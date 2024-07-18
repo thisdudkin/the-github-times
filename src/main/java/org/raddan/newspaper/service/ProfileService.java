@@ -7,17 +7,13 @@ import org.raddan.newspaper.entity.dto.ProfileRequest;
 import org.raddan.newspaper.entity.response.ProfileCreationResponse;
 import org.raddan.newspaper.entity.response.ProfileInfoResponse;
 import org.raddan.newspaper.exception.AlreadyExistsException;
+import org.raddan.newspaper.filter.DateFilter;
 import org.raddan.newspaper.repository.ProfileRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -25,7 +21,6 @@ import java.util.Optional;
 public class ProfileService {
 
     private static final Logger log = LoggerFactory.getLogger(ProfileService.class);
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 
     private final ProfileRepository profileRepository;
     private final UserService userService;
@@ -51,7 +46,7 @@ public class ProfileService {
                 profile.getId(),
                 profile.getFirstName(),
                 profile.getLastName(),
-                formatInstant(profile.getCreatedUtc())
+                DateFilter.formatInstant(profile.getCreatedUtc())
         );
 
     }
@@ -92,12 +87,8 @@ public class ProfileService {
                 profile.getFirstName(),
                 profile.getLastName(),
                 profile.getBio(),
-                formatInstant(profile.getCreatedUtc()),
-                formatInstant(profile.getUpdatedUtc())
+                DateFilter.formatInstant(profile.getCreatedUtc()),
+                DateFilter.formatInstant(profile.getUpdatedUtc())
                 );
-    }
-
-    private String formatInstant(long epochSecond) {
-        return LocalDateTime.ofEpochSecond(epochSecond, 0, ZoneOffset.UTC).format(formatter);
     }
 }

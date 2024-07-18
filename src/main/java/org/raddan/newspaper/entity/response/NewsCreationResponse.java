@@ -6,15 +6,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "News creation response")
 public class NewsCreationResponse {
-    private UUID newsId;
+    private String newsId;
     private String title;
     private String summary;
     private String content;

@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface NewsRepository extends JpaRepository<News, Integer> {
-    @Query("SELECT n FROM News n WHERE n.id = :p_newsId")
-    Optional<News> findById(@Param("p_newsId") Long newsId);
+    @Query("SELECT n FROM News n WHERE n.id = :p_newsUUID")
+    Optional<News> findById(@Param("p_newsUUID") String newsUUID);
 
     @Query("SELECT n FROM News n WHERE n.author.id = :p_authorId")
     List<News> findAllByAuthor(@Param("p_authorId") Long authorId);

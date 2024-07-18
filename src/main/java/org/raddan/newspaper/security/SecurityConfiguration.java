@@ -45,7 +45,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/auth/**", "/news/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/news/*/edit", "/profile/*").authenticated()
+                        .requestMatchers("/news/**", "/profile/*").authenticated()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))

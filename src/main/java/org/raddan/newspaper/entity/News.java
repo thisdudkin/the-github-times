@@ -2,10 +2,12 @@ package org.raddan.newspaper.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import org.raddan.newspaper.entity.data.NewsData;
 import org.raddan.newspaper.entity.data.NewsDataConverter;
 
-import java.util.UUID;
+import java.io.Serializable;
 
 @Entity
 @Builder
@@ -17,10 +19,8 @@ import java.util.UUID;
 public class News {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @SequenceGenerator(name = "news_id_seq", sequenceName = "news_id_seq", allocationSize = 1)
     @Column(name = "news_id", nullable = false, unique = true)
-    private UUID id;
+    private String id;
 
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
@@ -32,7 +32,7 @@ public class News {
     @Column(name = "updated_utc")
     private Long updatedUtc;
 
-    @Convert(converter = NewsDataConverter.class)
+    @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb", nullable = false)
     private NewsData data;
 
