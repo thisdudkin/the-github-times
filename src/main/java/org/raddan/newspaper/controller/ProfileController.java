@@ -8,6 +8,8 @@ import org.raddan.newspaper.service.ProfileService;
 import org.raddan.newspaper.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping(path = "/profile")
 @RequiredArgsConstructor

@@ -6,14 +6,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "Response on creating new profile")
-public class ProfileCreationResponse {
-    private Long profileId;
-    private String firstName;
-    private String lastName;
-    private String createdAt;
+@Schema(description = "News creation response")
+public class NewsCreationResponse {
+    private UUID newsId;
+    private String title;
+    private String summary;
+    private String content;
+
 }
