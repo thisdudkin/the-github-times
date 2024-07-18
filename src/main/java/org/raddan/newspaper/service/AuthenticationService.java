@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.raddan.newspaper.entity.User;
 import org.raddan.newspaper.entity.dto.SignInRequest;
 import org.raddan.newspaper.entity.dto.SignUpRequest;
-import org.raddan.newspaper.entity.response.JwtAuthenticationResponse;
+import org.raddan.newspaper.entity.response.info.JwtAuthenticationResponse;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;

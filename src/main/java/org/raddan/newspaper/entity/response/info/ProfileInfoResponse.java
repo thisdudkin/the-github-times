@@ -1,4 +1,4 @@
-package org.raddan.newspaper.entity.response;
+package org.raddan.newspaper.entity.response.info;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

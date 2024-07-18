@@ -2,13 +2,11 @@ package org.raddan.newspaper.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.raddan.newspaper.entity.dto.ProfileRequest;
-import org.raddan.newspaper.entity.response.ProfileInfoResponse;
-import org.raddan.newspaper.entity.response.ProfileCreationResponse;
+import org.raddan.newspaper.entity.response.info.ProfileInfoResponse;
+import org.raddan.newspaper.entity.response.creation.ProfileCreationResponse;
 import org.raddan.newspaper.service.ProfileService;
 import org.raddan.newspaper.service.UserService;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping(path = "/profile")

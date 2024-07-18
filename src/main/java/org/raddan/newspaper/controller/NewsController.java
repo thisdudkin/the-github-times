@@ -2,15 +2,13 @@ package org.raddan.newspaper.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.raddan.newspaper.entity.data.NewsData;
-import org.raddan.newspaper.entity.response.NewsCreationResponse;
+import org.raddan.newspaper.entity.response.creation.NewsCreationResponse;
+import org.raddan.newspaper.entity.response.info.NewsInfoResponse;
 import org.raddan.newspaper.service.NewsService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path = "/news/")
+@RequestMapping(path = "/news")
 @RequiredArgsConstructor
 public class NewsController {
 
@@ -19,6 +17,11 @@ public class NewsController {
     @PostMapping(path = "/create")
     public NewsCreationResponse createNews(@RequestBody NewsData request) {
         return newsService.createNews(request);
+    }
+
+    @GetMapping
+    public NewsInfoResponse getNewsInfo(@RequestParam String id) {
+        return newsService.getNewsInfo(id);
     }
 
 }

@@ -6,7 +6,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.raddan.newspaper.entity.dto.SignInRequest;
 import org.raddan.newspaper.entity.dto.SignUpRequest;
-import org.raddan.newspaper.entity.response.JwtAuthenticationResponse;
+import org.raddan.newspaper.entity.response.info.JwtAuthenticationResponse;
 import org.raddan.newspaper.service.AuthenticationService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

@@ -1,4 +1,4 @@
-package org.raddan.newspaper.entity.response;
+package org.raddan.newspaper.entity.response.info;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

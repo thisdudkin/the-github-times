@@ -1,14 +1,18 @@
 package org.raddan.newspaper.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.raddan.newspaper.entity.News;
 import org.raddan.newspaper.entity.data.NewsData;
-import org.raddan.newspaper.entity.response.NewsCreationResponse;
+import org.raddan.newspaper.entity.response.creation.NewsCreationResponse;
+import org.raddan.newspaper.entity.response.info.NewsInfoResponse;
 import org.raddan.newspaper.filter.DateFilter;
 import org.raddan.newspaper.repository.NewsRepository;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.time.Instant;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -35,6 +39,24 @@ public class NewsService {
                 news.getData().getTitle(),
                 news.getData().getSummary(),
                 news.getData().getContent()
+        );
+    }
+
+    public NewsInfoResponse getNewsInfo(String uuid) {
+        Optional<News> optionalNews = newsRepository.findById(uuid);
+        if (optionalNews.isEmpty())
+            throw new EntityNotFoundException("News with UUID " + uuid + " not found");
+
+        var news = optionalNews.get();
+        return new NewsInfoResponse(
+                news.getId(),
+                news.getData().getTitle(),
+                news.getData().getSummary(),
+                news.getData().getContent(),
+                news.getData().getTags(),
+                news.getData().getImageURL(),
+                news.getAuthor().getUsername(),
+                DateFilter.formatInstant(news.getCreatedUtc())
         );
     }
 }
