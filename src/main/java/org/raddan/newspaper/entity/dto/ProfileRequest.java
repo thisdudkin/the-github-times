@@ -4,8 +4,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
-@Schema(description = "Profile creation request")
-public class ProfileCreationRequest {
+@Schema(description = "Profile request")
+public class ProfileRequest {
     private String firstName;
     private String lastName;
     private String bio;
