@@ -8,8 +8,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import static org.raddan.newspaper.enums.Role.ROLE_ADMIN;
-
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -43,10 +41,4 @@ public class UserService {
         return getByUsername(username);
     }
 
-    @Deprecated
-    public void getAdmin() {
-        var user = getCurrentUser();
-        user.setRole(ROLE_ADMIN);
-        save(user);
-    }
 }
