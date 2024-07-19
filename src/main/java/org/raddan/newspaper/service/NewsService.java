@@ -5,12 +5,14 @@ import lombok.RequiredArgsConstructor;
 import org.raddan.newspaper.entity.News;
 import org.raddan.newspaper.entity.data.NewsData;
 import org.raddan.newspaper.entity.response.creation.NewsCreationResponse;
+import org.raddan.newspaper.entity.response.deletion.DeletionResponse;
 import org.raddan.newspaper.entity.response.info.NewsInfoResponse;
 import org.raddan.newspaper.filter.DateFilter;
 import org.raddan.newspaper.repository.NewsRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
@@ -19,6 +21,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class NewsService {
 
+    private static final Logger log = LoggerFactory.getLogger(NewsService.class);
     private final NewsRepository newsRepository;
     private final UserService userService;
 
@@ -29,8 +32,6 @@ public class NewsService {
         news.setCreatedUtc(Instant.now().getEpochSecond());
         news.setUpdatedUtc(Instant.now().getEpochSecond());
         news.setData(request);
-
-        System.out.println(news.getData());
 
         newsRepository.save(news);
 
@@ -57,6 +58,24 @@ public class NewsService {
                 news.getData().getImageURL(),
                 news.getAuthor().getUsername(),
                 DateFilter.formatInstant(news.getCreatedUtc())
+        );
+    }
+
+    public DeletionResponse deleteNews(String newsId) {
+        Optional<News> optionalNews = newsRepository.findById(newsId);
+        if (optionalNews.isEmpty())
+            throw new EntityNotFoundException("News with UUID " + newsId + " not found");
+
+        var news = optionalNews.get();
+        newsRepository.delete(optionalNews.get());
+        log.info("News with UUID {} deleted successfully", newsId);
+        log.info("Author: {}", optionalNews.get().getAuthor().getUsername());
+
+        return new DeletionResponse(
+                news.getId(),
+                "Type: News",
+                DateFilter.formatInstant(Instant.now().getEpochSecond()),
+                news.getAuthor().getUsername()
         );
     }
 }
