@@ -34,6 +34,11 @@ public class NewsController {
         return newsService.getNewsInfoByTag(tag);
     }
 
+    @GetMapping(path = "/author/{author}")
+    public List<NewsInfoResponse> getNewsInfoByAuthor(@PathVariable String author) {
+        return newsService.getNewsInfoByAuthor(author);
+    }
+
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping(path = "/{newsId}")
     public DeletionResponse deleteResponse(@PathVariable String newsId) {

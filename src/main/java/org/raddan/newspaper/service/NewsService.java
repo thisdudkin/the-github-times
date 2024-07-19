@@ -65,7 +65,24 @@ public class NewsService {
     public List<NewsInfoResponse> getNewsInfoByTag(String tag) {
         List<News> newsList = newsRepository.findByTag(tag);
         if (newsList.isEmpty())
-            throw new EntityNotFoundException("News with tag " + tag + " not found");
+            throw new EntityNotFoundException("News with tag: " + tag + " not found");
+
+        return newsList.stream().map(news -> new NewsInfoResponse(
+                news.getId(),
+                news.getData().getTitle(),
+                news.getData().getSummary(),
+                news.getData().getContent(),
+                news.getData().getTags(),
+                news.getData().getImageURL(),
+                news.getAuthor().getUsername(),
+                DateFilter.formatInstant(news.getCreatedUtc())
+        )).toList();
+    }
+
+    public List<NewsInfoResponse> getNewsInfoByAuthor(String author) {
+        List<News> newsList = newsRepository.findAllByAuthor(author);
+        if (newsList.isEmpty())
+            throw new EntityNotFoundException("News with author: " + author + " not found");
 
         return newsList.stream().map(news -> new NewsInfoResponse(
                 news.getId(),

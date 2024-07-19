@@ -12,8 +12,8 @@ public interface NewsRepository extends JpaRepository<News, Integer> {
     @Query("SELECT n FROM News n WHERE n.id = :p_newsUUID")
     Optional<News> findById(@Param("p_newsUUID") String newsUUID);
 
-    @Query("SELECT n FROM News n WHERE n.author.id = :p_authorId")
-    List<News> findAllByAuthor(@Param("p_authorId") Long authorId);
+    @Query("SELECT n FROM News n WHERE n.author.username = :p_author")
+    List<News> findAllByAuthor(@Param("p_author") String author);
 
     @Query("SELECT n FROM News n WHERE JSONB_QUERY(n.data, '$.title') = :p_title")
     Optional<News> findByTitle(@Param("p_title") String title);
