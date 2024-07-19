@@ -18,5 +18,8 @@ public interface NewsRepository extends JpaRepository<News, Integer> {
     @Query("SELECT n FROM News n WHERE JSONB_QUERY(n.data, '$.title') = :p_title")
     Optional<News> findByTitle(@Param("p_title") String title);
 
+    @Query(value = "SELECT * FROM news n WHERE EXISTS (SELECT 1 FROM jsonb_array_elements_text(n.data->'tags') elem WHERE elem = :p_tag)", nativeQuery = true)
+    List<News> findByTag(@Param("p_tag") String tag);
+
     // TODO: get all news for day (e.g: 2013-11-30)
 }

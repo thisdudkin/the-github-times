@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -59,6 +60,23 @@ public class NewsService {
                 news.getAuthor().getUsername(),
                 DateFilter.formatInstant(news.getCreatedUtc())
         );
+    }
+
+    public List<NewsInfoResponse> getNewsInfoByTag(String tag) {
+        List<News> newsList = newsRepository.findByTag(tag);
+        if (newsList.isEmpty())
+            throw new EntityNotFoundException("News with tag " + tag + " not found");
+
+        return newsList.stream().map(news -> new NewsInfoResponse(
+                news.getId(),
+                news.getData().getTitle(),
+                news.getData().getSummary(),
+                news.getData().getContent(),
+                news.getData().getTags(),
+                news.getData().getImageURL(),
+                news.getAuthor().getUsername(),
+                DateFilter.formatInstant(news.getCreatedUtc())
+        )).toList();
     }
 
     public DeletionResponse deleteNews(String newsId) {

@@ -9,6 +9,8 @@ import org.raddan.newspaper.service.NewsService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "/news")
 @RequiredArgsConstructor
@@ -22,9 +24,14 @@ public class NewsController {
         return newsService.createNews(request);
     }
 
-    @GetMapping(path = "/{newsId}")
+    @GetMapping(path = "/id/{newsId}")
     public NewsInfoResponse getNewsInfo(@PathVariable String newsId) {
         return newsService.getNewsInfo(newsId);
+    }
+
+    @GetMapping(path = "/tags/{tag}")
+    public List<NewsInfoResponse> getNewsInfoByTag(@PathVariable String tag) {
+        return newsService.getNewsInfoByTag(tag);
     }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
