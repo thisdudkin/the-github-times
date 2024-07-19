@@ -16,6 +16,7 @@ public class NewsController {
 
     private final NewsService newsService;
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping(path = "/create")
     public NewsCreationResponse createNews(@RequestBody NewsData request) {
         return newsService.createNews(request);
