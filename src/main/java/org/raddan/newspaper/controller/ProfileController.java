@@ -16,7 +16,7 @@ public class ProfileController {
     private final UserService userService;
     private final ProfileService profileService;
 
-    @PostMapping
+    @PostMapping(path = "/create")
     public ProfileCreationResponse createProfile(@RequestBody ProfileRequest request) {
         return profileService.createProfile(request);
     }
