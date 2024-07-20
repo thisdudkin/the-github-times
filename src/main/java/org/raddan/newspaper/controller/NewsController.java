@@ -22,6 +22,11 @@ public class NewsController {
         return newsService.createNews(request);
     }
 
+    @GetMapping
+    public List<NewsInfoResponse> getAllNews() {
+        return newsService.getAllNewsInfo();
+    }
+
     @GetMapping(path = "/id/{newsId}")
     public NewsInfoResponse getNewsInfo(@PathVariable String newsId) {
         return newsService.getNewsInfo(newsId);
