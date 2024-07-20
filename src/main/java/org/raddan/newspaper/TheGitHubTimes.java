@@ -1,4 +1,4 @@
-package org.raddan.newspaper.application;
+package org.raddan.newspaper;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

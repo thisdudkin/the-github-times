@@ -18,7 +18,7 @@ public class NewsController {
 
     private final NewsService newsService;
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_REPORTER')")
     @PostMapping(path = "/create")
     public NewsCreationResponse createNews(@RequestBody NewsData request) {
         return newsService.createNews(request);
@@ -39,9 +39,9 @@ public class NewsController {
         return newsService.getNewsInfoByAuthor(author);
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_MODERATOR')")
     @DeleteMapping(path = "/{newsId}")
-    public DeletionResponse deleteResponse(@PathVariable String newsId) {
+    public DeletionResponse deleteNews(@PathVariable String newsId) {
         return newsService.deleteNews(newsId);
     }
 

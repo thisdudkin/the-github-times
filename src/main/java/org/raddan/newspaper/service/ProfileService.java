@@ -6,7 +6,7 @@ import org.raddan.newspaper.entity.Profile;
 import org.raddan.newspaper.entity.dto.ProfileRequest;
 import org.raddan.newspaper.entity.response.creation.ProfileCreationResponse;
 import org.raddan.newspaper.entity.response.info.ProfileInfoResponse;
-import org.raddan.newspaper.exception.AlreadyExistsException;
+import org.raddan.newspaper.exception.custom.AlreadyExistsException;
 import org.raddan.newspaper.filter.DateFilter;
 import org.raddan.newspaper.repository.ProfileRepository;
 import org.slf4j.Logger;
