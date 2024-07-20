@@ -6,13 +6,13 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.3.1</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
     <groupId>org.raddan</groupId>
-    <artifactId>Newspaper</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>Newspaper</name>
-    <description>Newspaper</description>
+    <artifactId>the-github-times</artifactId>
+    <version>1.0</version>
+    <name>The GitHub Times</name>
+    <description>Web application designed to manage news articles</description>
     <url/>
     <licenses>
         <license/>
