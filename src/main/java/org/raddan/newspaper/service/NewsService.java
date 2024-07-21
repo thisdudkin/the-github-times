@@ -23,17 +23,18 @@ import java.util.UUID;
 public class NewsService {
 
     private static final Logger log = LoggerFactory.getLogger(NewsService.class);
+    
     private final NewsRepository newsRepository;
     private final UserService userService;
 
     public NewsCreationResponse createNews(NewsData request) {
-        News news = new News();
+        var news = new News();
         news.setId(String.valueOf(UUID.randomUUID()));
         news.setAuthor(userService.getCurrentUser());
         news.setCreatedUtc(Instant.now().getEpochSecond());
         news.setUpdatedUtc(Instant.now().getEpochSecond());
-        news.setData(request);
 
+        news.setData(request);
         newsRepository.save(news);
 
         return new NewsCreationResponse(
