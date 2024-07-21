@@ -17,14 +17,14 @@ public class NewsController {
 
     private final NewsService newsService;
 
-    @PostMapping(path = "/create")
-    public NewsCreationResponse createNews(@RequestBody NewsData request) {
-        return newsService.createNews(request);
-    }
-
     @GetMapping
     public List<NewsInfoResponse> getAllNews() {
         return newsService.getAllNewsInfo();
+    }
+
+    @PostMapping(path = "/create")
+    public NewsCreationResponse createNews(@RequestBody NewsData request) {
+        return newsService.createNews(request);
     }
 
     @GetMapping(path = "/id/{newsId}")

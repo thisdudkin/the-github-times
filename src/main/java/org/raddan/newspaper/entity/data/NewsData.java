@@ -14,6 +14,7 @@ public class NewsData {
     private String title;
     private String content;
     private String summary;
+    private String category;
     private List<String> tags;
     private List<String> imageURL;
     private Map<String, Object> metadata;
