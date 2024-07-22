@@ -2,12 +2,14 @@ package org.raddan.newspaper.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.raddan.newspaper.entity.Category;
 import org.raddan.newspaper.entity.News;
 import org.raddan.newspaper.entity.data.NewsData;
 import org.raddan.newspaper.entity.response.creation.NewsCreationResponse;
 import org.raddan.newspaper.entity.response.deletion.DeletionResponse;
 import org.raddan.newspaper.entity.response.info.NewsInfoResponse;
 import org.raddan.newspaper.filter.DateFilter;
+import org.raddan.newspaper.repository.CategoryRepository;
 import org.raddan.newspaper.repository.NewsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +25,8 @@ import java.util.UUID;
 public class NewsService {
 
     private static final Logger log = LoggerFactory.getLogger(NewsService.class);
-    
+
+    private final CategoryRepository categoryRepository;
     private final NewsRepository newsRepository;
     private final UserService userService;
 
@@ -37,6 +40,11 @@ public class NewsService {
         news.setData(request);
         newsRepository.save(news);
 
+        var category = new Category();
+        category.setName(request.getCategory());
+
+        newsRepository.save(news);
+        categoryRepository.save(category);
         return new NewsCreationResponse(
                 String.valueOf(news.getId()),
                 news.getData().getTitle(),
