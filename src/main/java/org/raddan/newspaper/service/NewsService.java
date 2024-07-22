@@ -38,7 +38,6 @@ public class NewsService {
         news.setUpdatedUtc(Instant.now().getEpochSecond());
 
         news.setData(request);
-        newsRepository.save(news);
 
         var category = new Category();
         category.setName(request.getCategory());
