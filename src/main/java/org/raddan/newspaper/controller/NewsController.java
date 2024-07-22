@@ -27,19 +27,19 @@ public class NewsController {
         return newsService.createNews(request);
     }
 
-    @GetMapping(path = "/id/{newsId}")
-    public NewsInfoResponse getNewsInfo(@PathVariable String newsId) {
-        return newsService.getNewsInfo(newsId);
+    @GetMapping(path = "/search")
+    public NewsInfoResponse getNewsInfo(@RequestParam String q) {
+        return newsService.getNewsInfo(q);
     }
 
-    @GetMapping(path = "/tags/{tag}")
-    public List<NewsInfoResponse> getNewsInfoByTag(@PathVariable String tag) {
-        return newsService.getNewsInfoByTag(tag);
+    @GetMapping(path = "/tags")
+    public List<NewsInfoResponse> getNewsInfoByTag(@RequestParam String q) {
+        return newsService.getNewsInfoByTag(q);
     }
 
-    @GetMapping(path = "/author/{author}")
-    public List<NewsInfoResponse> getNewsInfoByAuthor(@PathVariable String author) {
-        return newsService.getNewsInfoByAuthor(author);
+    @GetMapping(path = "/author")
+    public List<NewsInfoResponse> getNewsInfoByAuthor(@RequestParam String q) {
+        return newsService.getNewsInfoByAuthor(q);
     }
 
     @DeleteMapping(path = "/delete/{newsId}")
