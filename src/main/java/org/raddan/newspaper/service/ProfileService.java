@@ -11,21 +11,29 @@ import org.raddan.newspaper.exception.custom.AlreadyExistsException;
 import org.raddan.newspaper.exception.custom.UnauthorizedException;
 import org.raddan.newspaper.filter.DateFilter;
 import org.raddan.newspaper.repository.ProfileRepository;
+import org.raddan.newspaper.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @RequiredArgsConstructor
 public class ProfileService {
 
     private static final Logger log = LoggerFactory.getLogger(ProfileService.class);
+    private static final String http = "http://";
+    private static final String profileUrl = http + "localhost:8080/profile";
+    private static final String delimiter = "/";
 
     private final ProfileRepository profileRepository;
     private final UserService userService;
+    private final UserRepository userRepository;
 
     public ProfileCreationResponse createProfile(ProfileRequest request) {
         User authorizedUser = userService.getCurrentUser();
@@ -95,5 +103,16 @@ public class ProfileService {
                 DateFilter.formatInstant(profile.getCreatedUtc()),
                 DateFilter.formatInstant(profile.getUpdatedUtc())
         );
+    }
+
+    public Map<String, String> shareProfile(String username) {
+        Map<String, String> shareUrl = new ConcurrentHashMap<>();
+        User optionalUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+
+        String url = profileUrl + delimiter + optionalUser.getUsername();
+        shareUrl.put("url", url);
+
+        return shareUrl;
     }
 }
