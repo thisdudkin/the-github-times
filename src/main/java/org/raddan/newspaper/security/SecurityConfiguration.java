@@ -43,8 +43,8 @@ public class SecurityConfiguration {
                     return corsConfiguration;
                 }))
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/auth/**", "/profile", "/profile", "/news/**").permitAll()
-                        .requestMatchers("/profile/**").authenticated()
+                        .requestMatchers("/auth/**", "/profile/**", "/news/**").permitAll()
+                        .requestMatchers("/profile/edit").authenticated()
                         .requestMatchers("/news/create").hasRole("REPORTER")
                         .requestMatchers("/news/delete/**").hasAnyRole("MODERATOR", "ADMIN")
                         .anyRequest().authenticated()

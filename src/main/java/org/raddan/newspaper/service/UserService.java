@@ -2,6 +2,7 @@ package org.raddan.newspaper.service;
 
 import lombok.RequiredArgsConstructor;
 import org.raddan.newspaper.entity.User;
+import org.raddan.newspaper.exception.custom.UnauthorizedException;
 import org.raddan.newspaper.repository.UserRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -37,7 +38,12 @@ public class UserService {
     }
 
     public User getCurrentUser() {
-        var username = SecurityContextHolder.getContext().getAuthentication().getName();
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal() == "anonymousUser") {
+            throw new UnauthorizedException("You are not authorized to perform this action!");
+        }
+
+        String username = authentication.getName();
         return getByUsername(username);
     }
 

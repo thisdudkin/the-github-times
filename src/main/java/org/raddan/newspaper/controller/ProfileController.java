@@ -21,8 +21,8 @@ public class ProfileController {
         return profileService.createProfile(request);
     }
 
-    @GetMapping
-    public ProfileInfoResponse getProfileInfo(@RequestParam String username) {
+    @GetMapping(path = "/{username}")
+    public ProfileInfoResponse getProfileInfo(@PathVariable String username) {
         return profileService.getProfileInfo(username);
     }
 

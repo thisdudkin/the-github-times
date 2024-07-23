@@ -3,10 +3,12 @@ package org.raddan.newspaper.service;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.raddan.newspaper.entity.Profile;
+import org.raddan.newspaper.entity.User;
 import org.raddan.newspaper.entity.dto.ProfileRequest;
 import org.raddan.newspaper.entity.response.creation.ProfileCreationResponse;
 import org.raddan.newspaper.entity.response.info.ProfileInfoResponse;
 import org.raddan.newspaper.exception.custom.AlreadyExistsException;
+import org.raddan.newspaper.exception.custom.UnauthorizedException;
 import org.raddan.newspaper.filter.DateFilter;
 import org.raddan.newspaper.repository.ProfileRepository;
 import org.slf4j.Logger;
@@ -26,6 +28,9 @@ public class ProfileService {
     private final UserService userService;
 
     public ProfileCreationResponse createProfile(ProfileRequest request) {
+        User authorizedUser = userService.getCurrentUser();
+        if (authorizedUser == null)
+            throw new UnauthorizedException("You are not authorized to perform this action");
         Optional<Profile> optionalProfile = profileRepository.findByUser(userService.getCurrentUser().getId());
         if (optionalProfile.isPresent()) {
             throw new AlreadyExistsException("You already have an existing profile..");
@@ -89,6 +94,6 @@ public class ProfileService {
                 profile.getBio(),
                 DateFilter.formatInstant(profile.getCreatedUtc()),
                 DateFilter.formatInstant(profile.getUpdatedUtc())
-                );
+        );
     }
 }

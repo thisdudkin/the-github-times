@@ -2,6 +2,7 @@ package org.raddan.newspaper.exception;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.raddan.newspaper.exception.custom.AlreadyExistsException;
+import org.raddan.newspaper.exception.custom.UnauthorizedException;
 import org.raddan.newspaper.filter.DateFilter;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -43,6 +44,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         );
 
         return new ResponseEntity<>(exceptionDetails, NOT_FOUND);
+    }
+
+    @ExceptionHandler(value = {UnauthorizedException.class})
+    public ResponseEntity<?> handleUnauthorizedException(RuntimeException ex) {
+        ExceptionDetails exceptionDetails = new ExceptionDetails(
+                ex.getMessage(),
+                UNAUTHORIZED,
+                DateFilter.formatInstant(Instant.now().getEpochSecond())
+        );
+
+        return new ResponseEntity<>(exceptionDetails, UNAUTHORIZED);
     }
 
     @ExceptionHandler(value = {RuntimeException.class})
