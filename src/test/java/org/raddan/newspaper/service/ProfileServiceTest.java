@@ -14,9 +14,13 @@ import org.raddan.newspaper.entity.response.creation.ProfileCreationResponse;
 import org.raddan.newspaper.entity.response.info.ProfileInfoResponse;
 import org.raddan.newspaper.exception.custom.AlreadyExistsException;
 import org.raddan.newspaper.repository.ProfileRepository;
+import org.raddan.newspaper.utils.ProfileFieldUpdater;
 
+import java.lang.reflect.Field;
 import java.time.Instant;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -28,6 +32,9 @@ class ProfileServiceTest {
 
     @Mock
     private UserService userService;
+
+    @Mock
+    private ProfileFieldUpdater profileFieldUpdater;
 
     @InjectMocks
     private ProfileService profileService;
@@ -112,38 +119,59 @@ class ProfileServiceTest {
         when(userService.getCurrentUser()).thenReturn(user);
         when(profileRepository.findByUser(user.getId())).thenReturn(Optional.empty());
 
-        var request = new ProfileRequest();
-        assertThrows(EntityNotFoundException.class, () -> profileService.editProfileInfo(request));
+        Map<String, Object> requestInfo = new ConcurrentHashMap<>();
+        assertThrows(EntityNotFoundException.class, () -> profileService.editProfileInfo(requestInfo));
     }
 
     @Test
     @Order(6)
     void editProfileInfo_ShouldUpdateProfile_WhenProfileExists() {
-        var existingProfile = new Profile();
+        // Arrange
+        when(userService.getCurrentUser()).thenReturn(user);
+
+        Profile existingProfile = new Profile();
         existingProfile.setId(1L);
         existingProfile.setUser(user);
-        existingProfile.setFirstName("OldFirst");
-        existingProfile.setLastName("OldLast");
+        existingProfile.setFirstName("OldFirstName");
+        existingProfile.setLastName("OldLastName");
         existingProfile.setBio("OldBio");
         existingProfile.setCreatedUtc(Instant.now().getEpochSecond());
         existingProfile.setUpdatedUtc(existingProfile.getCreatedUtc());
 
-        when(userService.getCurrentUser()).thenReturn(user);
-
         when(profileRepository.findByUser(user.getId())).thenReturn(Optional.of(existingProfile));
-        when(profileRepository.save(any(Profile.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        var request = new ProfileRequest();
-        request.setFirstName("NewFirst");
-        request.setLastName("NewLast");
-        request.setBio("NewBio");
+        Map<String, Object> requestInfo = new ConcurrentHashMap<>();
+        requestInfo.put("firstName", "NewFirstName");
+        requestInfo.put("lastName", "NewLastName");
+        requestInfo.put("bio", "NewBio");
 
-        ProfileInfoResponse response = profileService.editProfileInfo(request);
+        doAnswer(invocation -> {
+            Profile profile = invocation.getArgument(0);
+            Map<String, Object> info = invocation.getArgument(1);
+            info.forEach((fieldName, newValue) -> {
+                try {
+                    Field field = profile.getClass().getDeclaredField(fieldName);
+                    field.setAccessible(true);
+                    field.set(profile, newValue);
+                } catch (NoSuchFieldException | IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            });
+            return null;
+        }).when(profileFieldUpdater).update(any(Profile.class), anyMap());
 
+        // Act
+        ProfileInfoResponse response = profileService.editProfileInfo(requestInfo);
+
+        // Assert
         assertNotNull(response);
-        assertEquals("NewFirst", response.getFirstName());
-        assertEquals("NewLast", response.getLastName());
+        assertEquals("NewFirstName", response.getFirstName());
+        assertEquals("NewLastName", response.getLastName());
         assertEquals("NewBio", response.getBio());
+
+        verify(profileFieldUpdater, times(1)).update(existingProfile, requestInfo);
+        verify(profileRepository, times(1)).save(existingProfile);
     }
+
 
 }
