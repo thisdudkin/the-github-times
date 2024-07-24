@@ -3,6 +3,7 @@ package org.raddan.newspaper.security;
 import lombok.RequiredArgsConstructor;
 import org.raddan.newspaper.filter.JwtAuthenticationFilter;
 import org.raddan.newspaper.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,6 +32,12 @@ public class SecurityConfiguration {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final UserService userService;
 
+    @Autowired
+    private CustomAccessDeniedHandler customAccessDeniedHandler;
+
+    @Autowired
+    private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
@@ -43,11 +50,15 @@ public class SecurityConfiguration {
                     return corsConfiguration;
                 }))
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/auth/**", "/profile/**", "/news/**").permitAll()
+                        .requestMatchers("/auth/**", "/profile/**", "/news", "/news/search").permitAll()
                         .requestMatchers("/profile/edit").authenticated()
-                        .requestMatchers("/news/create").hasRole("REPORTER")
+                        .requestMatchers("/news/create").hasAnyRole("REPORTER", "MODERATOR", "ADMIN")
                         .requestMatchers("/news/delete/**").hasAnyRole("MODERATOR", "ADMIN")
                         .anyRequest().authenticated()
+                )
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .accessDeniedHandler(customAccessDeniedHandler)
+                        .authenticationEntryPoint(customAuthenticationEntryPoint)
                 )
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider())
