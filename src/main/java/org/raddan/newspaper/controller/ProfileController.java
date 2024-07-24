@@ -29,7 +29,7 @@ public class ProfileController {
     }
 
     @PutMapping(path = "/edit")
-    public ProfileInfoResponse editProfileInfo(@RequestBody ProfileRequest request) {
+    public ProfileInfoResponse editProfileInfo(@RequestBody Map<String, Object> request) {
         return profileService.editProfileInfo(request);
     }
 

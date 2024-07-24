@@ -12,6 +12,7 @@ import org.raddan.newspaper.exception.custom.UnauthorizedException;
 import org.raddan.newspaper.filter.DateFilter;
 import org.raddan.newspaper.repository.ProfileRepository;
 import org.raddan.newspaper.repository.UserRepository;
+import org.raddan.newspaper.utils.ProfileFieldUpdater;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -34,6 +35,8 @@ public class ProfileService {
     private final ProfileRepository profileRepository;
     private final UserService userService;
     private final UserRepository userRepository;
+    private final ProfileFieldUpdater fieldUpdater;
+    private final ProfileFieldUpdater profileFieldUpdater;
 
     public ProfileCreationResponse createProfile(ProfileRequest request) {
         User authorizedUser = userService.getCurrentUser();
@@ -73,19 +76,14 @@ public class ProfileService {
         return createProfileInfoResponse(optionalProfile.get());
     }
 
-    public ProfileInfoResponse editProfileInfo(ProfileRequest request) {
+    public ProfileInfoResponse editProfileInfo(Map<String, Object> request) {
         Optional<Profile> optionalProfile = profileRepository.findByUser(userService.getCurrentUser().getId());
         if (optionalProfile.isEmpty())
             throw new EntityNotFoundException("Profile not found..");
 
         var profile = optionalProfile.get();
 
-        if (request.getFirstName() != null)
-            profile.setFirstName(request.getFirstName());
-        if (request.getLastName() != null)
-            profile.setLastName(request.getLastName());
-        if (request.getBio() != null)
-            profile.setBio(request.getBio());
+        profileFieldUpdater.update(profile, request);
 
         profile.setUpdatedUtc(Instant.now().getEpochSecond());
         profileRepository.save(profile);
