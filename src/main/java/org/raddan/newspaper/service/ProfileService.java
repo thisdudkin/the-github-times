@@ -12,7 +12,7 @@ import org.raddan.newspaper.exception.custom.UnauthorizedException;
 import org.raddan.newspaper.filter.DateFilter;
 import org.raddan.newspaper.repository.ProfileRepository;
 import org.raddan.newspaper.repository.UserRepository;
-import org.raddan.newspaper.utils.ProfileFieldUpdater;
+import org.raddan.newspaper.utils.updater.ProfileFieldUpdater;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

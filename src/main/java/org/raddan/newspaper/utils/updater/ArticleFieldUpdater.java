@@ -1,4 +1,4 @@
-package org.raddan.newspaper.utils;
+package org.raddan.newspaper.utils.updater;
 
 import org.raddan.newspaper.entity.News;
 import org.raddan.newspaper.entity.data.NewsData;

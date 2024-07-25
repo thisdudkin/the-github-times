@@ -13,6 +13,7 @@ import java.util.Map;
 /**
  * <b>RestController</b> for managing requests & responses
  * for CRUD operations.
+ *
  * @author Alexander Dudkin
  * @see NewsService
  */
@@ -25,6 +26,7 @@ public class NewsController {
 
     /**
      * Get all news articles
+     *
      * @return {@code List<NewsInfoResponse>} - list of all recent articles
      */
     @GetMapping
@@ -35,6 +37,7 @@ public class NewsController {
     /**
      * Return the article for news with: {@code q} - param, which
      * stands for UUID of article
+     *
      * @param q param, which stands for <b>UUID</b> of article
      * @return {@code Article}
      */
@@ -46,6 +49,7 @@ public class NewsController {
     /**
      * Return the {@code List<Article>} for news with: {@code q} - param, which
      * stands for <b>tag</b> of article
+     *
      * @param q param, which stands for <b>tag</b> of article
      * @return {@code List<Article>}
      */
@@ -57,6 +61,7 @@ public class NewsController {
     /**
      * Return the {@code List<Article>} for news with: {@code q} - param, which
      * stands for <b>author</b> of article
+     *
      * @param q param, which stands for <b>author</b> of article
      * @return {@code List<Article>}
      */
@@ -67,6 +72,7 @@ public class NewsController {
 
     /**
      * Create a new article
+     *
      * @param request {@literal not null}
      * @return {@code Article} - all needed news info for reader
      */
@@ -83,6 +89,7 @@ public class NewsController {
     /**
      * Delete news article with <b>UUID</b>, which is located
      * in {@code @PathVariable}
+     *
      * @param newsId {@literal not null}
      * @return {@code DeletionResponse}
      */
