@@ -15,6 +15,7 @@ import org.raddan.newspaper.repository.UserRepository;
 import org.raddan.newspaper.utils.ProfileFieldUpdater;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +38,9 @@ public class ProfileService {
     private final UserRepository userRepository;
     private final ProfileFieldUpdater fieldUpdater;
     private final ProfileFieldUpdater profileFieldUpdater;
+
+    @Autowired
+    private DateFilter dateFilter;
 
     public ProfileCreationResponse createProfile(ProfileRequest request) {
         User authorizedUser = userService.getCurrentUser();
@@ -62,7 +66,7 @@ public class ProfileService {
                 profile.getId(),
                 profile.getFirstName(),
                 profile.getLastName(),
-                DateFilter.formatInstant(profile.getCreatedUtc())
+                dateFilter.formatInstant(profile.getCreatedUtc())
         );
 
     }
@@ -98,8 +102,8 @@ public class ProfileService {
                 profile.getFirstName(),
                 profile.getLastName(),
                 profile.getBio(),
-                DateFilter.formatInstant(profile.getCreatedUtc()),
-                DateFilter.formatInstant(profile.getUpdatedUtc())
+                dateFilter.formatInstant(profile.getCreatedUtc()),
+                dateFilter.formatInstant(profile.getUpdatedUtc())
         );
     }
 

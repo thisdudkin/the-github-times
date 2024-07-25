@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.raddan.newspaper.entity.data.NewsData;
 
 import java.util.List;
 
@@ -12,12 +13,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NewsInfoResponse {
-    private String UUID;
-    private String title;
-    private String summary;
-    private String content;
-    private List<String> tags;
-    private List<String> imageURL;
+    private String ID;
     private String author;
     private String createdAt;
+    private String updatedAt;
+    private NewsData data;
 }

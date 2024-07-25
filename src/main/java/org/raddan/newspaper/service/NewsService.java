@@ -8,15 +8,19 @@ import org.raddan.newspaper.entity.data.NewsData;
 import org.raddan.newspaper.entity.response.creation.NewsCreationResponse;
 import org.raddan.newspaper.entity.response.deletion.DeletionResponse;
 import org.raddan.newspaper.entity.response.info.NewsInfoResponse;
+import org.raddan.newspaper.exception.custom.ArticleNotFoundException;
 import org.raddan.newspaper.filter.DateFilter;
 import org.raddan.newspaper.repository.CategoryRepository;
 import org.raddan.newspaper.repository.NewsRepository;
+import org.raddan.newspaper.utils.ArticleFieldUpdater;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -30,13 +34,18 @@ public class NewsService {
     private final NewsRepository newsRepository;
     private final UserService userService;
 
-    public NewsCreationResponse createNews(NewsData request) {
+    @Autowired
+    private ArticleFieldUpdater fieldUpdater;
+
+    @Autowired
+    private DateFilter dateFilter;
+
+    public NewsInfoResponse createNews(NewsData request) {
         var news = new News();
         news.setId(String.valueOf(UUID.randomUUID()));
         news.setAuthor(userService.getCurrentUser());
         news.setCreatedUtc(Instant.now().getEpochSecond());
         news.setUpdatedUtc(Instant.now().getEpochSecond());
-
         news.setData(request);
 
         var category = new Category();
@@ -44,12 +53,7 @@ public class NewsService {
 
         newsRepository.save(news);
         categoryRepository.save(category);
-        return new NewsCreationResponse(
-                String.valueOf(news.getId()),
-                news.getData().getTitle(),
-                news.getData().getSummary(),
-                news.getData().getContent()
-        );
+        return creationResponse(news);
     }
 
     public NewsInfoResponse getNewsInfo(String uuid) {
@@ -58,16 +62,7 @@ public class NewsService {
             throw new EntityNotFoundException("News with UUID " + uuid + " not found");
 
         var news = optionalNews.get();
-        return new NewsInfoResponse(
-                news.getId(),
-                news.getData().getTitle(),
-                news.getData().getSummary(),
-                news.getData().getContent(),
-                news.getData().getTags(),
-                news.getData().getImageURL(),
-                news.getAuthor().getUsername(),
-                DateFilter.formatInstant(news.getCreatedUtc())
-        );
+        return creationResponse(news);
     }
 
     public List<NewsInfoResponse> getNewsInfoByTag(String tag) {
@@ -75,16 +70,7 @@ public class NewsService {
         if (newsList.isEmpty())
             throw new EntityNotFoundException("News with tag: " + tag + " not found");
 
-        return newsList.stream().map(news -> new NewsInfoResponse(
-                news.getId(),
-                news.getData().getTitle(),
-                news.getData().getSummary(),
-                news.getData().getContent(),
-                news.getData().getTags(),
-                news.getData().getImageURL(),
-                news.getAuthor().getUsername(),
-                DateFilter.formatInstant(news.getCreatedUtc())
-        )).toList();
+        return newsList.stream().map(this::creationResponse).toList();
     }
 
     public List<NewsInfoResponse> getNewsInfoByAuthor(String author) {
@@ -92,16 +78,7 @@ public class NewsService {
         if (newsList.isEmpty())
             throw new EntityNotFoundException("News with author: " + author + " not found");
 
-        return newsList.stream().map(news -> new NewsInfoResponse(
-                news.getId(),
-                news.getData().getTitle(),
-                news.getData().getSummary(),
-                news.getData().getContent(),
-                news.getData().getTags(),
-                news.getData().getImageURL(),
-                news.getAuthor().getUsername(),
-                DateFilter.formatInstant(news.getCreatedUtc())
-        )).toList();
+        return newsList.stream().map(this::creationResponse).toList();
     }
 
     public List<NewsInfoResponse> getAllNewsInfo() {
@@ -109,16 +86,7 @@ public class NewsService {
         if (newsList.isEmpty())
             throw new EntityNotFoundException("News not found");
 
-        return newsList.stream().map(news -> new NewsInfoResponse(
-                news.getId(),
-                news.getData().getTitle(),
-                news.getData().getSummary(),
-                news.getData().getContent(),
-                news.getData().getTags(),
-                news.getData().getImageURL(),
-                news.getAuthor().getUsername(),
-                DateFilter.formatInstant(news.getCreatedUtc())
-        )).toList();
+        return newsList.stream().map(this::creationResponse).toList();
     }
 
     public DeletionResponse deleteNews(String newsId) {
@@ -134,8 +102,29 @@ public class NewsService {
         return new DeletionResponse(
                 news.getId(),
                 "Type: News",
-                DateFilter.formatInstant(Instant.now().getEpochSecond()),
+                dateFilter.formatInstant(Instant.now().getEpochSecond()),
                 news.getAuthor().getUsername()
+        );
+    }
+
+    public NewsInfoResponse editNews(String UUID, Map<String, Object> requestInfo) {
+        News news = newsRepository.findById(UUID)
+                .orElseThrow(() -> new ArticleNotFoundException("Article not found!"));
+        fieldUpdater.update(news, requestInfo);
+        news.setUpdatedUtc(Instant.now().getEpochSecond());
+        newsRepository.save(news);
+        return creationResponse(news);
+    }
+
+    private NewsInfoResponse creationResponse(News news) {
+        long createdUtc = news.getCreatedUtc();
+        long updatedUtc = news.getUpdatedUtc();
+        return new NewsInfoResponse(
+                news.getId(),
+                news.getAuthor().getUsername(),
+                dateFilter.formatInstant(createdUtc),
+                dateFilter.formatInstant(updatedUtc),
+                news.getData()
         );
     }
 }

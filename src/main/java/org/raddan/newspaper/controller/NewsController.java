@@ -2,13 +2,13 @@ package org.raddan.newspaper.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.raddan.newspaper.entity.data.NewsData;
-import org.raddan.newspaper.entity.response.creation.NewsCreationResponse;
 import org.raddan.newspaper.entity.response.deletion.DeletionResponse;
 import org.raddan.newspaper.entity.response.info.NewsInfoResponse;
 import org.raddan.newspaper.service.NewsService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <b>RestController</b> for managing requests & responses
@@ -71,8 +71,13 @@ public class NewsController {
      * @return {@code Article} - all needed news info for reader
      */
     @PostMapping(path = "/create")
-    public NewsCreationResponse createNews(@RequestBody NewsData request) {
+    public NewsInfoResponse createNews(@RequestBody NewsData request) {
         return newsService.createNews(request);
+    }
+
+    @PatchMapping(path = "/{UUID}/edit")
+    public NewsInfoResponse editNews(@PathVariable String UUID, @RequestBody Map<String, Object> requestInfo) {
+        return newsService.editNews(UUID, requestInfo);
     }
 
     /**

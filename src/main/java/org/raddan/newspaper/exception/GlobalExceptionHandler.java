@@ -2,8 +2,10 @@ package org.raddan.newspaper.exception;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.raddan.newspaper.exception.custom.AlreadyExistsException;
+import org.raddan.newspaper.exception.custom.ArticleNotFoundException;
 import org.raddan.newspaper.exception.custom.UnauthorizedException;
 import org.raddan.newspaper.filter.DateFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,23 +26,26 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     private record ExceptionDetails(String message, HttpStatus status, String timestamp) { }
 
+    @Autowired
+    private DateFilter dateFilter;
+
     @ExceptionHandler(value = {AlreadyExistsException.class, BadCredentialsException.class})
     public ResponseEntity<?> handleAlreadyExistsException(RuntimeException ex) {
         ExceptionDetails exceptionDetails = new ExceptionDetails(
                 ex.getMessage(),
                 BAD_REQUEST,
-                DateFilter.formatInstant(Instant.now().getEpochSecond())
+                dateFilter.formatInstant(Instant.now().getEpochSecond())
         );
 
         return new ResponseEntity<>(exceptionDetails, BAD_REQUEST);
     }
 
-    @ExceptionHandler(value = {UsernameNotFoundException.class, EntityNotFoundException.class})
+    @ExceptionHandler(value = {UsernameNotFoundException.class, ArticleNotFoundException.class, EntityNotFoundException.class})
     public ResponseEntity<?> handleUsernameNotFoundException(RuntimeException ex) {
         ExceptionDetails exceptionDetails = new ExceptionDetails(
                 ex.getMessage(),
                 NOT_FOUND,
-                DateFilter.formatInstant(Instant.now().getEpochSecond())
+                dateFilter.formatInstant(Instant.now().getEpochSecond())
         );
 
         return new ResponseEntity<>(exceptionDetails, NOT_FOUND);
@@ -51,7 +56,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ExceptionDetails exceptionDetails = new ExceptionDetails(
                 ex.getMessage(),
                 UNAUTHORIZED,
-                DateFilter.formatInstant(Instant.now().getEpochSecond())
+                dateFilter.formatInstant(Instant.now().getEpochSecond())
         );
 
         return new ResponseEntity<>(exceptionDetails, UNAUTHORIZED);
@@ -62,7 +67,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ExceptionDetails exceptionDetails = new ExceptionDetails(
                 ex.getMessage(),
                 INTERNAL_SERVER_ERROR,
-                DateFilter.formatInstant(Instant.now().getEpochSecond())
+                dateFilter.formatInstant(Instant.now().getEpochSecond())
         );
 
         return new ResponseEntity<>(exceptionDetails, INTERNAL_SERVER_ERROR);
