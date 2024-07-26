@@ -1,4 +1,4 @@
-package org.raddan.newspaper.utils.updater;
+package org.raddan.newspaper.utils;
 
 import java.util.Map;
 

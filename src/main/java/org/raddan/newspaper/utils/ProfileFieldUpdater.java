@@ -1,4 +1,4 @@
-package org.raddan.newspaper.utils.updater;
+package org.raddan.newspaper.utils;
 
 import org.raddan.newspaper.entity.Profile;
 import org.slf4j.Logger;
