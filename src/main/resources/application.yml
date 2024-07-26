@@ -1,20 +1,18 @@
 spring:
   application:
-    name: newspaper
+    name: security-security
   datasource:
-    url: jdbc:postgresql://localhost:5432/newspaper
+    url: jdbc:postgresql://localhost:5432/the-github-times
+    driverClassName: org.postgresql.Driver
     username: postgres
     password: 7654
-    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update
-    show-sql: false
+      ddl-auto: create-drop
+    show-sql: true
     properties:
       hibernate:
         format_sql: true
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-
 token:
   signing:
     key: 53A73E5F1C4E0A2D3B5F2D784E6A1B423D6F247D1F6E5C3A596D635A75327855

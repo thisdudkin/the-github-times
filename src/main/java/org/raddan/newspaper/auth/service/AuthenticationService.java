@@ -1,17 +1,20 @@
-package org.raddan.newspaper.service;
+package org.raddan.newspaper.auth.service;
 
 import lombok.RequiredArgsConstructor;
+import org.raddan.newspaper.enums.Role;
 import org.raddan.newspaper.entity.User;
-import org.raddan.newspaper.entity.dto.SignInRequest;
-import org.raddan.newspaper.entity.dto.SignUpRequest;
-import org.raddan.newspaper.entity.response.info.JwtAuthenticationResponse;
+import org.raddan.newspaper.service.UserService;
+import org.raddan.newspaper.auth.model.JwtAuthenticationResponse;
+import org.raddan.newspaper.auth.model.SignInRequest;
+import org.raddan.newspaper.auth.model.SignUpRequest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import static org.raddan.newspaper.enums.Role.ROLE_USER;
-
+/**
+ * @author Alexander Dudkin
+ */
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -20,12 +23,19 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
+    /**
+     * Регистрация пользователя
+     *
+     * @param request данные пользователя
+     * @return токен
+     */
     public JwtAuthenticationResponse signUp(SignUpRequest request) {
+
         var user = User.builder()
                 .username(request.getUsername())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(ROLE_USER)
+                .role(Role.ROLE_USER)
                 .build();
 
         userService.create(user);
@@ -34,6 +44,12 @@ public class AuthenticationService {
         return new JwtAuthenticationResponse(jwt);
     }
 
+    /**
+     * Аутентификация пользователя
+     *
+     * @param request данные пользователя
+     * @return токен
+     */
     public JwtAuthenticationResponse signIn(SignInRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 request.getUsername(),
