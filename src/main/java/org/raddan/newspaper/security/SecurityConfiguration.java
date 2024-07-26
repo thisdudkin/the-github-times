@@ -50,7 +50,8 @@ public class SecurityConfiguration {
                     return corsConfiguration;
                 }))
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/auth/**", "/profile/**", "/news", "/news/search").permitAll()
+                        .requestMatchers("/auth/**", "/profile/**").permitAll()
+                        .requestMatchers("/news", "/news/search", "/news/tags", "/news/author").permitAll()
                         .requestMatchers("/profile/edit").authenticated()
                         .requestMatchers("/news/create").hasAnyRole("REPORTER", "MODERATOR", "ADMIN")
                         .requestMatchers("/news/delete/**").hasAnyRole("MODERATOR", "ADMIN")

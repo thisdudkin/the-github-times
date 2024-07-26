@@ -7,11 +7,9 @@ import org.raddan.newspaper.entity.News;
 import org.raddan.newspaper.entity.data.NewsData;
 import org.raddan.newspaper.entity.response.deletion.DeletionResponse;
 import org.raddan.newspaper.entity.response.info.NewsInfoResponse;
-import org.raddan.newspaper.exception.custom.ArticleNotFoundException;
 import org.raddan.newspaper.filter.DateFilter;
 import org.raddan.newspaper.repository.CategoryRepository;
 import org.raddan.newspaper.repository.NewsRepository;
-import org.raddan.newspaper.utils.updater.ArticleFieldUpdater;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -32,9 +29,6 @@ public class NewsService {
     private final CategoryRepository categoryRepository;
     private final NewsRepository newsRepository;
     private final UserService userService;
-
-    @Autowired
-    private ArticleFieldUpdater fieldUpdater;
 
     @Autowired
     private DateFilter dateFilter;
@@ -104,15 +98,6 @@ public class NewsService {
                 dateFilter.formatInstant(Instant.now().getEpochSecond()),
                 news.getAuthor().getUsername()
         );
-    }
-
-    public NewsInfoResponse editNews(String UUID, Map<String, Object> requestInfo) {
-        News news = newsRepository.findById(UUID)
-                .orElseThrow(() -> new ArticleNotFoundException("Article not found!"));
-        fieldUpdater.update(news, requestInfo);
-        news.setUpdatedUtc(Instant.now().getEpochSecond());
-        newsRepository.save(news);
-        return creationResponse(news);
     }
 
     private NewsInfoResponse creationResponse(News news) {

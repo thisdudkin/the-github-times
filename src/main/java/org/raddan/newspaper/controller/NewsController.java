@@ -81,11 +81,6 @@ public class NewsController {
         return newsService.createNews(request);
     }
 
-    @PatchMapping(path = "/{UUID}/edit")
-    public NewsInfoResponse editNews(@PathVariable String UUID, @RequestBody Map<String, Object> requestInfo) {
-        return newsService.editNews(UUID, requestInfo);
-    }
-
     /**
      * Delete news article with <b>UUID</b>, which is located
      * in {@code @PathVariable}
