@@ -1,6 +1,7 @@
 package org.raddan.newspaper.service;
 
 import lombok.RequiredArgsConstructor;
+import org.raddan.newspaper.config.updater.ProfileFieldUpdater;
 import org.raddan.newspaper.dto.ProfileCreateRequest;
 import org.raddan.newspaper.entity.Profile;
 import org.raddan.newspaper.entity.User;
@@ -21,6 +22,7 @@ import static org.springframework.http.HttpStatus.OK;
 @RequiredArgsConstructor
 public class ProfileService {
 
+    private final ProfileFieldUpdater profileFieldUpdater;
     private final ProfileRepository profileRepository;
     private final UserService userService;
 
@@ -58,5 +60,20 @@ public class ProfileService {
         User authorizedUser = userService.getCurrentUser();
         return profileRepository.findByUsername(authorizedUser.getUsername())
                 .orElseThrow(() -> new ProfileNotFoundException("You do not own any profile yet."));
+    }
+
+    /**
+     * Service method to update the authorized user profile
+     *
+     * @param request object that holds new values
+     * @return Profile Information
+     */
+    public Profile updateProfile(ProfileCreateRequest request) {
+        User authorizedUser = userService.getCurrentUser();
+        Profile profile = profileRepository.findByUsername(authorizedUser.getUsername())
+                .orElseThrow(() -> new ProfileNotFoundException("You do not own any profile yet."));
+
+        profileFieldUpdater.update(profile, request);
+        return profileRepository.save(profile);
     }
 }

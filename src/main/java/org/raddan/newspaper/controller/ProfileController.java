@@ -1,5 +1,6 @@
 package org.raddan.newspaper.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.raddan.newspaper.dto.ProfileCreateRequest;
 import org.raddan.newspaper.entity.Profile;
@@ -34,6 +35,16 @@ public class ProfileController {
     @GetMapping
     public Profile getAuthorizedUserProfile() {
         return profileService.getAuthorizedUserProfile();
+    }
+
+    /**
+     * Managing PATCH request to update profile fields
+     * @param request object that holds new values
+     * @return Profile Information
+     */
+    @PatchMapping(path = "/edit")
+    public Profile updateProfile(@Valid @RequestBody ProfileCreateRequest request) {
+        return profileService.updateProfile(request);
     }
 
 }
