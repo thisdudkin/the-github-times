@@ -23,6 +23,11 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
     @Query("SELECT p FROM Profile p WHERE p.user.username = :p_username")
     Optional<Profile> findByUsername(@Param("p_username") String username);
 
+    /**
+     * Abstract method to delete Profile by UserId.
+     *
+     * @param userId stands for Profile's unique user identifier
+     */
     @Modifying
     @Transactional
     @Query("DELETE FROM Profile p WHERE p.user.id = :p_userId")
