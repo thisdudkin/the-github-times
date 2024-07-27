@@ -1,5 +1,8 @@
 package org.raddan.newspaper.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,6 +15,10 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "profiles")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id"
+)
 public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "profile_id_seq")
