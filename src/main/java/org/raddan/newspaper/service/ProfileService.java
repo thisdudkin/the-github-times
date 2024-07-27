@@ -5,8 +5,8 @@ import org.raddan.newspaper.dto.ProfileCreateRequest;
 import org.raddan.newspaper.entity.Profile;
 import org.raddan.newspaper.entity.User;
 import org.raddan.newspaper.exception.custom.ProfileAlreadyExistsException;
+import org.raddan.newspaper.exception.custom.ProfileNotFoundException;
 import org.raddan.newspaper.repository.ProfileRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +26,7 @@ public class ProfileService {
 
     /**
      * Service method to create a new profile
+     *
      * @param dto data transfer object stands for the personal information
      * @return {@code ResponseEntity<OK>} if profile created successfully
      * @throws ProfileAlreadyExistsException if authorized user already has an existing profile
@@ -45,5 +46,17 @@ public class ProfileService {
 
         profileRepository.save(profile);
         return new ResponseEntity<>("Profile just created.", OK);
+    }
+
+    /**
+     * Service method to get the authorized user profile
+     *
+     * @return Profile Information
+     * @throws ProfileNotFoundException if authorized user don't own any profile
+     */
+    public Profile getAuthorizedUserProfile() {
+        User authorizedUser = userService.getCurrentUser();
+        return profileRepository.findByUsername(authorizedUser.getUsername())
+                .orElseThrow(() -> new ProfileNotFoundException("You do not own any profile yet."));
     }
 }
