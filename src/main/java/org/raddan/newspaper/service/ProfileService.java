@@ -1,5 +1,6 @@
 package org.raddan.newspaper.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.raddan.newspaper.config.updater.ProfileFieldUpdater;
 import org.raddan.newspaper.dto.ProfileCreateRequest;
@@ -75,5 +76,20 @@ public class ProfileService {
 
         profileFieldUpdater.update(profile, request);
         return profileRepository.save(profile);
+    }
+
+    /**
+     * Service method to delete the authorized user profile
+     *
+     * @return {@code ResponseEntity<OK>} if profile deleted
+     */
+    @Transactional
+    public ResponseEntity<?> deleteProfile() {
+        User authorizedUser = userService.getCurrentUser();
+        Profile profile = profileRepository.findByUsername(authorizedUser.getUsername())
+                .orElseThrow(() -> new ProfileNotFoundException("You do not own any profile yet."));
+
+        profileRepository.deleteEntity(authorizedUser.getId());
+        return new ResponseEntity<>("Profile for user '" + authorizedUser.getUsername() + "' deleted.", OK);
     }
 }

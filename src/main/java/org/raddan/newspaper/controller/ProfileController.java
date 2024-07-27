@@ -20,6 +20,7 @@ public class ProfileController {
 
     /**
      * Managing POST request from user to create his own profile
+     *
      * @param dto data transfer object for user's profile
      * @return {@code ResponseEntity} with information about profile creation
      */
@@ -30,6 +31,7 @@ public class ProfileController {
 
     /**
      * Managing GET request to get authorized user profile
+     *
      * @return Profile Information
      */
     @GetMapping
@@ -39,12 +41,23 @@ public class ProfileController {
 
     /**
      * Managing PATCH request to update profile fields
+     *
      * @param request object that holds new values
      * @return Profile Information
      */
     @PatchMapping(path = "/edit")
     public Profile updateProfile(@Valid @RequestBody ProfileCreateRequest request) {
         return profileService.updateProfile(request);
+    }
+
+    /**
+     * Managing DELETE request to delete user profile
+     *
+     * @return {@code ResponseEntity} with information about profile deletion
+     */
+    @DeleteMapping(path = "/delete")
+    public ResponseEntity<?> deleteProfile() {
+        return profileService.deleteProfile();
     }
 
 }

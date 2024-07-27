@@ -1,6 +1,5 @@
 package org.raddan.newspaper.exception;
 
-import org.raddan.newspaper.annotation.NotEmpty;
 import org.raddan.newspaper.exception.custom.FieldEmptyException;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.time.ZonedDateTime;
 
