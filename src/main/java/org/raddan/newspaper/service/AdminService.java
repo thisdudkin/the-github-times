@@ -29,6 +29,9 @@ public class AdminService {
     private final UserRepository userRepository;
     private final AdminPanel adminPanel;
 
+    /**
+     * Service method to invoke specific method given from the controller {@code AdminPanelController}
+     */
     public ResponseEntity<?> doAction(AdminPanelRequest requestInfo) {
         Method method = Arrays.stream(AdminActions.class.getDeclaredMethods())
                 .filter(m -> m.getName().equals(requestInfo.getAction()))
