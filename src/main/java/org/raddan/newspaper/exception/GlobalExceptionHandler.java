@@ -1,5 +1,7 @@
 package org.raddan.newspaper.exception;
 
+import org.raddan.newspaper.annotation.NotEmpty;
+import org.raddan.newspaper.exception.custom.FieldEmptyException;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.time.ZonedDateTime;
 
@@ -35,7 +38,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(value = {UnsupportedOperationException.class})
-    public ResponseEntity<?> handleUnsupportedOperationException(RuntimeException ex) {
+    public ResponseEntity<?> handleUnsupportedOperationException(UnsupportedOperationException ex) {
         ExceptionDetails exceptionDetails = new ExceptionDetails(
                 ex.getMessage(),
                 METHOD_NOT_ALLOWED,
@@ -46,7 +49,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(value = {UsernameNotFoundException.class})
-    public ResponseEntity<?> handleUsernameNotFoundException(RuntimeException ex) {
+    public ResponseEntity<?> handleUsernameNotFoundException(UsernameNotFoundException ex) {
         ExceptionDetails exceptionDetails = new ExceptionDetails(
                 ex.getMessage(),
                 NOT_FOUND,
@@ -54,5 +57,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         );
 
         return new ResponseEntity<>(exceptionDetails, NOT_FOUND);
+    }
+
+    @ExceptionHandler(value = {FieldEmptyException.class})
+    public ResponseEntity<?> handleFieldEmptyException(FieldEmptyException ex) {
+        ExceptionDetails exceptionDetails = new ExceptionDetails(
+                ex.getMessage(),
+                BAD_REQUEST,
+                ZonedDateTime.now()
+        );
+
+        return new ResponseEntity<>(exceptionDetails, BAD_REQUEST);
     }
 }
