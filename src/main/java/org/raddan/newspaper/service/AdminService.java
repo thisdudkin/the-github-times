@@ -1,8 +1,8 @@
 package org.raddan.newspaper.service;
 
 import lombok.RequiredArgsConstructor;
-import org.raddan.newspaper.config.AdminActions;
-import org.raddan.newspaper.config.AdminPanel;
+import org.raddan.newspaper.config.admin.AdminActions;
+import org.raddan.newspaper.config.admin.AdminPanel;
 import org.raddan.newspaper.dto.AdminPanelRequest;
 import org.raddan.newspaper.entity.User;
 import org.raddan.newspaper.repository.UserRepository;
