@@ -71,11 +71,10 @@ public class ProfileService {
      */
     public Profile updateProfile(ProfileCreateRequest request) {
         User authorizedUser = userService.getCurrentUser();
-        Profile profile = profileRepository.findByUsername(authorizedUser.getUsername())
-                .orElseThrow(() -> new ProfileNotFoundException("You do not own any profile yet."));
-
-        profileFieldUpdater.update(profile, request);
-        return profileRepository.save(profile);
+        if (authorizedUser.getProfile() == null)
+            throw new ProfileNotFoundException("You do not own any profile yet.");
+        profileFieldUpdater.update(authorizedUser.getProfile(), request);
+        return profileRepository.save(authorizedUser.getProfile());
     }
 
     /**
@@ -86,10 +85,9 @@ public class ProfileService {
     @Transactional
     public ResponseEntity<?> deleteProfile() {
         User authorizedUser = userService.getCurrentUser();
-        Profile profile = profileRepository.findByUsername(authorizedUser.getUsername())
-                .orElseThrow(() -> new ProfileNotFoundException("You do not own any profile yet."));
-
-        profileRepository.deleteEntity(authorizedUser.getId());
+        if (authorizedUser.getProfile() == null)
+            throw new ProfileNotFoundException("You do not own any profile yet.");
+        profileRepository.deleteById(authorizedUser.getProfile().getId());
         return new ResponseEntity<>("Profile for user '" + authorizedUser.getUsername() + "' deleted.", OK);
     }
 }
