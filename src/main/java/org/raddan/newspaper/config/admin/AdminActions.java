@@ -9,37 +9,58 @@ public interface AdminActions {
 
     /**
      * Ban the specific user
-     * @param user - specific user
+     *
+     * @param user specific user
      */
     void ban(User user);
 
     /**
      * Unban the specific user
-     * @param user - specific user
+     *
+     * @param user specific user
      */
     void unban(User user);
 
     /**
      * Grant Admin Rights to the specific user
-     * @param user - specific user
+     *
+     * @param user specific user
      */
     void grantAdmin(User user);
 
     /**
      * Revoke Admin Rights from the specific user
-     * @param user - specific user
+     *
+     * @param user specific user
      */
     void revokeAdmin(User user);
 
     /**
      * Grant Moderator Rights to the specific user
-     * @param user - specific user
+     *
+     * @param user specific user
      */
     void grantModerator(User user);
 
     /**
      * Revoke Moderator Rights from the specific user
-     * @param user - specific user
+     *
+     * @param user specific user
      */
     void revokeModerator(User user);
+
+    /**
+     * Grant Reporter Rights to the specific user
+     *
+     * @param user specific user
+     */
+    void grantReporter(User user);
+
+    /**
+     * Revoke Reporter Rights to the specific user
+     *
+     * @param user specific user
+     */
+    void revokeReporter(User user);
+
 }
