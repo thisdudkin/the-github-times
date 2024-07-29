@@ -2,6 +2,7 @@ package org.raddan.newspaper.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.raddan.newspaper.auth.service.UserService;
 import org.raddan.newspaper.config.updater.ProfileFieldUpdater;
 import org.raddan.newspaper.dto.ProfileCreateRequest;
 import org.raddan.newspaper.entity.Profile;

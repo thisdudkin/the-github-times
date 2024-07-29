@@ -3,7 +3,6 @@ package org.raddan.newspaper.auth.service;
 import lombok.RequiredArgsConstructor;
 import org.raddan.newspaper.enums.Role;
 import org.raddan.newspaper.entity.User;
-import org.raddan.newspaper.service.UserService;
 import org.raddan.newspaper.auth.model.JwtAuthenticationResponse;
 import org.raddan.newspaper.auth.model.SignInRequest;
 import org.raddan.newspaper.auth.model.SignUpRequest;

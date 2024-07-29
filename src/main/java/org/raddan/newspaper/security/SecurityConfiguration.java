@@ -1,7 +1,7 @@
 package org.raddan.newspaper.security;
 
 import lombok.RequiredArgsConstructor;
-import org.raddan.newspaper.service.UserService;
+import org.raddan.newspaper.auth.service.UserService;
 import org.raddan.newspaper.auth.service.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
