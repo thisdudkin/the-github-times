@@ -1,4 +1,4 @@
-package org.raddan.newspaper.service;
+package org.raddan.newspaper.auth.service;
 
 import lombok.RequiredArgsConstructor;
 import org.raddan.newspaper.entity.User;
