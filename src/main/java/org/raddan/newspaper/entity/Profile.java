@@ -36,4 +36,7 @@ public class Profile {
 
     @Column(name = "bio", columnDefinition = "text")
     private String bio;
+
+    @Column(name = "created_utc", nullable = false)
+    private Long createdUtc;
 }

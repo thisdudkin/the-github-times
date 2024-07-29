@@ -1,4 +1,4 @@
-package org.raddan.newspaper.dto;
+package org.raddan.newspaper.config.admin;
 
 import lombok.Data;
 

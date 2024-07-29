@@ -1,11 +1,9 @@
 package org.raddan.newspaper.controller;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.raddan.newspaper.dto.ProfileCreateRequest;
+import org.raddan.newspaper.dto.ProfileDTO;
 import org.raddan.newspaper.entity.Profile;
 import org.raddan.newspaper.service.ProfileService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -18,46 +16,24 @@ public class ProfileController {
 
     private final ProfileService profileService;
 
-    /**
-     * Managing POST request from user to create his own profile
-     *
-     * @param dto data transfer object for user's profile
-     * @return {@code ResponseEntity} with information about profile creation
-     */
-    @PostMapping(path = "/create")
-    public ResponseEntity<?> createProfile(@RequestBody ProfileCreateRequest dto) {
-        return profileService.createProfile(dto);
+    @PostMapping("/new")
+    public Profile createProfile(@RequestBody ProfileDTO dto) {
+        return profileService.create(dto);
     }
 
-    /**
-     * Managing GET request to get authorized user profile
-     *
-     * @return Profile Information
-     */
     @GetMapping
-    public Profile getAuthorizedUserProfile() {
-        return profileService.getAuthorizedUserProfile();
+    public Profile getProfile() {
+        return profileService.get();
     }
 
-    /**
-     * Managing PATCH request to update profile fields
-     *
-     * @param request object that holds new values
-     * @return Profile Information
-     */
-    @PatchMapping(path = "/edit")
-    public Profile updateProfile(@Valid @RequestBody ProfileCreateRequest request) {
-        return profileService.updateProfile(request);
+    @PutMapping
+    public Profile updateProfile(@RequestBody ProfileDTO dto) {
+        return profileService.update(dto);
     }
 
-    /**
-     * Managing DELETE request to delete user profile
-     *
-     * @return {@code ResponseEntity} with information about profile deletion
-     */
-    @DeleteMapping(path = "/delete")
-    public ResponseEntity<?> deleteProfile() {
-        return profileService.deleteProfile();
+    @DeleteMapping
+    public String deleteProfile() {
+        return profileService.delete();
     }
 
 }

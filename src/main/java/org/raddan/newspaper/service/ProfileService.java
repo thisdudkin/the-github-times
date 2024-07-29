@@ -1,94 +1,84 @@
 package org.raddan.newspaper.service;
 
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 import org.raddan.newspaper.auth.service.UserService;
-import org.raddan.newspaper.config.updater.ProfileFieldUpdater;
-import org.raddan.newspaper.dto.ProfileCreateRequest;
+import org.raddan.newspaper.dto.ProfileDTO;
 import org.raddan.newspaper.entity.Profile;
 import org.raddan.newspaper.entity.User;
 import org.raddan.newspaper.exception.custom.ProfileAlreadyExistsException;
 import org.raddan.newspaper.exception.custom.ProfileNotFoundException;
 import org.raddan.newspaper.repository.ProfileRepository;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
-import static org.springframework.http.HttpStatus.OK;
+import java.time.Instant;
+import java.time.LocalDateTime;
 
 /**
  * @author Alexander Dudkin
  */
 @Service
-@RequiredArgsConstructor
-public class ProfileService {
+public class ProfileService implements EntityService<Profile, ProfileDTO> {
 
-    private final ProfileFieldUpdater profileFieldUpdater;
-    private final ProfileRepository profileRepository;
-    private final UserService userService;
+    @Autowired
+    private UserService userService;
 
-    /**
-     * Service method to create a new profile
-     *
-     * @param dto data transfer object stands for the personal information
-     * @return {@code ResponseEntity<OK>} if profile created successfully
-     * @throws ProfileAlreadyExistsException if authorized user already has an existing profile
-     */
-    public ResponseEntity<?> createProfile(ProfileCreateRequest dto) {
+    @Autowired
+    private ProfileRepository profileRepository;
+
+    @Autowired
+    private ProfileFieldUpdater fieldUpdater;
+
+    @Override
+    @Transactional
+    public Profile create(ProfileDTO dto) {
         User authorizedUser = userService.getCurrentUser();
-        Optional<Profile> optionalProfile = profileRepository.findByUsername(authorizedUser.getUsername());
-        if (optionalProfile.isPresent())
-            throw new ProfileAlreadyExistsException("Profile already exists");
+        if (authorizedUser.getProfile() != null)
+            throw new ProfileAlreadyExistsException("You already have a profile");
 
         Profile profile = Profile.builder()
                 .user(authorizedUser)
-                .fullName(dto.getFullName())
-                .avatar(dto.getAvatar())
-                .bio(dto.getBio())
+                .fullName(dto.getFullName().trim())
+                .avatar(dto.getAvatar().trim())
+                .bio(dto.getBio().trim())
+                .createdUtc(Instant.now().getEpochSecond())
                 .build();
 
         profileRepository.save(profile);
-        return new ResponseEntity<>("Profile just created.", OK);
+        return profile;
     }
 
-    /**
-     * Service method to get the authorized user profile
-     *
-     * @return Profile Information
-     * @throws ProfileNotFoundException if authorized user don't own any profile
-     */
-    public Profile getAuthorizedUserProfile() {
-        User authorizedUser = userService.getCurrentUser();
-        return profileRepository.findByUsername(authorizedUser.getUsername())
-                .orElseThrow(() -> new ProfileNotFoundException("You do not own any profile yet."));
-    }
-
-    /**
-     * Service method to update the authorized user profile
-     *
-     * @param request object that holds new values
-     * @return Profile Information
-     */
-    public Profile updateProfile(ProfileCreateRequest request) {
+    @Override
+    public Profile get() {
         User authorizedUser = userService.getCurrentUser();
         if (authorizedUser.getProfile() == null)
-            throw new ProfileNotFoundException("You do not own any profile yet.");
-        profileFieldUpdater.update(authorizedUser.getProfile(), request);
-        return profileRepository.save(authorizedUser.getProfile());
+            throw new ProfileNotFoundException("You do not have a profile");
+
+        return authorizedUser.getProfile();
     }
 
-    /**
-     * Service method to delete the authorized user profile
-     *
-     * @return {@code ResponseEntity<OK>} if profile deleted
-     */
+    @Override
     @Transactional
-    public ResponseEntity<?> deleteProfile() {
+    public Profile update(ProfileDTO dto) {
         User authorizedUser = userService.getCurrentUser();
         if (authorizedUser.getProfile() == null)
-            throw new ProfileNotFoundException("You do not own any profile yet.");
-        profileRepository.deleteById(authorizedUser.getProfile().getId());
-        return new ResponseEntity<>("Profile for user '" + authorizedUser.getUsername() + "' deleted.", OK);
+            throw new ProfileNotFoundException("You do not have a profile");
+
+        fieldUpdater.update(authorizedUser.getProfile(), dto);
+        profileRepository.save(authorizedUser.getProfile());
+        return authorizedUser.getProfile();
     }
+
+    @Override
+    @Transactional
+    public String delete() {
+        User authorizedUser = userService.getCurrentUser();
+        if (authorizedUser.getProfile() == null)
+            throw new ProfileNotFoundException("You do not have a profile");
+
+        Long id = authorizedUser.getProfile().getId();
+        profileRepository.deleteById(id);
+        return "Profile '" + id + "' has been deleted at: " + LocalDateTime.now();
+    }
+
 }

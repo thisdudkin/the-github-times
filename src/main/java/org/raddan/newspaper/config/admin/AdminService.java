@@ -1,7 +1,6 @@
 package org.raddan.newspaper.config.admin;
 
 import lombok.RequiredArgsConstructor;
-import org.raddan.newspaper.dto.AdminPanelRequest;
 import org.raddan.newspaper.entity.User;
 import org.raddan.newspaper.repository.UserRepository;
 import org.slf4j.Logger;
