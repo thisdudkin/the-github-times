@@ -50,7 +50,7 @@ public class User implements UserDetails {
     private Role role;
 
     // Hibernate relationships
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
     private Profile profile;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
