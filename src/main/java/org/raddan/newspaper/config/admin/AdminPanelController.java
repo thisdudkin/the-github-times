@@ -1,8 +1,7 @@
-package org.raddan.newspaper.controller;
+package org.raddan.newspaper.config.admin;
 
 import lombok.RequiredArgsConstructor;
 import org.raddan.newspaper.dto.AdminPanelRequest;
-import org.raddan.newspaper.service.AdminService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
