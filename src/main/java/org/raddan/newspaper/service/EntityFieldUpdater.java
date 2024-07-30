@@ -1,7 +1,5 @@
 package org.raddan.newspaper.service;
 
-import org.raddan.newspaper.dto.ProfileDTO;
-import org.raddan.newspaper.entity.Profile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -16,7 +14,7 @@ public class EntityFieldUpdater {
 
     private static final Logger log = LoggerFactory.getLogger(EntityFieldUpdater.class);
 
-    public <T, D> T update(T entity, D data) {
+    public <T, D> void update(T entity, D data) {
         for (Field field : entity.getClass().getDeclaredFields()) {
             for (Field dtoField : data.getClass().getDeclaredFields()) {
                 dtoField.setAccessible(true);
@@ -33,7 +31,6 @@ public class EntityFieldUpdater {
         }
 
         log.info("User: updated profile successfully!");
-        return entity;
     }
 
 }
