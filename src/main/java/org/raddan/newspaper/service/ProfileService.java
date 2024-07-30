@@ -1,6 +1,5 @@
 package org.raddan.newspaper.service;
 
-import jakarta.transaction.Transactional;
 import org.raddan.newspaper.auth.service.UserService;
 import org.raddan.newspaper.dto.ProfileDTO;
 import org.raddan.newspaper.entity.Profile;
@@ -12,35 +11,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 
 /**
  * @author Alexander Dudkin
  */
 @Service
-public class ProfileService implements EntityService<Profile, ProfileDTO> {
-
-    @Autowired
-    private UserService userService;
+public class ProfileService {
 
     @Autowired
     private ProfileRepository profileRepository;
 
     @Autowired
-    private ProfileFieldUpdater fieldUpdater;
+    private EntityFieldUpdater fieldUpdater;
 
-    @Override
-    @Transactional
+    @Autowired
+    private UserService userService;
+
     public Profile create(ProfileDTO dto) {
-        User authorizedUser = userService.getCurrentUser();
-        if (authorizedUser.getProfile() != null)
+        User currentUser = userService.getCurrentUser();
+        if (currentUser.getProfile() != null)
             throw new ProfileAlreadyExistsException("You already have a profile");
 
         Profile profile = Profile.builder()
-                .user(authorizedUser)
-                .fullName(dto.getFullName().trim())
-                .avatar(dto.getAvatar().trim())
-                .bio(dto.getBio().trim())
+                .user(currentUser)
+                .fullName(dto.getFullName())
+                .avatar(dto.getAvatar())
+                .bio(dto.getBio())
                 .createdUtc(Instant.now().getEpochSecond())
                 .build();
 
@@ -48,13 +44,12 @@ public class ProfileService implements EntityService<Profile, ProfileDTO> {
         return profile;
     }
 
-    @Override
     public Profile get() {
-        User authorizedUser = userService.getCurrentUser();
-        if (authorizedUser.getProfile() == null)
+        User currentUser = userService.getCurrentUser();
+        if (currentUser.getProfile() == null)
             throw new ProfileNotFoundException("You do not have a profile");
 
-        return authorizedUser.getProfile();
+        return currentUser.getProfile();
     }
 
     public Profile getByUsername(String username) {
@@ -62,28 +57,23 @@ public class ProfileService implements EntityService<Profile, ProfileDTO> {
                 .orElseThrow(() -> new ProfileNotFoundException("You do not have a profile"));
     }
 
-    @Override
-    @Transactional
     public Profile update(ProfileDTO dto) {
-        User authorizedUser = userService.getCurrentUser();
-        if (authorizedUser.getProfile() == null)
+        User currentUser = userService.getCurrentUser();
+        if (currentUser.getProfile() == null)
             throw new ProfileNotFoundException("You do not have a profile");
 
-        fieldUpdater.update(authorizedUser.getProfile(), dto);
-        profileRepository.save(authorizedUser.getProfile());
-        return authorizedUser.getProfile();
+        fieldUpdater.update(currentUser.getProfile(), dto);
+        profileRepository.save(currentUser.getProfile());
+        return currentUser.getProfile();
     }
 
-    @Override
-    @Transactional
     public String delete() {
-        User authorizedUser = userService.getCurrentUser();
-        if (authorizedUser.getProfile() == null)
+        User currentUser = userService.getCurrentUser();
+        if (currentUser.getProfile() == null)
             throw new ProfileNotFoundException("You do not have a profile");
 
-        Long id = authorizedUser.getProfile().getId();
-        profileRepository.deleteById(id);
-        return "Profile '" + id + "' has been deleted at: " + LocalDateTime.now();
+        profileRepository.delete(currentUser.getProfile());
+        return "Profile deleted";
     }
 
 }
