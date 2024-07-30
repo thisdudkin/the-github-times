@@ -1,8 +1,8 @@
 package org.raddan.newspaper.security;
 
 import lombok.RequiredArgsConstructor;
-import org.raddan.newspaper.auth.service.UserService;
 import org.raddan.newspaper.auth.service.JwtAuthenticationFilter;
+import org.raddan.newspaper.auth.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -46,12 +46,28 @@ public class SecurityConfiguration {
                     return corsConfiguration;
                 }))
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/auth/**", "/admin/**", "/profile/**").permitAll()
-                        .requestMatchers("/swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/news/create").hasAnyRole("ADMIN", "MODERATOR", "REPORTER")
-                        .requestMatchers("/endpoint", "/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/categories/**").authenticated()
+                        // Allow all users access API docs
+                        .requestMatchers("/swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**")
+                        .permitAll()
+
+                        // Allow all users access auth endpoints
+                        .requestMatchers("/auth/**")
+                        .permitAll()
+
+                        // Allow all users access articles, tags, categories endpoints
+                        .requestMatchers("/news/", "/tags/", "/categories/")
+                        .permitAll()
+
+                        // Allow authorized users create their profiles
+                        .requestMatchers("/profile/new")
+                        .authenticated()
+
+                        // Secure news, categories, tags creation endpoints
+                        .requestMatchers("/categories/new", "/tags/new", "/news/create")
+                        .hasAnyRole("ADMIN", "MODERATOR", "REPORTER")
+
                         .anyRequest().authenticated())
+
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
