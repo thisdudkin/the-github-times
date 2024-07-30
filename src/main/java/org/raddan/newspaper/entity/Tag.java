@@ -1,5 +1,7 @@
 package org.raddan.newspaper.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,6 +17,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tags")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id"
+)
 public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tag_id_seq")
@@ -24,6 +30,4 @@ public class Tag {
     @Column(name = "name", length = 50)
     private String name;
 
-    @ManyToMany(mappedBy = "tags")
-    private List<Article> articles;
 }
