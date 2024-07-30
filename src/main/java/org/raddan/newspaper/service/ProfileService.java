@@ -1,6 +1,7 @@
 package org.raddan.newspaper.service;
 
 import org.raddan.newspaper.auth.service.UserService;
+import org.raddan.newspaper.config.updater.EntityFieldUpdater;
 import org.raddan.newspaper.dto.ProfileDTO;
 import org.raddan.newspaper.entity.Profile;
 import org.raddan.newspaper.entity.User;

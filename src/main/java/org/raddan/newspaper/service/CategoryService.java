@@ -1,6 +1,7 @@
 package org.raddan.newspaper.service;
 
 import jakarta.transaction.Transactional;
+import org.raddan.newspaper.config.updater.EntityFieldUpdater;
 import org.raddan.newspaper.dto.CategoryDTO;
 import org.raddan.newspaper.entity.Category;
 import org.raddan.newspaper.exception.custom.CategoryAlreadyExistsException;

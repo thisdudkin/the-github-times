@@ -1,4 +1,4 @@
-package org.raddan.newspaper.service;
+package org.raddan.newspaper.config.updater;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
