@@ -26,6 +26,11 @@ public class ProfileController {
         return profileService.get();
     }
 
+    @GetMapping("/{username}")
+    public Profile getProfileByUsername(@PathVariable String username) {
+        return profileService.getByUsername(username);
+    }
+
     @PutMapping
     public Profile updateProfile(@RequestBody ProfileDTO dto) {
         return profileService.update(dto);

@@ -33,10 +33,10 @@ public class Article {
     @Column(name = "content", columnDefinition = "text", nullable = false)
     private String content;
 
-    @Column(name = "category", length = 120, nullable = false)
-    private String category;
+    @Column(name = "picture")
+    private String picture;
 
-    @Column(name = "publishDate", nullable = false)
+    @Column(name = "publish_date", nullable = false)
     private Long publishDate;
 
     @ManyToMany

@@ -57,6 +57,11 @@ public class ProfileService implements EntityService<Profile, ProfileDTO> {
         return authorizedUser.getProfile();
     }
 
+    public Profile getByUsername(String username) {
+        return profileRepository.findByUsername(username)
+                .orElseThrow(() -> new ProfileNotFoundException("You do not have a profile"));
+    }
+
     @Override
     @Transactional
     public Profile update(ProfileDTO dto) {
