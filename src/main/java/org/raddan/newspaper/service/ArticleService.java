@@ -7,7 +7,9 @@ import org.raddan.newspaper.entity.Article;
 import org.raddan.newspaper.entity.Category;
 import org.raddan.newspaper.entity.Tag;
 import org.raddan.newspaper.entity.User;
-import org.raddan.newspaper.exception.custom.ArticleAlreadyExistsException;
+import org.raddan.newspaper.exception.custom.ArticleNotFoundException;
+import org.raddan.newspaper.exception.custom.CategoryNotFoundException;
+import org.raddan.newspaper.exception.custom.TagNotFoundException;
 import org.raddan.newspaper.exception.custom.UnauthorizedException;
 import org.raddan.newspaper.repository.ArticleRepository;
 import org.raddan.newspaper.repository.CategoryRepository;
@@ -16,7 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.List;
+import java.util.Set;
+
+import static java.util.stream.Collectors.toSet;
 
 /**
  * @author Alexander Dudkin
@@ -42,11 +46,15 @@ public class ArticleService {
         if (currentUser == null)
             throw new UnauthorizedException("You are not logged in to perform this action");
 
-        Article optionalArticle = articleRepository.findByTitle(dto.getTitle().trim())
-                .orElseThrow(() -> new ArticleAlreadyExistsException("Article with the same title exists"));
+        Set<Category> categories = dto.getCategoryNames().stream()
+                .map(categoryName -> categoryRepository.findByName(categoryName)
+                        .orElseThrow(() -> new CategoryNotFoundException("Category not found with name: " + categoryName)))
+                .collect(toSet());
 
-        List<Category> categories = categoryRepository.findAllById(dto.getCategoryIds());
-        List<Tag> tags = tagRepository.findAllById(dto.getTagIds());
+        Set<Tag> tags = dto.getTagNames().stream()
+                .map(tagName -> tagRepository.findByName(tagName)
+                        .orElseThrow(() -> new TagNotFoundException("Tag not found with name: " + tagName)))
+                .collect(toSet());
 
         Article article = Article.builder()
                 .user(currentUser)
@@ -62,4 +70,8 @@ public class ArticleService {
         return articleRepository.save(article);
     }
 
+    public Article getById(Long id) {
+        return articleRepository.findById(id)
+                .orElseThrow(() -> new ArticleNotFoundException("Article not found"));
+    }
 }

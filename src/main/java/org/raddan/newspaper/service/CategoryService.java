@@ -54,7 +54,7 @@ public class CategoryService {
     public String delete(String name) {
         Category category = get(name);
         categoryRepository.delete(category);
-        return "Category '" + name + "' deleted";
+        return "Category '" + name + "' has been deleted";
     }
 
 }
