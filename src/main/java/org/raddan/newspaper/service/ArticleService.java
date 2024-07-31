@@ -105,4 +105,11 @@ public class ArticleService {
         articleRepository.delete(article);
         return "Article with id " + id + " has been deleted";
     }
+
+    @Transactional
+    public void incrementVisitCount(Long id) {
+        Article article = getById(id);
+        article.setVisitCount(article.getVisitCount() + 1);
+        articleRepository.save(article);
+    }
 }

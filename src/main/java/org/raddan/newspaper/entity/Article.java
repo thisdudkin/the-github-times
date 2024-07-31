@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Alexander Dudkin
@@ -23,11 +24,6 @@ public class Article {
     @SequenceGenerator(name = "article_id_seq", sequenceName = "article_id_seq", allocationSize = 1)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    @JsonIncludeProperties(value = {"id", "username", "email", "profile"})
-    private User user;
-
     @Column(name = "title", columnDefinition = "text", nullable = false)
     private String title;
 
@@ -40,8 +36,19 @@ public class Article {
     @Column(name = "picture")
     private String picture;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonIncludeProperties(value = {"id", "username", "email", "profile"})
+    private User user;
+
     @Column(name = "publish_date", nullable = false)
     private Long publishDate;
+
+    @Column(name = "updated_utc")
+    private Long updatedUtc;
+
+    @Column(name = "visit_count")
+    private int visitCount;
 
     @ManyToMany
     @JoinTable(
