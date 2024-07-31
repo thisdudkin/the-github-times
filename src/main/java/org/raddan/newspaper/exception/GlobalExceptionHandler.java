@@ -1,6 +1,9 @@
 package org.raddan.newspaper.exception;
 
-import org.raddan.newspaper.exception.custom.FieldEmptyException;
+import org.hibernate.graph.CannotBecomeEntityGraphException;
+import org.raddan.newspaper.exception.custom.*;
+import org.raddan.newspaper.exception.custom.general.EntityAlreadyExistsException;
+import org.raddan.newspaper.exception.custom.general.EntityNotFoundException;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +15,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.lang.reflect.InvocationTargetException;
 import java.time.ZonedDateTime;
 
+import static java.time.ZonedDateTime.now;
 import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
 import static org.springframework.http.HttpStatus.*;
 
@@ -22,49 +26,93 @@ import static org.springframework.http.HttpStatus.*;
 @Order(HIGHEST_PRECEDENCE)
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    private record ExceptionDetails(String message, HttpStatus httpStatus, ZonedDateTime timestamp) {  }
+    private record ExceptionDetails(String message, HttpStatus httpStatus, ZonedDateTime timestamp) {
+    }
 
-    @ExceptionHandler(value = {IllegalAccessException.class, InvocationTargetException.class})
+    @ExceptionHandler({
+            ArticleAlreadyExistsException.class,
+            CategoryAlreadyExistsException.class,
+            ProfileAlreadyExistsException.class,
+            TagAlreadyExistsException.class,
+    })
+    public ResponseEntity<?> handleAlreadyExistsExceptions(RuntimeException ex) {
+        ExceptionDetails exceptionDetails = new ExceptionDetails(
+                ex.getMessage(),
+                CONFLICT,
+                now()
+        );
+
+        return new ResponseEntity<>(exceptionDetails, CONFLICT);
+    }
+
+    @ExceptionHandler({
+            ArticleNotFoundException.class,
+            CategoryNotFoundException.class,
+            ProfileNotFoundException.class,
+            TagNotFoundException.class,
+            UsernameNotFoundException.class
+    })
+    public ResponseEntity<?> handleNotFoundExceptions(RuntimeException ex) {
+        ExceptionDetails exceptionDetails = new ExceptionDetails(
+                ex.getMessage(),
+                NOT_FOUND,
+                now()
+        );
+
+        return new ResponseEntity<>(exceptionDetails, CONFLICT);
+    }
+
+    @ExceptionHandler({
+            IllegalAccessException.class,
+            InvocationTargetException.class
+    })
     public ResponseEntity<?> handleInvocationException(RuntimeException ex) {
         ExceptionDetails exceptionDetails = new ExceptionDetails(
                 ex.getMessage(),
                 BAD_REQUEST,
-                ZonedDateTime.now()
+                now()
         );
 
         return new ResponseEntity<>(exceptionDetails, BAD_REQUEST);
     }
 
-    @ExceptionHandler(value = {UnsupportedOperationException.class})
+    @ExceptionHandler({
+            UnsupportedOperationException.class
+    })
     public ResponseEntity<?> handleUnsupportedOperationException(UnsupportedOperationException ex) {
         ExceptionDetails exceptionDetails = new ExceptionDetails(
                 ex.getMessage(),
                 METHOD_NOT_ALLOWED,
-                ZonedDateTime.now()
+                now()
         );
 
         return new ResponseEntity<>(exceptionDetails, METHOD_NOT_ALLOWED);
     }
 
-    @ExceptionHandler(value = {UsernameNotFoundException.class})
-    public ResponseEntity<?> handleUsernameNotFoundException(UsernameNotFoundException ex) {
-        ExceptionDetails exceptionDetails = new ExceptionDetails(
-                ex.getMessage(),
-                NOT_FOUND,
-                ZonedDateTime.now()
-        );
-
-        return new ResponseEntity<>(exceptionDetails, NOT_FOUND);
-    }
-
-    @ExceptionHandler(value = {FieldEmptyException.class})
+    @ExceptionHandler({
+            FieldEmptyException.class
+    })
     public ResponseEntity<?> handleFieldEmptyException(FieldEmptyException ex) {
         ExceptionDetails exceptionDetails = new ExceptionDetails(
                 ex.getMessage(),
                 BAD_REQUEST,
-                ZonedDateTime.now()
+                now()
         );
 
         return new ResponseEntity<>(exceptionDetails, BAD_REQUEST);
     }
+
+    @ExceptionHandler({
+            UnauthorizedException.class
+    })
+    public ResponseEntity<?> handleUnauthorizedException(UnauthorizedException ex) {
+        ExceptionDetails exceptionDetails = new ExceptionDetails(
+                ex.getMessage(),
+                UNAUTHORIZED,
+                now()
+        );
+
+        return new ResponseEntity<>(exceptionDetails, UNAUTHORIZED);
+    }
+
 }

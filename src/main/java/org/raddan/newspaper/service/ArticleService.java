@@ -2,6 +2,8 @@ package org.raddan.newspaper.service;
 
 import jakarta.transaction.Transactional;
 import org.raddan.newspaper.auth.service.UserService;
+import org.raddan.newspaper.config.EntityDeletionValidator;
+import org.raddan.newspaper.config.updater.EntityFieldUpdater;
 import org.raddan.newspaper.dto.ArticleDTO;
 import org.raddan.newspaper.entity.Article;
 import org.raddan.newspaper.entity.Category;
@@ -15,6 +17,7 @@ import org.raddan.newspaper.repository.ArticleRepository;
 import org.raddan.newspaper.repository.CategoryRepository;
 import org.raddan.newspaper.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -39,6 +42,12 @@ public class ArticleService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private EntityFieldUpdater fieldUpdater;
+
+    @Autowired
+    private EntityDeletionValidator entityDeletionValidator;
 
     @Transactional
     public Article create(ArticleDTO dto) {
@@ -73,5 +82,27 @@ public class ArticleService {
     public Article getById(Long id) {
         return articleRepository.findById(id)
                 .orElseThrow(() -> new ArticleNotFoundException("Article not found"));
+    }
+
+    @Transactional
+    public Article update(Long id, ArticleDTO dto) {
+        Article article = articleRepository.findById(id)
+                .orElseThrow(() -> new ArticleNotFoundException("Article not found"));
+
+        fieldUpdater.update(article, dto);
+        return articleRepository.save(article);
+    }
+
+    @Transactional
+    public String delete(Long id) {
+        User currentUser = userService.getCurrentUser();
+        Article article = articleRepository.findById(id)
+                .orElseThrow(() -> new ArticleNotFoundException("Article not found"));
+
+        if (!entityDeletionValidator.isValid(currentUser))
+            throw new RuntimeException("You can not perform this action");
+
+        articleRepository.delete(article);
+        return "Article with id " + id + " has been deleted";
     }
 }

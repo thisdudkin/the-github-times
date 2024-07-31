@@ -25,4 +25,14 @@ public class ArticleController {
     public Article get(@PathVariable Long id) {
         return articleService.getById(id);
     }
+
+    @PutMapping("/{id}")
+    public Article update(@PathVariable Long id, @RequestBody ArticleDTO dto) {
+        return articleService.update(id, dto);
+    }
+
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable Long id) {
+        return articleService.delete(id);
+    }
 }
