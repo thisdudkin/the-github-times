@@ -1,5 +1,6 @@
 package org.raddan.newspaper.entity;
 
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,6 +25,7 @@ public class Article {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIncludeProperties(value = {"id", "username", "email", "profile"})
     private User user;
 
     @Column(name = "title", columnDefinition = "text", nullable = false)
