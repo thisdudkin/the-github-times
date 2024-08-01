@@ -2,6 +2,7 @@ package org.raddan.newspaper.service;
 
 import jakarta.transaction.Transactional;
 import org.raddan.newspaper.auth.service.UserService;
+import org.raddan.newspaper.config.DataFetcherDeterminer;
 import org.raddan.newspaper.config.EntityDeletionValidator;
 import org.raddan.newspaper.config.updater.EntityFieldUpdater;
 import org.raddan.newspaper.dto.ArticleDTO;
@@ -17,10 +18,10 @@ import org.raddan.newspaper.repository.ArticleRepository;
 import org.raddan.newspaper.repository.CategoryRepository;
 import org.raddan.newspaper.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.Set;
 
 import static java.util.stream.Collectors.toSet;
@@ -48,6 +49,8 @@ public class ArticleService {
 
     @Autowired
     private EntityDeletionValidator entityDeletionValidator;
+    @Autowired
+    private DataFetcherDeterminer dataFetcherDeterminer;
 
     @Transactional
     public Article create(ArticleDTO dto) {
@@ -111,5 +114,10 @@ public class ArticleService {
         Article article = getById(id);
         article.setVisitCount(article.getVisitCount() + 1);
         articleRepository.save(article);
+    }
+
+    public Set<Article> getAllNews(String param) {
+        return param == null ? articleRepository.findAllOrderedByPublishDate()
+                .orElseThrow(() -> new ArticleNotFoundException("Article not found")) : dataFetcherDeterminer.fetch(param);
     }
 }

@@ -55,7 +55,8 @@ public class SecurityConfiguration {
                         .permitAll()
 
                         // Allow all users access articles, tags, categories endpoints
-                        .requestMatchers("/news/{id}", "/tags/{name}", "/categories/{name}")
+                        .requestMatchers("/news/{id}", "/tags/{name}", "/categories/{name}",
+                                         "/news", "/tags", "/categories")
                         .permitAll()
 
                         // Allow authorized users create their profiles

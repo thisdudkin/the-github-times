@@ -6,6 +6,8 @@ import org.raddan.newspaper.entity.Article;
 import org.raddan.newspaper.service.ArticleService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Set;
+
 /**
  * @author Alexander Dudkin
  */
@@ -24,6 +26,11 @@ public class ArticleController {
     @GetMapping("/{id}")
     public Article get(@PathVariable Long id) {
         return articleService.getById(id);
+    }
+
+    @GetMapping
+    public Set<Article> getAll(@RequestParam(required = false) String orderBy) {
+        return articleService.getAllNews(orderBy);
     }
 
     @PutMapping("/{id}")
