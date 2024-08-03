@@ -39,4 +39,7 @@ public class Profile {
 
     @Column(name = "created_utc", nullable = false)
     private Long createdUtc;
+
+    @Column(name = "updated_utc")
+    private Long updatedUtc;
 }

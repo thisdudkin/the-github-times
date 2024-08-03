@@ -59,6 +59,14 @@ public class SecurityConfiguration {
                                          "/news", "/tags", "/categories")
                         .permitAll()
 
+                        // Allow all users access other profiles
+                        .requestMatchers("/profile/{username}")
+                        .permitAll()
+
+                        // Allow authorized users see their profile
+                        .requestMatchers("/profile")
+                        .authenticated()
+
                         // Allow authorized users create their profiles
                         .requestMatchers("/profile/new")
                         .authenticated()

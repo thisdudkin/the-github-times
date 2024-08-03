@@ -1,6 +1,7 @@
 package org.raddan.newspaper.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
@@ -54,12 +55,15 @@ public class User implements UserDetails {
     private Profile profile;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonIncludeProperties(value = {"id", "title"})
     private List<Article> articles;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonIncludeProperties(value = {"id"})
     private List<Comment> comments;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonIncludeProperties(value = {"id"})
     private List<Rating> ratings;
 
     @Override
