@@ -46,37 +46,51 @@ public class SecurityConfiguration {
                     return corsConfiguration;
                 }))
                 .authorizeHttpRequests(request -> request
-                        // Allow all users access API docs
-                        .requestMatchers("/swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**")
+                        .requestMatchers("/auth/signup", "/auth/signin")
                         .permitAll()
 
-                        // Allow all users access auth endpoints
-                        .requestMatchers("/auth/**")
-                        .permitAll()
-
-                        // Allow all users access articles, tags, categories endpoints
-                        .requestMatchers("/news/{id}", "/tags/{name}", "/categories/{name}",
-                                         "/news", "/tags", "/categories")
-                        .permitAll()
-
-                        // Allow all users access other profiles
-                        .requestMatchers("/profile/{username}")
-                        .permitAll()
-
-                        // Allow authorized users see their profile
-                        .requestMatchers("/profile")
+                        .requestMatchers("/profile", "/profile/create", "/profile/edit", "/profile/delete")
                         .authenticated()
 
-                        // Allow authorized users create their profiles
-                        .requestMatchers("/profile/new")
-                        .authenticated()
+                        .requestMatchers("/profile/{id}", "/profile/{username}")
+                        .permitAll()
 
-                        // Secure news, categories, tags creation endpoints
-                        .requestMatchers("/categories/new", "/tags/new", "/news/create")
+                        .requestMatchers("/news", "/news/{id}")
+                        .permitAll()
+
+                        .requestMatchers("/news/create")
                         .hasAnyRole("ADMIN", "MODERATOR", "REPORTER")
 
-                        .anyRequest().authenticated())
+                        .requestMatchers("/news/{id}/edit")
+                        .hasAnyRole("ADMIN", "MODERATOR")
 
+                        .requestMatchers("/news/{id}/delete")
+                        .hasRole("ADMIN")
+
+                        .requestMatchers("/categories", "/categories/{id}", "/categories/{name}")
+                        .permitAll()
+
+                        .requestMatchers("/categories/create")
+                        .hasAnyRole("ADMIN", "MODERATOR", "REPORTER")
+
+                        .requestMatchers("/categories/{name}/edit")
+                        .hasAnyRole("ADMIN", "MODERATOR")
+
+                        .requestMatchers("/categories/{name}/delete")
+                        .hasRole("ADMIN")
+
+                        .requestMatchers("/tags", "/tags/{id}", "/tags/{name}")
+                        .permitAll()
+
+                        .requestMatchers("/tags/create")
+                        .hasAnyRole("ADMIN", "MODERATOR", "REPORTER")
+
+                        .requestMatchers("/tags/{name}/edit")
+                        .hasAnyRole("ADMIN", "MODERATOR")
+
+                        .requestMatchers("/tags/{name}/delete")
+                        .hasRole("ADMIN")
+                )
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
