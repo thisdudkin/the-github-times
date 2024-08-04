@@ -1,6 +1,7 @@
 package org.raddan.newspaper.service;
 
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.raddan.newspaper.auth.service.UserService;
 import org.raddan.newspaper.config.DataFetcherDeterminer;
 import org.raddan.newspaper.config.EntityDeletionValidator;
@@ -30,27 +31,16 @@ import static java.util.stream.Collectors.toSet;
  * @author Alexander Dudkin
  */
 @Service
+@RequiredArgsConstructor
 public class ArticleService {
 
-    @Autowired
-    private ArticleRepository articleRepository;
-
-    @Autowired
-    private CategoryRepository categoryRepository;
-
-    @Autowired
-    private TagRepository tagRepository;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private EntityFieldUpdater fieldUpdater;
-
-    @Autowired
-    private EntityDeletionValidator entityDeletionValidator;
-    @Autowired
-    private DataFetcherDeterminer dataFetcherDeterminer;
+    private final CategoryService categoryService;
+    private final TagService tagService;
+    private final ArticleRepository articleRepository;
+    private final UserService userService;
+    private final EntityFieldUpdater fieldUpdater;
+    private final EntityDeletionValidator entityDeletionValidator;
+    private final DataFetcherDeterminer dataFetcherDeterminer;
 
     @Transactional
     public Article create(ArticleDTO dto) {
@@ -58,30 +48,15 @@ public class ArticleService {
         if (currentUser == null)
             throw new UnauthorizedException("You are not logged in to perform this action");
 
-        Set<Category> categories = dto.getCategoryNames().stream()
-                .map(categoryName -> categoryRepository.findByName(categoryName)
-                        .orElseThrow(() -> new CategoryNotFoundException("Category not found with name: " + categoryName)))
-                .collect(toSet());
+        Set<Category> categories = categoryService.getCategoriesByName(dto.getCategoryNames());
+        Set<Tag> tags = tagService.getTagsByName(dto.getTagNames());
 
-        Set<Tag> tags = dto.getTagNames().stream()
-                .map(tagName -> tagRepository.findByName(tagName)
-                        .orElseThrow(() -> new TagNotFoundException("Tag not found with name: " + tagName)))
-                .collect(toSet());
-
-        Article article = Article.builder()
-                .user(currentUser)
-                .title(dto.getTitle().trim())
-                .summary(dto.getSummary().trim())
-                .content(dto.getContent().trim())
-                .picture(dto.getPicture().trim())
-                .publishDate(Instant.now().getEpochSecond())
-                .categories(categories)
-                .tags(tags)
-                .build();
+        Article article = buildArticle(dto, currentUser, categories, tags);
 
         return articleRepository.save(article);
     }
 
+    // TODO: Caching via Caffeine
     public Article getById(Long id) {
         return articleRepository.findById(id)
                 .orElseThrow(() -> new ArticleNotFoundException("Article not found"));
@@ -119,5 +94,18 @@ public class ArticleService {
     public Set<Article> getAllNews(String param) {
         return param == null ? articleRepository.findAllOrderedByPublishDate()
                 .orElseThrow(() -> new ArticleNotFoundException("Article not found")) : dataFetcherDeterminer.fetch(param);
+    }
+
+    private Article buildArticle(ArticleDTO dto, User currenctUser, Set<Category> categories, Set<Tag> tags) {
+        return Article.builder()
+                .user(currenctUser)
+                .title(dto.getTitle().trim())
+                .summary(dto.getSummary().trim())
+                .content(dto.getContent().trim())
+                .picture(dto.getPicture().trim())
+                .publishDate(Instant.now().getEpochSecond())
+                .categories(categories)
+                .tags(tags)
+                .build();
     }
 }

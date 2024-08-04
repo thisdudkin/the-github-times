@@ -10,7 +10,11 @@ import org.raddan.newspaper.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
+import static java.util.stream.Collectors.toSet;
 
 /**
  * @author Alexander Dudkin
@@ -38,23 +42,29 @@ public class CategoryService {
         return categoryRepository.save(category);
     }
 
-    public Category get(String name) {
+    public Category getByName(String name) {
         return categoryRepository.findByName(name)
                 .orElseThrow(() -> new CategoryNotFoundException("Category not found"));
     }
 
     @Transactional
     public Category update(String name, CategoryDTO dto) {
-        Category category = get(name);
+        Category category = getByName(name);
         fieldUpdater.update(category, dto);
         return categoryRepository.save(category);
     }
 
     @Transactional
     public String delete(String name) {
-        Category category = get(name);
+        Category category = getByName(name);
         categoryRepository.delete(category);
         return "Category '" + name + "' has been deleted";
+    }
+
+    public Set<Category> getCategoriesByName(Set<String> categoryNames) {
+        return categoryNames.stream()
+                .map(this::getByName)
+                .collect(toSet());
     }
 
 }

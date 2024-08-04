@@ -23,11 +23,12 @@ public class CategoryController {
 
     @GetMapping("/{name}")
     public Category get(@PathVariable String name) {
-        return categoryService.get(name);
+        return categoryService.getByName(name);
     }
 
     @PutMapping("/{name}")
-    public Category update(@PathVariable String name, @RequestBody CategoryDTO dto) {
+    public Category update(@PathVariable String name,
+                           @RequestBody CategoryDTO dto) {
         return categoryService.update(name, dto);
     }
 

@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.Set;
+
+import static java.util.stream.Collectors.toSet;
 
 /**
  * @author Alexander Dudkin
@@ -38,23 +41,28 @@ public class TagService {
         return tagRepository.save(tag);
     }
 
-    public Tag get(String name) {
+    public Tag getByName(String name) {
         return tagRepository.findByName(name.trim())
                 .orElseThrow(() -> new TagNotFoundException("Tag not found"));
     }
 
     @Transactional
     public Tag update(String name, TagDTO dto) {
-        Tag tag = get(name);
+        Tag tag = getByName(name);
         fieldUpdater.update(tag, dto);
         return tagRepository.save(tag);
     }
 
     @Transactional
     public String delete(String name) {
-        Tag tag = get(name);
+        Tag tag = getByName(name);
         tagRepository.delete(tag);
         return "Tag '" + name.trim() + "' has been deleted";
     }
 
+    public Set<Tag> getTagsByName(Set<String> tagNames) {
+        return tagNames.stream()
+                .map(this::getByName)
+                .collect(toSet());
+    }
 }

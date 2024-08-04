@@ -4,6 +4,7 @@ import lombok.Data;
 import org.raddan.newspaper.annotation.NotEmpty;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Alexander Dudkin
@@ -24,9 +25,9 @@ public class ArticleDTO {
     private String picture;
 
     @NotEmpty
-    private List<String> categoryNames;
+    private Set<String> categoryNames;
 
     @NotEmpty
-    private List<String> tagNames;
+    private Set<String> tagNames;
 
 }

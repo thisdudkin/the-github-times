@@ -23,7 +23,7 @@ public class TagController {
 
     @GetMapping("/{name}")
     public Tag get(@PathVariable String name) {
-        return tagService.get(name);
+        return tagService.getByName(name);
     }
 
     @PutMapping("/{name}")
