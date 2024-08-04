@@ -16,10 +16,9 @@ import java.util.List;
 /**
  * @author Alexander Dudkin
  */
+@Data
 @Entity
 @Builder
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")

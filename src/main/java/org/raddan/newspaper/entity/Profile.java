@@ -1,6 +1,8 @@
 package org.raddan.newspaper.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
@@ -8,9 +10,9 @@ import lombok.*;
 /**
  * @author Alexander Dudkin
  */
+@Data
 @Entity
 @Builder
-@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "profiles")
@@ -26,6 +28,7 @@ public class Profile {
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonIgnoreProperties({"password", "enabled", "accountNonLocked", "credentialsNonExpired", "accountNonExpired"})
     private User user;
 
     @Column(name = "full_name")
