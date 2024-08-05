@@ -1,15 +1,15 @@
 package org.raddan.newspaper.exception;
 
-import org.hibernate.graph.CannotBecomeEntityGraphException;
 import org.raddan.newspaper.exception.custom.*;
-import org.raddan.newspaper.exception.custom.general.EntityAlreadyExistsException;
-import org.raddan.newspaper.exception.custom.general.EntityNotFoundException;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.lang.reflect.InvocationTargetException;
@@ -34,6 +34,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             CategoryAlreadyExistsException.class,
             ProfileAlreadyExistsException.class,
             TagAlreadyExistsException.class,
+            UserAlreadyExistsWithThatEmailException.class,
+            UserAlreadyExistsWithThatUsernameException.class
     })
     public ResponseEntity<?> handleAlreadyExistsExceptions(RuntimeException ex) {
         ExceptionDetails exceptionDetails = new ExceptionDetails(
@@ -59,7 +61,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 now()
         );
 
-        return new ResponseEntity<>(exceptionDetails, CONFLICT);
+        return new ResponseEntity<>(exceptionDetails, NOT_FOUND);
     }
 
     @ExceptionHandler({

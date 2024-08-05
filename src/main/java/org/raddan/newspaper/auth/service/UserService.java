@@ -3,6 +3,8 @@ package org.raddan.newspaper.auth.service;
 import lombok.RequiredArgsConstructor;
 import org.raddan.newspaper.entity.User;
 import org.raddan.newspaper.enums.Role;
+import org.raddan.newspaper.exception.custom.UserAlreadyExistsWithThatEmailException;
+import org.raddan.newspaper.exception.custom.UserAlreadyExistsWithThatUsernameException;
 import org.raddan.newspaper.repository.UserRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,11 +25,11 @@ public class UserService {
 
     public User create(User user) {
         if (repository.existsByUsername(user.getUsername())) {
-            throw new RuntimeException("Пользователь с таким именем уже существует");
+            throw new UserAlreadyExistsWithThatUsernameException("Пользователь с таким именем уже существует");
         }
 
         if (repository.existsByEmail(user.getEmail())) {
-            throw new RuntimeException("Пользователь с таким email уже существует");
+            throw new UserAlreadyExistsWithThatEmailException("Пользователь с таким email уже существует");
         }
 
         return save(user);
