@@ -17,9 +17,9 @@ public class AdminPanel implements AdminActions {
     private UserRepository userRepo;
 
     /**
-     * Implementation of method {@code ban}
+     * Реализация метода {@code ban}
      *
-     * @param user specific user
+     * @param user определенный пользователь
      */
     @Override
     public void ban(User user) {
@@ -28,9 +28,9 @@ public class AdminPanel implements AdminActions {
     }
 
     /**
-     * Implementation of method {@code unban}
+     * Реализация метода {@code unban}
      *
-     * @param user specific user
+     * @param user определенный пользователь
      */
     @Override
     public void unban(User user) {
@@ -39,9 +39,9 @@ public class AdminPanel implements AdminActions {
     }
 
     /**
-     * Implementation of method {@code grantAdmin}
+     * Реализация метода {@code grantAdmin}
      *
-     * @param user specific user
+     * @param user определенный пользователь
      */
     @Override
     public void grantAdmin(User user) {
@@ -50,9 +50,9 @@ public class AdminPanel implements AdminActions {
     }
 
     /**
-     * Implementation of method {@code revokeAdmin}
+     * Реализация метода {@code revokeAdmin}
      *
-     * @param user specific user
+     * @param user определенный пользователь
      */
     @Override
     public void revokeAdmin(User user) {
@@ -61,9 +61,9 @@ public class AdminPanel implements AdminActions {
     }
 
     /**
-     * Implementation of method {@code grantModerator}
+     * Реализация метода {@code grantModerator}
      *
-     * @param user specific user
+     * @param user определенный пользователь
      */
     @Override
     public void grantModerator(User user) {
@@ -72,9 +72,9 @@ public class AdminPanel implements AdminActions {
     }
 
     /**
-     * Implementation of method {@code revokeModerator}
+     * Реализация метода {@code revokeModerator}
      *
-     * @param user specific user
+     * @param user определенный пользователь
      */
     @Override
     public void revokeModerator(User user) {
@@ -83,9 +83,9 @@ public class AdminPanel implements AdminActions {
     }
 
     /**
-     * Implementation of method {@code grantReporter}
+     * Реализация метода {@code grantReporter}
      *
-     * @param user specific user
+     * @param user определенный пользователь
      */
     @Override
     public void grantReporter(User user) {
@@ -94,9 +94,9 @@ public class AdminPanel implements AdminActions {
     }
 
     /**
-     * Implementation of method {@code revokeReporter}
+     * Реализация метода {@code revokeReporter}
      *
-     * @param user specific user
+     * @param user определенный пользователь
      */
     @Override
     public void revokeReporter(User user) {

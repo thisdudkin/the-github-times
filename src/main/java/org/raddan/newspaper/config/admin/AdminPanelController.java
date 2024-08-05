@@ -18,10 +18,11 @@ public class AdminPanelController {
     private final AdminService adminService;
 
     /**
-     * Managing requests from admin panel
+     * Управляет запросами из панели администратора
      *
-     * @param requestInfo display what method should be executed and username of target entity
-     * @return {@code ResponseEntity} with information about execution
+     * @param requestInfo хранит информацию, какой метод должен быть выполнен,
+     *                    и никнейм пользователя, над которым выполняется операция
+     * @return {@code ResponseEntity} информация о выполнении операции
      */
     @PatchMapping(path = "/panel")
     public ResponseEntity<?> doAction(@RequestBody AdminPanelRequest requestInfo) {

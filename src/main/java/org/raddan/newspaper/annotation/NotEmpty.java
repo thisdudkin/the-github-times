@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = NotEmptyValidator.class)
 public @interface NotEmpty {
-    String message() default "Field must not be empty";
+    String message() default "Поле не должно быть пустым";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

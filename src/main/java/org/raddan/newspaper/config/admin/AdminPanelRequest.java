@@ -7,6 +7,7 @@ import lombok.Data;
  */
 @Data
 public class AdminPanelRequest {
+
     /**
      * Field stands for admin action, that needed to be executed.
      */

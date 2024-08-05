@@ -23,8 +23,10 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
     public static final String BEARER_PREFIX = "Bearer ";
     public static final String HEADER_NAME = "Authorization";
+
     private final JwtService jwtService;
     private final UserService userService;
 
@@ -35,14 +37,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
 
-        // Получаем токен из заголовка
         var authHeader = request.getHeader(HEADER_NAME);
         if (StringUtils.isEmpty(authHeader) || !StringUtils.startsWith(authHeader, BEARER_PREFIX)) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // Обрезаем префикс и получаем имя пользователя из токена
         var jwt = authHeader.substring(BEARER_PREFIX.length());
         var username = jwtService.extractUserName(jwt);
 
@@ -51,7 +51,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     .userDetailsService()
                     .loadUserByUsername(username);
 
-            // Если токен валиден, то аутентифицируем пользователя
             if (jwtService.isTokenValid(jwt, userDetails)) {
                 SecurityContext context = SecurityContextHolder.createEmptyContext();
 

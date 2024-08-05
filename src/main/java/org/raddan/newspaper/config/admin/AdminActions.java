@@ -8,58 +8,58 @@ import org.raddan.newspaper.entity.User;
 public interface AdminActions {
 
     /**
-     * Ban the specific user
+     * Забанить пользователя
      *
-     * @param user specific user
+     * @param user определенный пользователь
      */
     void ban(User user);
 
     /**
-     * Unban the specific user
+     * Разбанить пользователя
      *
-     * @param user specific user
+     * @param user определенный пользователь
      */
     void unban(User user);
 
     /**
-     * Grant Admin Rights to the specific user
+     * Выдать права администратора определенному пользователю
      *
-     * @param user specific user
+     * @param user определенный пользователь
      */
     void grantAdmin(User user);
 
     /**
-     * Revoke Admin Rights from the specific user
+     * Забрать права администратора у определенного пользователя
      *
-     * @param user specific user
+     * @param user определенный пользователь
      */
     void revokeAdmin(User user);
 
     /**
-     * Grant Moderator Rights to the specific user
+     * Выдать права модератора определенному пользователю
      *
-     * @param user specific user
+     * @param user определенный пользователь
      */
     void grantModerator(User user);
 
     /**
-     * Revoke Moderator Rights from the specific user
+     * Забрать права модератора у определенного пользователя
      *
-     * @param user specific user
+     * @param user определенный пользователь
      */
     void revokeModerator(User user);
 
     /**
-     * Grant Reporter Rights to the specific user
+     * Выдать права репортера определенному пользователю
      *
-     * @param user specific user
+     * @param user определенный пользователь
      */
     void grantReporter(User user);
 
     /**
-     * Revoke Reporter Rights to the specific user
+     * Забрать права репортера у определенного пользователя
      *
-     * @param user specific user
+     * @param user определенный пользователь
      */
     void revokeReporter(User user);
 
