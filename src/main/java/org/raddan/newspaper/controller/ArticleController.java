@@ -6,6 +6,7 @@ import org.raddan.newspaper.entity.Article;
 import org.raddan.newspaper.service.ArticleService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -18,9 +19,9 @@ public class ArticleController {
 
     private final ArticleService articleService;
 
-    @PostMapping("/create")
-    public Article create(@RequestBody ArticleDTO dto) {
-        return articleService.create(dto);
+    @GetMapping
+    public List<Article> getAllArticles() {
+        return articleService.getAllArticles();
     }
 
     @GetMapping("/{id}")
@@ -28,17 +29,17 @@ public class ArticleController {
         return articleService.getById(id);
     }
 
-    @GetMapping
-    public Set<Article> getAll(@RequestParam(required = false) String orderBy) {
-        return articleService.getAllNews(orderBy);
+    @PostMapping("/create")
+    public Article create(@RequestBody ArticleDTO dto) {
+        return articleService.create(dto);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{id}/edit")
     public Article update(@PathVariable Long id, @RequestBody ArticleDTO dto) {
         return articleService.update(id, dto);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}/delete")
     public String delete(@PathVariable Long id) {
         return articleService.delete(id);
     }

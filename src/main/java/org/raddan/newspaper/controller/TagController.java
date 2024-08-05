@@ -6,6 +6,8 @@ import org.raddan.newspaper.entity.Tag;
 import org.raddan.newspaper.service.TagService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author Alexander Dudkin
  */
@@ -16,22 +18,32 @@ public class TagController {
 
     private final TagService tagService;
 
-    @PostMapping("/new")
-    public Tag create(@RequestBody TagDTO dto) {
-        return tagService.create(dto);
+    @GetMapping
+    public List<Tag> getAllTags() {
+        return tagService.getAllTags();
+    }
+
+    @GetMapping("/{id}")
+    public Tag getTagById(@PathVariable Long id) {
+        return tagService.getTagById(id);
     }
 
     @GetMapping("/{name}")
     public Tag get(@PathVariable String name) {
-        return tagService.getByName(name);
+        return tagService.getTagByName(name);
     }
 
-    @PutMapping("/{name}")
+    @PostMapping("/create")
+    public Tag create(@RequestBody TagDTO dto) {
+        return tagService.create(dto);
+    }
+
+    @PutMapping("/{name}/edit")
     public Tag update(@PathVariable String name, @RequestBody TagDTO dto) {
         return tagService.update(name, dto);
     }
 
-    @DeleteMapping("/{name}")
+    @DeleteMapping("/{name}/delete")
     public String delete(@PathVariable String name) {
         return tagService.delete(name);
     }

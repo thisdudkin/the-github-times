@@ -25,9 +25,9 @@ public class ArticleDTO {
     private String picture;
 
     @NotEmpty
-    private Set<String> categoryNames;
+    private List<String> categoryNames;
 
     @NotEmpty
-    private Set<String> tagNames;
+    private List<String> tagNames;
 
 }

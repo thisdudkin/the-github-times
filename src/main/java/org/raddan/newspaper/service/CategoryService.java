@@ -28,6 +28,25 @@ public class CategoryService {
     @Autowired
     private EntityFieldUpdater fieldUpdater;
 
+    public List<Category> getAllCategories() {
+        List<Category> categories = categoryRepository.findAll();
+        if (categories.isEmpty()) {
+            throw new CategoryNotFoundException("Category not found");
+        }
+
+        return categories;
+    }
+
+    public Category getCategoryById(Long id) {
+        return categoryRepository.findById(id)
+                .orElseThrow(() -> new CategoryNotFoundException("Category not found"));
+    }
+
+    public Category getCategoryByName(String name) {
+        return categoryRepository.findByName(name)
+                .orElseThrow(() -> new CategoryNotFoundException("Category not found"));
+    }
+
     @Transactional
     public Category create(CategoryDTO dto) {
         Optional<Category> optionalCategory = categoryRepository.findByName(dto.getName().trim());
@@ -42,29 +61,27 @@ public class CategoryService {
         return categoryRepository.save(category);
     }
 
-    public Category getByName(String name) {
-        return categoryRepository.findByName(name)
-                .orElseThrow(() -> new CategoryNotFoundException("Category not found"));
-    }
-
     @Transactional
     public Category update(String name, CategoryDTO dto) {
-        Category category = getByName(name);
+        Category category = getCategoryByName(name);
         fieldUpdater.update(category, dto);
         return categoryRepository.save(category);
     }
 
     @Transactional
     public String delete(String name) {
-        Category category = getByName(name);
+        Category category = getCategoryByName(name);
         categoryRepository.delete(category);
         return "Category '" + name + "' has been deleted";
     }
 
-    public Set<Category> getCategoriesByName(Set<String> categoryNames) {
-        return categoryNames.stream()
-                .map(this::getByName)
-                .collect(toSet());
+    public List<Category> getCategoriesByName(List<String> categoryNames) {
+        List<Category> categories = categoryRepository.findByNameIn(categoryNames);
+        if (categories.isEmpty()) {
+            throw new CategoryNotFoundException("Category not found");
+        }
+
+        return categories;
     }
 
 }

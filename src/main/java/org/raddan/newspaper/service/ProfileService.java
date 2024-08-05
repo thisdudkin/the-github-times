@@ -32,6 +32,33 @@ public class ProfileService {
     @Autowired
     private UserService userService;
 
+    public Profile getProfile() {
+        User currentUser = userService.getCurrentUser();
+        if (currentUser.getProfile() == null) {
+            LOG.warn("[Get] Profile not found for user: {}", currentUser.getUsername());
+            throw new ProfileNotFoundException("You do not have a profile");
+        }
+
+        LOG.info("Profile retrieved for user: {}", currentUser.getUsername());
+        return currentUser.getProfile();
+    }
+
+    public Profile getProfileById(Long id) {
+        return profileRepository.findById(id)
+                .orElseThrow(() -> {
+                    LOG.warn("[GetByID] Profile not found for id: {}", id);
+                    return new ProfileNotFoundException("Profile not found");
+                });
+    }
+
+    public Profile getByUsername(String username) {
+        return profileRepository.findByUsername(username)
+                .orElseThrow(() -> {
+                    LOG.warn("[GetByUsername] Profile not found for username {}", username);
+                    return new ProfileNotFoundException("Profile not found");
+                });
+    }
+
     public Profile create(ProfileDTO dto) {
         User currentUser = userService.getCurrentUser();
         if (currentUser.getProfile() != null) {
@@ -50,25 +77,6 @@ public class ProfileService {
         profileRepository.save(profile);
         LOG.info("Profile created for user: {}", currentUser.getUsername());
         return profile;
-    }
-
-    public Profile get() {
-        User currentUser = userService.getCurrentUser();
-        if (currentUser.getProfile() == null) {
-            LOG.warn("[Get] Profile not found for user: {}", currentUser.getUsername());
-            throw new ProfileNotFoundException("You do not have a profile");
-        }
-
-        LOG.info("Profile retrieved for user: {}", currentUser.getUsername());
-        return currentUser.getProfile();
-    }
-
-    public Profile getByUsername(String username) {
-        return profileRepository.findByUsername(username)
-                .orElseThrow(() -> {
-                    LOG.warn("[GetByUsername] Profile not found for username {}", username);
-                    return new ProfileNotFoundException("Profile not found");
-                });
     }
 
     public Profile update(ProfileDTO dto) {

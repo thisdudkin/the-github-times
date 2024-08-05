@@ -10,6 +10,7 @@ import org.raddan.newspaper.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -27,6 +28,25 @@ public class TagService {
     @Autowired
     private EntityFieldUpdater fieldUpdater;
 
+    public List<Tag> getAllTags() {
+        List<Tag> tags = tagRepository.findAll();
+        if (tags.isEmpty()) {
+            throw new TagNotFoundException("Tags not found");
+        }
+
+        return tags;
+    }
+
+    public Tag getTagById(Long id) {
+        return tagRepository.findById(id)
+                .orElseThrow(() -> new TagNotFoundException("Tag not found"));
+    }
+
+    public Tag getTagByName(String name) {
+        return tagRepository.findByName(name.trim())
+                .orElseThrow(() -> new TagNotFoundException("Tag not found"));
+    }
+
     @Transactional
     public Tag create(TagDTO dto) {
         Optional<Tag> optionalTag = tagRepository.findByName(dto.getName().trim());
@@ -41,28 +61,27 @@ public class TagService {
         return tagRepository.save(tag);
     }
 
-    public Tag getByName(String name) {
-        return tagRepository.findByName(name.trim())
-                .orElseThrow(() -> new TagNotFoundException("Tag not found"));
-    }
-
     @Transactional
     public Tag update(String name, TagDTO dto) {
-        Tag tag = getByName(name);
+        Tag tag = getTagByName(name);
         fieldUpdater.update(tag, dto);
         return tagRepository.save(tag);
     }
 
     @Transactional
     public String delete(String name) {
-        Tag tag = getByName(name);
+        Tag tag = getTagByName(name);
         tagRepository.delete(tag);
         return "Tag '" + name.trim() + "' has been deleted";
     }
 
-    public Set<Tag> getTagsByName(Set<String> tagNames) {
-        return tagNames.stream()
-                .map(this::getByName)
-                .collect(toSet());
+    public List<Tag> getTagsByName(List<String> tagNames) {
+        List<Tag> tags = tagRepository.findByNameIn(tagNames);
+        if (tags.isEmpty()) {
+            throw new TagNotFoundException("Tags not found");
+        }
+
+        return tags;
     }
+
 }

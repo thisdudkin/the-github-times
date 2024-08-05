@@ -16,27 +16,32 @@ public class ProfileController {
 
     private final ProfileService profileService;
 
-    @PostMapping("/new")
-    public Profile createProfile(@RequestBody ProfileDTO dto) {
-        return profileService.create(dto);
-    }
-
     @GetMapping
     public Profile getProfile() {
-        return profileService.get();
+        return profileService.getProfile();
     }
 
-    @GetMapping("/{username}")
+    @GetMapping("/{id:[0-9]+}")
+    public Profile getProfileById(@PathVariable Long id) {
+        return profileService.getProfileById(id);
+    }
+
+    @GetMapping("/{username:[a-zA-Z]+}")
     public Profile getProfileByUsername(@PathVariable String username) {
         return profileService.getByUsername(username);
     }
 
-    @PutMapping
+    @PostMapping("/create")
+    public Profile createProfile(@RequestBody ProfileDTO dto) {
+        return profileService.create(dto);
+    }
+
+    @PutMapping("/edit")
     public Profile updateProfile(@RequestBody ProfileDTO dto) {
         return profileService.update(dto);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/delete")
     public String deleteProfile() {
         return profileService.delete();
     }

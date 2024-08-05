@@ -6,6 +6,8 @@ import org.raddan.newspaper.entity.Category;
 import org.raddan.newspaper.service.CategoryService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author Alexander Dudkin
  */
@@ -16,23 +18,33 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @PostMapping("/new")
-    public Category create(@RequestBody CategoryDTO dto) {
-        return categoryService.create(dto);
+    @GetMapping
+    public List<Category> getAllCategories() {
+        return categoryService.getAllCategories();
+    }
+
+    @GetMapping("/id")
+    public Category getCategoryById(@RequestParam Long id) {
+        return categoryService.getCategoryById(id);
     }
 
     @GetMapping("/{name}")
     public Category get(@PathVariable String name) {
-        return categoryService.getByName(name);
+        return categoryService.getCategoryByName(name);
     }
 
-    @PutMapping("/{name}")
+    @PostMapping("/create")
+    public Category create(@RequestBody CategoryDTO dto) {
+        return categoryService.create(dto);
+    }
+
+    @PutMapping("/{name}/edit")
     public Category update(@PathVariable String name,
                            @RequestBody CategoryDTO dto) {
         return categoryService.update(name, dto);
     }
 
-    @DeleteMapping("/{name}")
+    @DeleteMapping("/{name}/delete")
     public String delete(@PathVariable String name) {
         return categoryService.delete(name);
     }
