@@ -21,7 +21,8 @@ import java.util.function.Function;
  */
 @Service
 public class JwtService {
-    @Value("${token.signing.key}")
+
+    @Value("${security.token.signing.key}")
     private String jwtSigningKey;
 
     public String extractUserName(String token) {
@@ -72,4 +73,5 @@ public class JwtService {
         byte[] keyBytes = Decoders.BASE64.decode(jwtSigningKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
+
 }
