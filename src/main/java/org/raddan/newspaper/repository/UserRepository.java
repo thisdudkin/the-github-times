@@ -1,6 +1,6 @@
 package org.raddan.newspaper.repository;
 
-import org.raddan.newspaper.entity.User;
+import org.raddan.newspaper.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

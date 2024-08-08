@@ -1,4 +1,4 @@
-package org.raddan.newspaper.entity;
+package org.raddan.newspaper.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -13,19 +13,20 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "ratings")
+@Table(name = "comments")
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id"
 )
-public class Rating {
+public class Comment {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rating_id_seq")
-    @SequenceGenerator(name = "rating_id_seq", sequenceName = "rating_id_seq", allocationSize = 1)
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "comment_id_seq")
+    @SequenceGenerator(name = "comment_id_seq", sequenceName = "comment_id_seq", allocationSize = 1)
     private Long id;
 
-    @Column(name = "score")
-    private Integer score;
+    @Column(name = "content")
+    private String content;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

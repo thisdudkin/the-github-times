@@ -2,7 +2,7 @@ package org.raddan.newspaper.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.raddan.newspaper.dto.TagDTO;
-import org.raddan.newspaper.entity.Tag;
+import org.raddan.newspaper.model.Tag;
 import org.raddan.newspaper.service.TagService;
 import org.springframework.web.bind.annotation.*;
 

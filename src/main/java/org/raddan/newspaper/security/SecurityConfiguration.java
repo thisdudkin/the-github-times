@@ -1,8 +1,8 @@
 package org.raddan.newspaper.security;
 
 import lombok.RequiredArgsConstructor;
+import org.raddan.newspaper.auth.UserDetailsServiceImpl;
 import org.raddan.newspaper.auth.service.JwtAuthenticationFilter;
-import org.raddan.newspaper.auth.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,8 +31,9 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration {
+
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final UserService userService;
+    private final UserDetailsServiceImpl userDetailsService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -90,6 +91,11 @@ public class SecurityConfiguration {
 
                         .requestMatchers("/tags/{name}/delete")
                         .hasRole("ADMIN")
+
+                        .requestMatchers("/admin/**")
+                        .permitAll()
+
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider())
@@ -105,7 +111,7 @@ public class SecurityConfiguration {
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userService.userDetailsService());
+        authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }

@@ -1,8 +1,7 @@
 package org.raddan.newspaper.auth.service;
 
 import lombok.RequiredArgsConstructor;
-import org.raddan.newspaper.entity.User;
-import org.raddan.newspaper.enums.Role;
+import org.raddan.newspaper.model.User;
 import org.raddan.newspaper.exception.custom.UserAlreadyExistsWithThatEmailException;
 import org.raddan.newspaper.exception.custom.UserAlreadyExistsWithThatUsernameException;
 import org.raddan.newspaper.repository.UserRepository;
@@ -17,6 +16,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class UserService {
+
     private final UserRepository repository;
 
     public User save(User user) {
@@ -35,19 +35,9 @@ public class UserService {
         return save(user);
     }
 
-    public User getByUsername(String username) {
-        return repository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
-
-    }
-
-    public UserDetailsService userDetailsService() {
-        return this::getByUsername;
-    }
-
     public User getCurrentUser() {
-        var username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return getByUsername(username);
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return repository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
     }
 
 }

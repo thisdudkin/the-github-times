@@ -1,6 +1,6 @@
 package org.raddan.newspaper.config;
 
-import org.raddan.newspaper.entity.User;
+import org.raddan.newspaper.model.User;
 import org.raddan.newspaper.enums.DeletionAuthority;
 import org.springframework.stereotype.Component;
 

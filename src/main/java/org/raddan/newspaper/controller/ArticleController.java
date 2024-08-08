@@ -2,13 +2,12 @@ package org.raddan.newspaper.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.raddan.newspaper.dto.ArticleDTO;
-import org.raddan.newspaper.entity.Article;
+import org.raddan.newspaper.model.Article;
 import org.raddan.newspaper.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Alexander Dudkin

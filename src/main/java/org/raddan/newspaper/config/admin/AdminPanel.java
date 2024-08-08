@@ -1,6 +1,6 @@
 package org.raddan.newspaper.config.admin;
 
-import org.raddan.newspaper.entity.User;
+import org.raddan.newspaper.model.User;
 import org.raddan.newspaper.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,7 +23,7 @@ public class AdminPanel implements AdminActions {
      */
     @Override
     public void ban(User user) {
-        user.setIsActive(false);
+        user.setActive(false);
         userRepo.save(user);
     }
 
@@ -34,7 +34,7 @@ public class AdminPanel implements AdminActions {
      */
     @Override
     public void unban(User user) {
-        user.setIsActive(true);
+        user.setActive(true);
         userRepo.save(user);
     }
 

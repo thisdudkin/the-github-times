@@ -1,6 +1,6 @@
 package org.raddan.newspaper.config.admin;
 
-import org.raddan.newspaper.entity.User;
+import org.raddan.newspaper.model.User;
 
 /**
  * @author Alexander Dudkin

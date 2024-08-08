@@ -1,11 +1,9 @@
-package org.raddan.newspaper.entity;
+package org.raddan.newspaper.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.List;
 
 /**
  * @author Alexander Dudkin

@@ -30,7 +30,7 @@ public class EntityFieldUpdater {
             }
         }
 
-        log.info("User: updated profile successfully!");
+        log.info("{}: updated profile successfully!", entity.getClass().getSimpleName());
     }
 
 }

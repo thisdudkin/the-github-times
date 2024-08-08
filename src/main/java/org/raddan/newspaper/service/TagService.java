@@ -3,7 +3,7 @@ package org.raddan.newspaper.service;
 import jakarta.transaction.Transactional;
 import org.raddan.newspaper.config.updater.EntityFieldUpdater;
 import org.raddan.newspaper.dto.TagDTO;
-import org.raddan.newspaper.entity.Tag;
+import org.raddan.newspaper.model.Tag;
 import org.raddan.newspaper.exception.custom.TagAlreadyExistsException;
 import org.raddan.newspaper.exception.custom.TagNotFoundException;
 import org.raddan.newspaper.repository.TagRepository;
@@ -12,9 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-
-import static java.util.stream.Collectors.toSet;
 
 /**
  * @author Alexander Dudkin

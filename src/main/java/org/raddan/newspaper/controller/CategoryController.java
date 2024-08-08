@@ -2,7 +2,7 @@ package org.raddan.newspaper.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.raddan.newspaper.dto.CategoryDTO;
-import org.raddan.newspaper.entity.Category;
+import org.raddan.newspaper.model.Category;
 import org.raddan.newspaper.service.CategoryService;
 import org.springframework.web.bind.annotation.*;
 

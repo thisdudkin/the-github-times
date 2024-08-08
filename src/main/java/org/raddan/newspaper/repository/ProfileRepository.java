@@ -1,9 +1,7 @@
 package org.raddan.newspaper.repository;
 
-import jakarta.transaction.Transactional;
-import org.raddan.newspaper.entity.Profile;
+import org.raddan.newspaper.model.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
