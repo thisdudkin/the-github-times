@@ -71,7 +71,6 @@ public class ProfileService {
                 .fullName(dto.getFullName())
                 .avatar(dto.getAvatar())
                 .bio(dto.getBio())
-                .createdUtc(Instant.now().getEpochSecond())
                 .build();
 
         profileRepository.save(profile);
@@ -87,7 +86,6 @@ public class ProfileService {
         }
 
         fieldUpdater.update(currentUser.getProfile(), dto);
-        currentUser.getProfile().setUpdatedUtc(Instant.now().getEpochSecond());
         profileRepository.save(currentUser.getProfile());
         LOG.info("Profile updated for user: {}", currentUser.getUsername());
         return currentUser.getProfile();

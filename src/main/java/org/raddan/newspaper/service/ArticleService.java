@@ -3,7 +3,7 @@ package org.raddan.newspaper.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.raddan.newspaper.auth.service.UserService;
-import org.raddan.newspaper.config.EntityDeletionValidator;
+import org.raddan.newspaper.config.validator.EntityDeletionValidator;
 import org.raddan.newspaper.config.updater.EntityFieldUpdater;
 import org.raddan.newspaper.dto.ArticleDto;
 import org.raddan.newspaper.model.Article;

@@ -17,10 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "articles")
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id"
-)
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "article_id_seq")
@@ -49,9 +46,6 @@ public class Article {
 
     @Column(name = "updated_utc")
     private Long updatedUtc;
-
-    @Column(name = "visit_count")
-    private int visitCount;
 
     @ManyToMany
     @JoinTable(

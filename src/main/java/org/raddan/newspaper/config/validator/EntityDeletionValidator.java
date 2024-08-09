@@ -1,4 +1,4 @@
-package org.raddan.newspaper.config;
+package org.raddan.newspaper.config.validator;
 
 import org.raddan.newspaper.model.User;
 import org.raddan.newspaper.enums.DeletionAuthority;
