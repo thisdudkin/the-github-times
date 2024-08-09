@@ -2,7 +2,7 @@ package org.raddan.newspaper.service;
 
 import jakarta.transaction.Transactional;
 import org.raddan.newspaper.config.updater.EntityFieldUpdater;
-import org.raddan.newspaper.dto.CategoryDTO;
+import org.raddan.newspaper.dto.CategoryDto;
 import org.raddan.newspaper.model.Category;
 import org.raddan.newspaper.exception.custom.CategoryAlreadyExistsException;
 import org.raddan.newspaper.exception.custom.CategoryNotFoundException;
@@ -45,7 +45,7 @@ public class CategoryService {
     }
 
     @Transactional
-    public Category create(CategoryDTO dto) {
+    public Category create(CategoryDto dto) {
         Optional<Category> optionalCategory = categoryRepository.findByName(dto.getName().trim());
         if (optionalCategory.isPresent()) {
             throw new CategoryAlreadyExistsException("Category with that name already exists");
@@ -59,7 +59,7 @@ public class CategoryService {
     }
 
     @Transactional
-    public Category update(String name, CategoryDTO dto) {
+    public Category update(String name, CategoryDto dto) {
         Category category = getCategoryByName(name);
         fieldUpdater.update(category, dto);
         return categoryRepository.save(category);

@@ -20,6 +20,7 @@ import lombok.*;
         property = "id"
 )
 public class Profile {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "profile_id_seq")
     @SequenceGenerator(name = "profile_id_seq", sequenceName = "profile_id_seq", allocationSize = 1)
@@ -44,4 +45,5 @@ public class Profile {
 
     @Column(name = "updated_utc")
     private Long updatedUtc;
+
 }

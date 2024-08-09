@@ -1,7 +1,7 @@
 package org.raddan.newspaper.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.raddan.newspaper.dto.CategoryDTO;
+import org.raddan.newspaper.dto.CategoryDto;
 import org.raddan.newspaper.model.Category;
 import org.raddan.newspaper.service.CategoryService;
 import org.springframework.web.bind.annotation.*;
@@ -34,13 +34,13 @@ public class CategoryController {
     }
 
     @PostMapping("/create")
-    public Category create(@RequestBody CategoryDTO dto) {
+    public Category create(@RequestBody CategoryDto dto) {
         return categoryService.create(dto);
     }
 
     @PutMapping("/{name}/edit")
     public Category update(@PathVariable String name,
-                           @RequestBody CategoryDTO dto) {
+                           @RequestBody CategoryDto dto) {
         return categoryService.update(name, dto);
     }
 

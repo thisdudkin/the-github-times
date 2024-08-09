@@ -4,13 +4,12 @@ import lombok.Data;
 import org.raddan.newspaper.annotation.NotEmpty;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Alexander Dudkin
  */
 @Data
-public class ArticleDTO {
+public class ArticleDto {
 
     @NotEmpty
     private String title;

@@ -1,7 +1,7 @@
 package org.raddan.newspaper.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.raddan.newspaper.dto.TagDTO;
+import org.raddan.newspaper.dto.TagDto;
 import org.raddan.newspaper.model.Tag;
 import org.raddan.newspaper.service.TagService;
 import org.springframework.web.bind.annotation.*;
@@ -34,12 +34,12 @@ public class TagController {
     }
 
     @PostMapping("/create")
-    public Tag create(@RequestBody TagDTO dto) {
+    public Tag create(@RequestBody TagDto dto) {
         return tagService.create(dto);
     }
 
     @PutMapping("/{name}/edit")
-    public Tag update(@PathVariable String name, @RequestBody TagDTO dto) {
+    public Tag update(@PathVariable String name, @RequestBody TagDto dto) {
         return tagService.update(name, dto);
     }
 

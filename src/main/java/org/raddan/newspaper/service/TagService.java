@@ -2,7 +2,7 @@ package org.raddan.newspaper.service;
 
 import jakarta.transaction.Transactional;
 import org.raddan.newspaper.config.updater.EntityFieldUpdater;
-import org.raddan.newspaper.dto.TagDTO;
+import org.raddan.newspaper.dto.TagDto;
 import org.raddan.newspaper.model.Tag;
 import org.raddan.newspaper.exception.custom.TagAlreadyExistsException;
 import org.raddan.newspaper.exception.custom.TagNotFoundException;
@@ -45,7 +45,7 @@ public class TagService {
     }
 
     @Transactional
-    public Tag create(TagDTO dto) {
+    public Tag create(TagDto dto) {
         Optional<Tag> optionalTag = tagRepository.findByName(dto.getName().trim());
         if (optionalTag.isPresent()) {
             throw new TagAlreadyExistsException("Tag with that name already exists");
@@ -59,7 +59,7 @@ public class TagService {
     }
 
     @Transactional
-    public Tag update(String name, TagDTO dto) {
+    public Tag update(String name, TagDto dto) {
         Tag tag = getTagByName(name);
         fieldUpdater.update(tag, dto);
         return tagRepository.save(tag);

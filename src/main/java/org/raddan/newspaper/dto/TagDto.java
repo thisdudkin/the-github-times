@@ -6,6 +6,6 @@ import lombok.Data;
  * @author Alexander Dudkin
  */
 @Data
-public class TagDTO {
+public class TagDto {
     private String name;
 }

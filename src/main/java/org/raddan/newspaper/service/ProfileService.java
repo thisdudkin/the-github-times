@@ -2,7 +2,7 @@ package org.raddan.newspaper.service;
 
 import org.raddan.newspaper.auth.service.UserService;
 import org.raddan.newspaper.config.updater.EntityFieldUpdater;
-import org.raddan.newspaper.dto.ProfileDTO;
+import org.raddan.newspaper.dto.ProfileDto;
 import org.raddan.newspaper.model.Profile;
 import org.raddan.newspaper.model.User;
 import org.raddan.newspaper.exception.custom.ProfileAlreadyExistsException;
@@ -59,7 +59,7 @@ public class ProfileService {
                 });
     }
 
-    public Profile create(ProfileDTO dto) {
+    public Profile create(ProfileDto dto) {
         User currentUser = userService.getCurrentUser();
         if (currentUser.getProfile() != null) {
             LOG.warn("User {} already has a profile", currentUser.getUsername());
@@ -79,7 +79,7 @@ public class ProfileService {
         return profile;
     }
 
-    public Profile update(ProfileDTO dto) {
+    public Profile update(ProfileDto dto) {
         User currentUser = userService.getCurrentUser();
         if (currentUser.getProfile() == null) {
             LOG.warn("[Update] Profile not found for user: {}", currentUser.getUsername());

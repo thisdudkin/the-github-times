@@ -1,7 +1,7 @@
 package org.raddan.newspaper.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.raddan.newspaper.dto.ProfileDTO;
+import org.raddan.newspaper.dto.ProfileDto;
 import org.raddan.newspaper.model.Profile;
 import org.raddan.newspaper.service.ProfileService;
 import org.springframework.web.bind.annotation.*;
@@ -32,12 +32,12 @@ public class ProfileController {
     }
 
     @PostMapping("/create")
-    public Profile createProfile(@RequestBody ProfileDTO dto) {
+    public Profile createProfile(@RequestBody ProfileDto dto) {
         return profileService.create(dto);
     }
 
     @PutMapping("/edit")
-    public Profile updateProfile(@RequestBody ProfileDTO dto) {
+    public Profile updateProfile(@RequestBody ProfileDto dto) {
         return profileService.update(dto);
     }
 

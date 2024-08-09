@@ -7,7 +7,7 @@ import org.raddan.newspaper.annotation.NotEmpty;
  * @author Alexander Dudkin
  */
 @Data
-public class CategoryDTO {
+public class CategoryDto {
 
     @NotEmpty
     private String name;

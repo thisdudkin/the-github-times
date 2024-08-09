@@ -1,7 +1,7 @@
 package org.raddan.newspaper.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.raddan.newspaper.dto.ArticleDTO;
+import org.raddan.newspaper.dto.ArticleDto;
 import org.raddan.newspaper.model.Article;
 import org.raddan.newspaper.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +48,7 @@ public class ArticleController {
      * @return the created article.
      */
     @PostMapping("/create")
-    public Article create(@RequestBody ArticleDTO dto) {
+    public Article create(@RequestBody ArticleDto dto) {
         return articleService.create(dto);
     }
 
@@ -60,7 +60,7 @@ public class ArticleController {
      * @return the updated article.
      */
     @PutMapping("/{id}/edit")
-    public Article update(@PathVariable Long id, @RequestBody ArticleDTO dto) {
+    public Article update(@PathVariable Long id, @RequestBody ArticleDto dto) {
         return articleService.update(id, dto);
     }
 

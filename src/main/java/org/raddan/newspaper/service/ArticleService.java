@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.raddan.newspaper.auth.service.UserService;
 import org.raddan.newspaper.config.EntityDeletionValidator;
 import org.raddan.newspaper.config.updater.EntityFieldUpdater;
-import org.raddan.newspaper.dto.ArticleDTO;
+import org.raddan.newspaper.dto.ArticleDto;
 import org.raddan.newspaper.model.Article;
 import org.raddan.newspaper.model.Category;
 import org.raddan.newspaper.model.Tag;
@@ -47,7 +47,7 @@ public class ArticleService {
     }
 
     @Transactional
-    public Article create(ArticleDTO dto) {
+    public Article create(ArticleDto dto) {
         User currentUser = userService.getCurrentUser();
         if (currentUser == null)
             throw new UnauthorizedException("You are not logged in to perform this action");
@@ -60,7 +60,7 @@ public class ArticleService {
     }
 
     @Transactional
-    public Article update(Long id, ArticleDTO dto) {
+    public Article update(Long id, ArticleDto dto) {
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new ArticleNotFoundException("Article not found"));
 
@@ -81,7 +81,7 @@ public class ArticleService {
         return "Article with id " + id + " has been deleted";
     }
 
-    private Article buildArticle(ArticleDTO dto,
+    private Article buildArticle(ArticleDto dto,
                                  User currenctUser,
                                  List<Category> categories,
                                  List<Tag> tags) {
