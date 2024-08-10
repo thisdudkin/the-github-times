@@ -51,14 +51,6 @@ public class ProfileService {
                 });
     }
 
-    public Profile getByUsername(String username) {
-        return profileRepository.findByUsername(username)
-                .orElseThrow(() -> {
-                    LOG.warn("[GetByUsername] Profile not found for username {}", username);
-                    return new ProfileNotFoundException("Profile not found");
-                });
-    }
-
     public Profile create(ProfileDto dto) {
         User currentUser = userService.getCurrentUser();
         if (currentUser.getProfile() != null) {

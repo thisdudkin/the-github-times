@@ -26,11 +26,6 @@ public class ProfileController {
         return profileService.getProfileById(id);
     }
 
-    @GetMapping("/{username:[a-zA-Z]+}")
-    public Profile getProfileByUsername(@PathVariable String username) {
-        return profileService.getByUsername(username);
-    }
-
     @PostMapping("/create")
     public Profile createProfile(@RequestBody ProfileDto dto) {
         return profileService.create(dto);

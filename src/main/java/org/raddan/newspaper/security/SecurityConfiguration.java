@@ -53,7 +53,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/profile", "/profile/create", "/profile/edit", "/profile/delete")
                         .authenticated()
 
-                        .requestMatchers("/profile/{id:[0-9]+}", "/profile/{username:[a-zA-Z]+}")
+                        .requestMatchers("/profile/{id:[0-9]+}")
                         .permitAll()
 
                         .requestMatchers("/news", "/news/{id}")

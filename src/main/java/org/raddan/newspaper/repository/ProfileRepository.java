@@ -11,14 +11,5 @@ import java.util.Optional;
  * @author Alexander Dudkin
  */
 public interface ProfileRepository extends JpaRepository<Profile, Long> {
-
-    /**
-     * Abstract method to get Profile by username.
-     *
-     * @param username of Profile's author.
-     * @return {@code Profile} from the database
-     */
-    @Query("SELECT p FROM Profile p WHERE p.user.username = :p_username")
-    Optional<Profile> findByUsername(@Param("p_username") String username);
-
+    boolean existsById(Long profileId);
 }
