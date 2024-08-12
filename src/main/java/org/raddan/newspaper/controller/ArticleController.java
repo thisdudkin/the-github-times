@@ -1,6 +1,5 @@
 package org.raddan.newspaper.controller;
 
-import lombok.RequiredArgsConstructor;
 import org.raddan.newspaper.dto.ArticleDto;
 import org.raddan.newspaper.model.Article;
 import org.raddan.newspaper.service.ArticleService;
@@ -13,7 +12,6 @@ import java.util.List;
  * @author Alexander Dudkin
  */
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/news")
 public class ArticleController {
 

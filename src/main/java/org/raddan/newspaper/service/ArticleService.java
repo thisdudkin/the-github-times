@@ -1,18 +1,18 @@
 package org.raddan.newspaper.service;
 
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 import org.raddan.newspaper.auth.service.UserService;
-import org.raddan.newspaper.config.validator.EntityDeletionValidator;
 import org.raddan.newspaper.config.updater.EntityFieldUpdater;
+import org.raddan.newspaper.config.validator.EntityDeletionValidator;
 import org.raddan.newspaper.dto.ArticleDto;
+import org.raddan.newspaper.exception.custom.ArticleNotFoundException;
+import org.raddan.newspaper.exception.custom.UnauthorizedException;
 import org.raddan.newspaper.model.Article;
 import org.raddan.newspaper.model.Category;
 import org.raddan.newspaper.model.Tag;
 import org.raddan.newspaper.model.User;
-import org.raddan.newspaper.exception.custom.ArticleNotFoundException;
-import org.raddan.newspaper.exception.custom.UnauthorizedException;
 import org.raddan.newspaper.repository.ArticleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -22,7 +22,6 @@ import java.util.List;
  * @author Alexander Dudkin
  */
 @Service
-@RequiredArgsConstructor
 public class ArticleService {
 
     private final CategoryService categoryService;
@@ -31,6 +30,21 @@ public class ArticleService {
     private final UserService userService;
     private final EntityFieldUpdater fieldUpdater;
     private final EntityDeletionValidator entityDeletionValidator;
+
+    @Autowired
+    public ArticleService(CategoryService categoryService,
+                          TagService tagService,
+                          ArticleRepository articleRepository,
+                          UserService userService,
+                          EntityFieldUpdater fieldUpdater,
+                          EntityDeletionValidator entityDeletionValidator) {
+        this.categoryService = categoryService;
+        this.tagService = tagService;
+        this.articleRepository = articleRepository;
+        this.userService = userService;
+        this.fieldUpdater = fieldUpdater;
+        this.entityDeletionValidator = entityDeletionValidator;
+    }
 
     public List<Article> getAllArticles() {
         List<Article> articles = articleRepository.findAll();
