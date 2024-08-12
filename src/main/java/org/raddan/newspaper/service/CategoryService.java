@@ -3,9 +3,9 @@ package org.raddan.newspaper.service;
 import jakarta.transaction.Transactional;
 import org.raddan.newspaper.config.updater.EntityFieldUpdater;
 import org.raddan.newspaper.dto.CategoryDto;
-import org.raddan.newspaper.model.Category;
 import org.raddan.newspaper.exception.custom.CategoryAlreadyExistsException;
 import org.raddan.newspaper.exception.custom.CategoryNotFoundException;
+import org.raddan.newspaper.model.Category;
 import org.raddan.newspaper.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,11 +19,15 @@ import java.util.Optional;
 @Service
 public class CategoryService {
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
+    private final EntityFieldUpdater fieldUpdater;
 
     @Autowired
-    private EntityFieldUpdater fieldUpdater;
+    public CategoryService(CategoryRepository categoryRepository,
+                           EntityFieldUpdater fieldUpdater) {
+        this.categoryRepository = categoryRepository;
+        this.fieldUpdater = fieldUpdater;
+    }
 
     public List<Category> getAllCategories() {
         List<Category> categories = categoryRepository.findAll();

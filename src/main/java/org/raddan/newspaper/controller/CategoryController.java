@@ -1,9 +1,9 @@
 package org.raddan.newspaper.controller;
 
-import lombok.RequiredArgsConstructor;
 import org.raddan.newspaper.dto.CategoryDto;
 import org.raddan.newspaper.model.Category;
 import org.raddan.newspaper.service.CategoryService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,11 +12,11 @@ import java.util.List;
  * @author Alexander Dudkin
  */
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/categories")
 public class CategoryController {
 
-    private final CategoryService categoryService;
+    @Autowired
+    private CategoryService categoryService;
 
     @GetMapping
     public List<Category> getAllCategories() {
