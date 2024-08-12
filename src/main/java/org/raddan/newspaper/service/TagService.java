@@ -3,9 +3,9 @@ package org.raddan.newspaper.service;
 import jakarta.transaction.Transactional;
 import org.raddan.newspaper.config.updater.EntityFieldUpdater;
 import org.raddan.newspaper.dto.TagDto;
-import org.raddan.newspaper.model.Tag;
 import org.raddan.newspaper.exception.custom.TagAlreadyExistsException;
 import org.raddan.newspaper.exception.custom.TagNotFoundException;
+import org.raddan.newspaper.model.Tag;
 import org.raddan.newspaper.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,11 +19,15 @@ import java.util.Optional;
 @Service
 public class TagService {
 
-    @Autowired
-    private TagRepository tagRepository;
+    private final TagRepository tagRepository;
+    private final EntityFieldUpdater fieldUpdater;
 
     @Autowired
-    private EntityFieldUpdater fieldUpdater;
+    public TagService(TagRepository tagRepository,
+                      EntityFieldUpdater fieldUpdater) {
+        this.tagRepository = tagRepository;
+        this.fieldUpdater = fieldUpdater;
+    }
 
     public List<Tag> getAllTags() {
         List<Tag> tags = tagRepository.findAll();

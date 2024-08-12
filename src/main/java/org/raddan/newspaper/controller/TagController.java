@@ -1,9 +1,9 @@
 package org.raddan.newspaper.controller;
 
-import lombok.RequiredArgsConstructor;
 import org.raddan.newspaper.dto.TagDto;
 import org.raddan.newspaper.model.Tag;
 import org.raddan.newspaper.service.TagService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,11 +12,11 @@ import java.util.List;
  * @author Alexander Dudkin
  */
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/tags")
 public class TagController {
 
-    private final TagService tagService;
+    @Autowired
+    private TagService tagService;
 
     @GetMapping
     public List<Tag> getAllTags() {
