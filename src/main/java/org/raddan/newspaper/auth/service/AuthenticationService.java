@@ -1,13 +1,13 @@
 package org.raddan.newspaper.auth.service;
 
-import lombok.RequiredArgsConstructor;
 import org.raddan.newspaper.auth.UserDetailsServiceImpl;
-import org.raddan.newspaper.enums.Role;
-import org.raddan.newspaper.model.User;
 import org.raddan.newspaper.auth.model.JwtAuthenticationResponse;
 import org.raddan.newspaper.auth.model.SignInRequest;
 import org.raddan.newspaper.auth.model.SignUpRequest;
+import org.raddan.newspaper.enums.Role;
+import org.raddan.newspaper.model.User;
 import org.raddan.newspaper.security.UserDetailsImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
  * @author Alexander Dudkin
  */
 @Service
-@RequiredArgsConstructor
 public class AuthenticationService {
 
     private final UserService userService;
@@ -26,6 +25,19 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+
+    @Autowired
+    public AuthenticationService(UserService userService,
+                                 UserDetailsServiceImpl userDetailsService,
+                                 JwtService jwtService,
+                                 PasswordEncoder passwordEncoder,
+                                 AuthenticationManager authenticationManager) {
+        this.userService = userService;
+        this.userDetailsService = userDetailsService;
+        this.jwtService = jwtService;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+    }
 
     public JwtAuthenticationResponse signUp(SignUpRequest request) {
 

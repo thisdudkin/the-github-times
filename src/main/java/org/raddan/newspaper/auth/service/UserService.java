@@ -1,12 +1,11 @@
 package org.raddan.newspaper.auth.service;
 
-import lombok.RequiredArgsConstructor;
-import org.raddan.newspaper.model.User;
 import org.raddan.newspaper.exception.custom.UserAlreadyExistsWithThatEmailException;
 import org.raddan.newspaper.exception.custom.UserAlreadyExistsWithThatUsernameException;
+import org.raddan.newspaper.model.User;
 import org.raddan.newspaper.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +13,14 @@ import org.springframework.stereotype.Service;
  * @author Alexander Dudkin
  */
 @Service
-@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository repository;
+
+    @Autowired
+    public UserService(UserRepository repository) {
+        this.repository = repository;
+    }
 
     public User save(User user) {
         return repository.save(user);
