@@ -21,7 +21,6 @@ import java.util.Objects;
 @Entity
 @Builder
 @Getter @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
 @JsonIdentityInfo(
@@ -51,6 +50,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;
+
+    public User() { }
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private Profile profile;
