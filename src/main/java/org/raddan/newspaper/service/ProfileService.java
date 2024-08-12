@@ -3,17 +3,15 @@ package org.raddan.newspaper.service;
 import org.raddan.newspaper.auth.service.UserService;
 import org.raddan.newspaper.config.updater.EntityFieldUpdater;
 import org.raddan.newspaper.dto.ProfileDto;
-import org.raddan.newspaper.model.Profile;
-import org.raddan.newspaper.model.User;
 import org.raddan.newspaper.exception.custom.ProfileAlreadyExistsException;
 import org.raddan.newspaper.exception.custom.ProfileNotFoundException;
+import org.raddan.newspaper.model.Profile;
+import org.raddan.newspaper.model.User;
 import org.raddan.newspaper.repository.ProfileRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.time.Instant;
 
 /**
  * @author Alexander Dudkin
@@ -23,14 +21,18 @@ public class ProfileService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ProfileService.class);
 
-    @Autowired
-    private ProfileRepository profileRepository;
+    private final ProfileRepository profileRepository;
+    private final EntityFieldUpdater fieldUpdater;
+    private final UserService userService;
 
     @Autowired
-    private EntityFieldUpdater fieldUpdater;
-
-    @Autowired
-    private UserService userService;
+    public ProfileService(ProfileRepository profileRepository,
+                          EntityFieldUpdater fieldUpdater,
+                          UserService userService) {
+        this.profileRepository = profileRepository;
+        this.fieldUpdater = fieldUpdater;
+        this.userService = userService;
+    }
 
     public Profile getProfile() {
         User currentUser = userService.getCurrentUser();

@@ -1,20 +1,20 @@
 package org.raddan.newspaper.controller;
 
-import lombok.RequiredArgsConstructor;
 import org.raddan.newspaper.dto.ProfileDto;
 import org.raddan.newspaper.model.Profile;
 import org.raddan.newspaper.service.ProfileService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Alexander Dudkin
  */
 @RestController
-@RequiredArgsConstructor
 @RequestMapping(path = "/profile")
 public class ProfileController {
 
-    private final ProfileService profileService;
+    @Autowired
+    private ProfileService profileService;
 
     @GetMapping
     public Profile getProfile() {
