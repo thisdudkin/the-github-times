@@ -56,8 +56,7 @@ public class ArticleService {
     }
 
     public Article getById(Long id) {
-        return articleRepository.findById(id)
-                .orElseThrow(() -> new ArticleNotFoundException("Article not found"));
+        return findArticleById(id);
     }
 
     @Transactional
@@ -75,8 +74,7 @@ public class ArticleService {
 
     @Transactional
     public Article update(Long id, ArticleDto dto) {
-        Article article = articleRepository.findById(id)
-                .orElseThrow(() -> new ArticleNotFoundException("Article not found"));
+        Article article = findArticleById(id);
 
         fieldUpdater.update(article, dto);
         return articleRepository.save(article);
@@ -85,8 +83,7 @@ public class ArticleService {
     @Transactional
     public String delete(Long id) {
         User currentUser = userService.getCurrentUser();
-        Article article = articleRepository.findById(id)
-                .orElseThrow(() -> new ArticleNotFoundException("Article not found"));
+        Article article = findArticleById(id);
 
         if (!entityDeletionValidator.isValid(currentUser))
             throw new RuntimeException("You can not perform this action");
@@ -105,9 +102,14 @@ public class ArticleService {
                 .summary(dto.getSummary().trim())
                 .content(dto.getContent().trim())
                 .picture(dto.getPicture().trim())
-                .publishDate(Instant.now().getEpochSecond())
+                .publishDate(Instant.now())
                 .categories(categories)
                 .tags(tags)
                 .build();
+    }
+
+    private Article findArticleById(Long id) {
+        return articleRepository.findById(id)
+                .orElseThrow(() -> new ArticleNotFoundException("Article not found"));
     }
 }
