@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.Instant;
 import java.util.List;
 
 /**
@@ -19,6 +20,7 @@ import java.util.List;
 @Table(name = "articles")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Article {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "article_id_seq")
     @SequenceGenerator(name = "article_id_seq", sequenceName = "article_id_seq", allocationSize = 1)
@@ -42,10 +44,21 @@ public class Article {
     private User user;
 
     @Column(name = "publish_date", nullable = false)
-    private Long publishDate;
+    private Instant publishDate;
 
     @Column(name = "updated_utc")
-    private Long updatedUtc;
+    private Instant updatedUtc;
+
+    @PrePersist
+    protected void onCreate() {
+        this.publishDate = Instant.now();
+        this.updatedUtc = Instant.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedUtc = Instant.now();
+    }
 
     @ManyToMany
     @JoinTable(
