@@ -2,7 +2,8 @@ package org.earlspilner.newspaper.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.earlspilner.auth.model.AppUser;
+import org.earlspilner.auth.model.*;
+import org.earlspilner.newspaper.model.*;
 
 import java.time.Instant;
 import java.util.Set;

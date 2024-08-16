@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@ComponentScan(basePackages = "org.earlspilner.newspaper.*")
+@ComponentScan(basePackages = "org.earlspilner.newspaper.**")
 @EnableJpaRepositories(basePackages = "org.earlspilner.newspaper.repository")
 @EntityScan(basePackages = {"org.earlspilner.newspaper", "org.earlspilner.auth"})
 public class TheGitHubTimes {
