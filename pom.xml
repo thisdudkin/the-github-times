@@ -10,7 +10,7 @@
         <relativePath/>
     </parent>
 
-    <groupId>org.raddan</groupId>
+    <groupId>org.earlspilner</groupId>
     <artifactId>the-github-times</artifactId>
     <version>1.0</version>
     <name>The GitHub Times</name>
@@ -20,6 +20,8 @@
         <java.version>17</java.version>
     </properties>
 
+    <packaging>pom</packaging>
+
     <dependencies>
         <!-- Spring Dependencies -->
 
@@ -27,11 +29,6 @@
             <!-- Spring Data JPA -->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <!-- Spring Data Redis -->
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
         <dependency>
             <!-- Validation -->
@@ -95,11 +92,6 @@
             <artifactId>caffeine</artifactId>
             <version>3.1.8</version>
         </dependency>
-        <dependency>
-            <!-- Spring Data Redis -->
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-redis</artifactId>
-        </dependency>
 
 
         <!-- Logging Dependencies -->
@@ -118,6 +110,16 @@
 
 
         <!-- Other Dependencies -->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>1.6.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <version>1.6.0</version>
+        </dependency>
         <dependency>
             <!-- Reflections -->
             <groupId>org.reflections</groupId>
@@ -189,5 +191,10 @@
             </plugin>
         </plugins>
     </build>
+
+    <modules>
+        <module>newspaper</module>
+        <module>auth</module>
+    </modules>
 
 </project>
