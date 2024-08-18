@@ -1,0 +1,9 @@
+server:
+  port: 9002
+
+spring:
+  cloud:
+    compatibility-verifier:
+      enabled: false
+  application:
+    name: user-service
