@@ -1,25 +1,33 @@
 package org.earlspilner.service;
 
-import lombok.AllArgsConstructor;
-import org.earlspilner.models.UserVO;
+import org.earlspilner.dto.UserDto;
+import org.earlspilner.mapper.UserMapper;
+import org.earlspilner.models.User;
+import org.earlspilner.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
 
 /**
  * @author Alexander Dudkin
  */
 @Service
-@AllArgsConstructor
 public class UserService {
 
-    public UserVO save(UserVO userVO) {
-        // Simulate save operation
-        String userId = String.valueOf(new Date().getTime());
-        userVO.setId(userId);
-        userVO.setRole("USER");
-        // Save user
-        return userVO;
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public UserService(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.userMapper = userMapper;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    public User register(UserDto dto) {
+        User user = userMapper.toUser(dto);
+        return userRepository.save(user);
     }
 
 }

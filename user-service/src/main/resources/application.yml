@@ -2,8 +2,21 @@ server:
   port: 9002
 
 spring:
-  cloud:
-    compatibility-verifier:
-      enabled: false
   application:
     name: user-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/newspaper-user-service
+    username: postgres
+    password: secret
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+
