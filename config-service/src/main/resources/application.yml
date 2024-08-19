@@ -1,6 +1,11 @@
 server:
   port: 9297
 
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
 spring:
   application:
     name: config-service
@@ -8,6 +13,6 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/earlspilner/demo-config-server
+          uri: https://github.com/earlspilner/demo-config-server.git
           clone-on-start: true
           default-label: master

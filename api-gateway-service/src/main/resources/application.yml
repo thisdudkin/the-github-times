@@ -11,7 +11,7 @@ spring:
           enabled: true
 
 jwt:
-  secret: [ SECRET-KEY ]
+  secret: [SECRET-KEY]
 
 eureka:
   client:
