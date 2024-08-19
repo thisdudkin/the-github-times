@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import org.earlspilner.models.UserRole;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -36,8 +37,8 @@ public class JwtUtil {
         return getClaims(token).getExpiration();
     }
 
-    public String generate(String userId, String role, String tokenType) {
-        Map<String, String> claims = Map.of("id", userId, "role", role);
+    public String generate(Integer userId, UserRole role, String tokenType) {
+        Map<String, Object> claims = Map.of("id", userId.toString(), "role", role.name());
         long expMillis = "ACCESS".equalsIgnoreCase(tokenType)
                 ? Long.parseLong(expiration) * 1000
                 : Long.parseLong(expiration) * 1000 * 5;
@@ -47,7 +48,7 @@ public class JwtUtil {
 
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(claims.get("id"))
+                .setSubject(userId.toString())
                 .setIssuedAt(now)
                 .setExpiration(exp)
                 .signWith(key)

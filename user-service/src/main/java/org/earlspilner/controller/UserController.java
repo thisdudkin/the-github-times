@@ -1,7 +1,8 @@
 package org.earlspilner.controller;
 
 import lombok.AllArgsConstructor;
-import org.earlspilner.models.UserVO;
+import org.earlspilner.dto.UserDto;
+import org.earlspilner.models.User;
 import org.earlspilner.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,8 +18,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<UserVO> save(@RequestBody UserVO userVO) {
-        return ResponseEntity.ok(userService.save(userVO));
+    public ResponseEntity<User> save(@RequestBody UserDto dto) {
+        return ResponseEntity.ok(userService.register(dto));
     }
 
     @GetMapping("/secured")

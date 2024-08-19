@@ -8,5 +8,6 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/earlspilner/demo-config-server.git
+          uri: https://github.com/earlspilner/demo-config-server
           clone-on-start: true
+          default-label: master

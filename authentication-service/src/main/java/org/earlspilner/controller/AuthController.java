@@ -1,8 +1,8 @@
 package org.earlspilner.controller;
 
 import lombok.AllArgsConstructor;
-import org.earlspilner.models.AuthRequest;
-import org.earlspilner.models.AuthResponse;
+import org.earlspilner.dto.UserDto;
+import org.earlspilner.model.AuthResponse;
 import org.earlspilner.service.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +21,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping(value = "/register")
-    public ResponseEntity<AuthResponse> register(@RequestBody AuthRequest request) {
+    public ResponseEntity<AuthResponse> register(@RequestBody UserDto request) {
         return ResponseEntity.ok(authService.register(request));
     }
 
