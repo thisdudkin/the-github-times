@@ -8,11 +8,14 @@ import org.earlspilner.users.dto.Tokens;
 import org.earlspilner.users.model.User;
 import org.earlspilner.users.repository.UserRepository;
 import org.earlspilner.users.rest.advice.custom.CustomException;
+import org.earlspilner.users.rest.advice.custom.UnauthorizedException;
 import org.earlspilner.users.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -107,5 +110,16 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new EntityNotFoundException("Users not found");
         }
+    }
+
+    @Override
+    public User getAuthenticatedUser(Authentication authentication) {
+        if (authentication == null || !(authentication.getPrincipal() instanceof UserDetails)) {
+            throw new UnauthorizedException("User is not authenticated.");
+        }
+
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        return userRepository.findByUsername(userDetails.getUsername())
+                .orElseThrow(() -> new EntityNotFoundException("User not found with username: " + userDetails.getUsername()));
     }
 }

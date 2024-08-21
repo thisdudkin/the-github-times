@@ -5,6 +5,7 @@ import org.earlspilner.users.dto.AuthRequest;
 import org.earlspilner.users.dto.RegisterRequest;
 import org.earlspilner.users.dto.Tokens;
 import org.earlspilner.users.model.User;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
@@ -20,4 +21,5 @@ public interface UserService {
     Tokens refresh(String username);
 
     List<User> getUsers();
+    User getAuthenticatedUser(Authentication authentication);
 }
