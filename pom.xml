@@ -17,6 +17,7 @@
         <module>the-github-times-discovery-server</module>
         <module>the-github-times-config-server</module>
         <module>the-github-times-users-service</module>
+        <module>the-github-times-article-service</module>
     </modules>
     <packaging>pom</packaging>
 
