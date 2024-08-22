@@ -1,5 +1,6 @@
 package org.earlspilner.users.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,16 +35,21 @@ public class User {
 
     @Getter @Setter
     @ElementCollection(fetch = FetchType.EAGER)
-    List<UserRole> userRoles;
+    private List<UserRole> userRoles;
+
+    @Getter @Setter
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Profile profile;
 
     public User() { }
 
-    public User(Integer id, String username, String email, String password, List<UserRole> userRoles) {
+    public User(Integer id, String username, String email, String password, List<UserRole> userRoles, Profile profile) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.userRoles = userRoles;
+        this.profile = profile;
     }
 
     @Override
@@ -53,6 +59,7 @@ public class User {
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", userRoles=" + userRoles +
+                ", profile=" + (profile != null ? profile.getId() : "null") +
                 '}';
     }
 

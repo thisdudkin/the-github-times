@@ -1,4 +1,4 @@
-package org.earlspilner.users.dto;
+package org.earlspilner.users.rest.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProfileDto {
+public class ProfileRequest {
     private String name;
     private String bio;
     private String location;

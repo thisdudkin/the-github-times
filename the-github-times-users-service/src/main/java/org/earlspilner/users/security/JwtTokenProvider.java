@@ -4,7 +4,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
-import org.earlspilner.users.dto.Tokens;
+import org.earlspilner.users.rest.dto.response.Tokens;
 import org.earlspilner.users.model.UserRole;
 import org.earlspilner.users.rest.advice.custom.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;

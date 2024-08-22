@@ -1,9 +1,9 @@
 package org.earlspilner.users.rest.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.earlspilner.users.dto.AuthRequest;
-import org.earlspilner.users.dto.RegisterRequest;
-import org.earlspilner.users.dto.Tokens;
+import org.earlspilner.users.rest.dto.request.AuthRequest;
+import org.earlspilner.users.rest.dto.request.RegisterRequest;
+import org.earlspilner.users.rest.dto.response.Tokens;
 import org.earlspilner.users.model.User;
 import org.earlspilner.users.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

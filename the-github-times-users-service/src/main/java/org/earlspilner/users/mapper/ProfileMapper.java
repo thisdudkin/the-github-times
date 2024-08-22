@@ -1,7 +1,8 @@
 package org.earlspilner.users.mapper;
 
-import org.earlspilner.users.dto.ProfileDto;
+import org.earlspilner.users.rest.dto.request.ProfileRequest;
 import org.earlspilner.users.model.Profile;
+import org.earlspilner.users.rest.dto.response.ProfileResponse;
 import org.mapstruct.Mapper;
 
 /**
@@ -9,7 +10,6 @@ import org.mapstruct.Mapper;
  */
 @Mapper(componentModel = "spring")
 public interface ProfileMapper {
-//    @Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
-    Profile toEntity(ProfileDto profileDto);
-    ProfileDto toDto(Profile profile);
+    Profile toEntity(ProfileRequest profileRequest);
+    ProfileResponse toResponse(Profile profile);
 }

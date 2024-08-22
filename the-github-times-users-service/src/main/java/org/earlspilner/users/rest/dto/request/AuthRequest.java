@@ -1,4 +1,4 @@
-package org.earlspilner.users.dto;
+package org.earlspilner.users.rest.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

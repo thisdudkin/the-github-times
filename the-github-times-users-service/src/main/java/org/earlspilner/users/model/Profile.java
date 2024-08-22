@@ -1,6 +1,7 @@
 package org.earlspilner.users.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,8 +40,7 @@ public class Profile {
     private String location;
 
     @Getter @Setter
-    @Column(name = "birthdate", nullable = false)
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @Column(name = "birthdate", nullable = false, columnDefinition = "date")
     private LocalDate birthDate;
 
     @Getter @Setter

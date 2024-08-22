@@ -2,11 +2,12 @@ package org.earlspilner.users.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.earlspilner.users.config.FieldUpdater;
-import org.earlspilner.users.dto.ProfileDto;
+import org.earlspilner.users.rest.dto.request.ProfileRequest;
 import org.earlspilner.users.mapper.ProfileMapper;
 import org.earlspilner.users.model.Profile;
 import org.earlspilner.users.model.User;
 import org.earlspilner.users.repository.ProfileRepository;
+import org.earlspilner.users.rest.dto.response.ProfileResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -55,7 +56,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public Profile createProfile(ProfileDto dto) {
+    public Profile createProfile(ProfileRequest dto) {
         User authorizedUser = userService.getAuthenticatedUser(SecurityContextHolder.getContext().getAuthentication());
 
         Profile profile = profileMapper.toEntity(dto);
@@ -70,7 +71,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public Profile updateProfile(int id, ProfileDto dto) {
+    public Profile updateProfile(int id, ProfileRequest dto) {
         Profile profile = profileRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Profile not found for ID: " + id));
         fieldUpdater.update(profile, dto);
@@ -79,6 +80,9 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public void deleteProfileById(int id) {
+        if (!profileRepository.existsById(id)) {
+            throw new EntityNotFoundException("Profile not found for ID: " + id);
+        }
         profileRepository.deleteById(id);
     }
 
