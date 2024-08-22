@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.Instant;
 import java.time.LocalDate;
 
 /**
@@ -47,10 +48,19 @@ public class Profile {
     @Column(name = "website_url")
     private String website;
 
+    @Getter @Setter
+    @Column(name = "created_utc", nullable = false, updatable = false)
+    private Instant createdUtc;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdUtc = Instant.now();
+    }
+
     public Profile() {}
 
     public Profile(Integer id, User user, String name, String bio,
-                   String location, LocalDate birthDate, String website) {
+                    String location, LocalDate birthDate, String website, Instant createdUtc) {
         this.id = id;
         this.user = user;
         this.name = name;
@@ -58,6 +68,7 @@ public class Profile {
         this.location = location;
         this.birthDate = birthDate;
         this.website = website;
+        this.createdUtc = createdUtc;
     }
 
     @Override
