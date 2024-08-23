@@ -11,48 +11,40 @@ import java.time.LocalDate;
 /**
  * @author Alexander Dudkin
  */
-@Entity
 @Builder
+@Entity @Getter
 @Table(name = "profiles")
 public class Profile {
 
     @Id
-    @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @OneToOne
-    @Getter
     @Setter
     @JoinColumn(name = "user_id", nullable = false, updatable = false)
     private User user;
 
-    @Getter
     @Setter
     @Column(name = "full_name", nullable = false)
     private String name;
 
-    @Getter
     @Setter
     @Column(name = "bio", length = 8192)
     private String bio;
 
-    @Getter
     @Setter
     @Column(name = "location", nullable = false)
     private String location;
 
-    @Getter
     @Setter
     @Column(name = "birth_date", nullable = false, columnDefinition = "date")
     private LocalDate birthDate;
 
-    @Getter
     @Setter
     @Column(name = "website_url")
     private String website;
 
-    @Getter
     @Setter
     @Column(name = "created_utc", nullable = false, updatable = false)
     private Instant createdUtc;

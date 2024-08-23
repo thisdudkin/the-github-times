@@ -11,29 +11,28 @@ import java.util.List;
 /**
  * @author Alexander Dudkin
  */
-@Entity
 @Builder
+@Entity @Getter
 @Table(name = "users")
 public class User {
 
     @Id
-    @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Getter @Setter
+    @Setter
     @Column(unique = true, nullable = false)
     private String username;
 
-    @Getter @Setter
+    @Setter
     @Column(unique = true, nullable = false)
     private String email;
 
-    @Getter @Setter
+    @Setter
     @Column(nullable = false)
     private String password;
 
-    @Getter @Setter
+    @Setter
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
             name = "user_roles",
@@ -42,7 +41,7 @@ public class User {
     @Column(name = "user_role")
     private List<UserRole> userRoles;
 
-    @Getter @Setter
+    @Setter
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Profile profile;
 
