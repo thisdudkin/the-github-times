@@ -1,7 +1,5 @@
 package org.earlspilner.users.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,31 +22,38 @@ public class Profile {
     private Integer id;
 
     @OneToOne
-    @Getter @Setter
+    @Getter
+    @Setter
     @JoinColumn(name = "user_id", nullable = false, updatable = false)
     private User user;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     @Column(name = "full_name", nullable = false)
     private String name;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     @Column(name = "bio", length = 8192)
     private String bio;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     @Column(name = "location", nullable = false)
     private String location;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     @Column(name = "birth_date", nullable = false, columnDefinition = "date")
     private LocalDate birthDate;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     @Column(name = "website_url")
     private String website;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     @Column(name = "created_utc", nullable = false, updatable = false)
     private Instant createdUtc;
 
@@ -57,10 +62,11 @@ public class Profile {
         this.createdUtc = Instant.now();
     }
 
-    public Profile() {}
+    public Profile() {
+    }
 
     public Profile(Integer id, User user, String name, String bio,
-                    String location, LocalDate birthDate, String website, Instant createdUtc) {
+                   String location, LocalDate birthDate, String website, Instant createdUtc) {
         this.id = id;
         this.user = user;
         this.name = name;
