@@ -41,7 +41,7 @@ public class Profile {
     private String location;
 
     @Getter @Setter
-    @Column(name = "birthdate", nullable = false, columnDefinition = "date")
+    @Column(name = "birth_date", nullable = false, columnDefinition = "date")
     private LocalDate birthDate;
 
     @Getter @Setter
