@@ -59,13 +59,15 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                ", userRoles=" + userRoles +
-                ", profile=" + (profile != null ? profile.getId() : "null") +
-                '}';
+        final StringBuffer sb = new StringBuffer("User{");
+        sb.append("id=").append(id);
+        sb.append(", username='").append(username).append('\'');
+        sb.append(", email='").append(email).append('\'');
+        sb.append(", password='").append(password).append('\'');
+        sb.append(", userRoles=").append(userRoles);
+        sb.append(", profile=").append(profile);
+        sb.append('}');
+        return sb.toString();
     }
 
 }
