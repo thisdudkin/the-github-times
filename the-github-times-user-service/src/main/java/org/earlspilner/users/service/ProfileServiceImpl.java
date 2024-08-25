@@ -2,6 +2,8 @@ package org.earlspilner.users.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.earlspilner.users.config.FieldUpdater;
+import org.earlspilner.users.rest.advice.custom.ProfileNotFoundException;
+import org.earlspilner.users.rest.advice.custom.ProfileServiceException;
 import org.earlspilner.users.rest.dto.request.ProfileRequest;
 import org.earlspilner.users.mapper.ProfileMapper;
 import org.earlspilner.users.model.Profile;
@@ -16,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * @author Alexander Dudkin
@@ -48,42 +51,64 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public List<Profile> getProfiles() {
-        if (profileRepository.count() != 0) {
-            return profileRepository.findAll();
-        } else {
-            throw new EntityNotFoundException("There are zero profiles in the database");
+        long profileCount = profileRepository.count();
+        if (profileCount == 0) {
+            throw new ProfileNotFoundException("No profiles found");
         }
+        return profileRepository.findAll();
     }
 
     @Override
     public Profile createProfile(ProfileRequest dto) {
-        User authorizedUser = userService.getAuthenticatedUser(SecurityContextHolder.getContext().getAuthentication());
-
-        Profile profile = profileMapper.toEntity(dto);
-        profile.setUser(authorizedUser);
-        return profileRepository.save(profile);
+        try {
+            User authorizedUser = getAuthenticatedUser();
+            Profile profile = profileMapper.toEntity(dto);
+            profile.setUser(authorizedUser);
+            return profileRepository.save(profile);
+        } catch (RuntimeException ex) {
+            throw new ProfileServiceException("Failed to create profile", ex);
+        }
     }
 
     @Override
     public Profile getProfileById(int id) {
-        return profileRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Profile not found for ID: " + id));
+        return findProfileByIdOrThrow(id);
     }
 
     @Override
     public Profile updateProfile(int id, ProfileRequest dto) {
-        Profile profile = profileRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Profile not found for ID: " + id));
-        fieldUpdater.update(profile, dto);
-        return profile;
+        try {
+            Profile profile = findProfileByIdOrThrow(id);
+            fieldUpdater.update(profile, dto);
+            return profileRepository.save(profile);
+        } catch (RuntimeException ex) {
+            throw new ProfileServiceException("Failed to update profile", ex);
+        }
     }
 
     @Override
     public void deleteProfileById(int id) {
         if (!profileRepository.existsById(id)) {
-            throw new EntityNotFoundException("Profile not found for ID: " + id);
+            throw new ProfileNotFoundException("Profile not found for ID: " + id);
         }
-        profileRepository.deleteById(id);
+        try {
+            profileRepository.deleteById(id);
+        } catch (RuntimeException ex) {
+            throw new ProfileServiceException("Failed to delete profile", ex);
+        }
+    }
+
+    private User getAuthenticatedUser() {
+        return userService.getAuthenticatedUser(SecurityContextHolder.getContext().getAuthentication());
+    }
+
+    private Profile findProfileByIdOrThrow(int id) {
+        return profileRepository.findById(id)
+                .orElseThrow(entityNotFoundSupplier(id));
+    }
+
+    private Supplier<? extends RuntimeException> entityNotFoundSupplier(int id) {
+        return () -> new EntityNotFoundException("Profile not found for ID: " + id);
     }
 
 }
