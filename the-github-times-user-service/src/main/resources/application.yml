@@ -14,8 +14,3 @@ eureka:
   client:
     fetch-registry: true
     register-with-eureka: true
-
-security:
-  jwt:
-    token:
-      secret-key: null
