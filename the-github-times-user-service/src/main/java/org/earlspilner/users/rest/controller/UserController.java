@@ -1,9 +1,7 @@
 package org.earlspilner.users.rest.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.earlspilner.users.rest.dto.request.AuthRequest;
 import org.earlspilner.users.rest.dto.request.RegisterRequest;
-import org.earlspilner.users.rest.dto.response.Tokens;
 import org.earlspilner.users.model.User;
 import org.earlspilner.users.rest.dto.response.UserResponse;
 import org.earlspilner.users.service.UserService;
@@ -27,13 +25,8 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<Tokens> login(@RequestBody AuthRequest request) {
-        return ResponseEntity.ok(userService.login(request));
-    }
-
     @PostMapping("/register")
-    public ResponseEntity<Tokens> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<UserResponse> register(@RequestBody RegisterRequest request) {
         return ResponseEntity.ok(userService.register(request));
     }
 
@@ -50,7 +43,7 @@ public class UserController {
 
     @GetMapping("/me")
     public ResponseEntity<User> whoami(HttpServletRequest request) {
-        return ResponseEntity.ok(userService.whoami(request));
+        return null;
     }
 
     @GetMapping
@@ -58,9 +51,5 @@ public class UserController {
         return ResponseEntity.ok(userService.getUsers());
     }
 
-    @PostMapping("/refresh")
-    public ResponseEntity<Tokens> refresh(@RequestParam String refreshToken) {
-        return ResponseEntity.ok(userService.refresh(refreshToken));
-    }
 
 }

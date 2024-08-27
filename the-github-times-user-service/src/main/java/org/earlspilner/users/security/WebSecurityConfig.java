@@ -24,23 +24,18 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableMethodSecurity
 public class WebSecurityConfig {
 
-    private final JwtTokenProvider jwtTokenProvider;
-
-    @Autowired
-    public WebSecurityConfig(JwtTokenProvider jwtTokenProvider) {
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/users/login", "/users/register", "/users/refresh", "/users/{username}").permitAll()
-                        .anyRequest().authenticated())
-                .exceptionHandling(ex -> ex.accessDeniedPage("/login"))
-                .with(new JwtTokenFilterConfigurer(jwtTokenProvider), Customizer.withDefaults());
+                        .requestMatchers(
+                                "/users/login",
+                                "/users/register",
+                                "/users/refresh",
+                                "/users/{username}").permitAll()
+                        .anyRequest().authenticated());
         return http.build();
     }
 

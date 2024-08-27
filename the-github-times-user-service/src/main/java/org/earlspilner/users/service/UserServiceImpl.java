@@ -5,13 +5,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.earlspilner.users.mapper.UserMapper;
 import org.earlspilner.users.rest.dto.request.AuthRequest;
 import org.earlspilner.users.rest.dto.request.RegisterRequest;
-import org.earlspilner.users.rest.dto.response.Tokens;
 import org.earlspilner.users.model.User;
 import org.earlspilner.users.repository.UserRepository;
 import org.earlspilner.users.rest.advice.custom.CustomException;
 import org.earlspilner.users.rest.advice.custom.UnauthorizedException;
 import org.earlspilner.users.rest.dto.response.UserResponse;
-import org.earlspilner.users.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -35,34 +33,17 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtTokenProvider jwtTokenProvider;
-    private final AuthenticationManager authenticationManager;
     private final UserMapper userMapper;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder,
-                           JwtTokenProvider jwtTokenProvider, AuthenticationManager authenticationManager, UserMapper userMapper) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.jwtTokenProvider = jwtTokenProvider;
-        this.authenticationManager = authenticationManager;
         this.userMapper = userMapper;
     }
 
     @Override
-    public Tokens login(AuthRequest request) {
-        try {
-            User user = userRepository.findByUsername(request.getUsername())
-                    .orElseThrow(() -> new EntityNotFoundException("User not found with username: " + request.getUsername()));
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-            return jwtTokenProvider.createTokens(request.getUsername(), user.getUserRoles());
-        } catch (AuthenticationException e) {
-            throw new CustomException("Invalid username/password supplied", UNPROCESSABLE_ENTITY);
-        }
-    }
-
-    @Override
-    public Tokens register(RegisterRequest request) {
+    public UserResponse register(RegisterRequest request) {
         if (!userRepository.existsByUsername(request.getUsername())) {
             User user = User.builder()
                     .username(request.getUsername())
@@ -70,7 +51,7 @@ public class UserServiceImpl implements UserService {
                     .password(passwordEncoder.encode(request.getPassword()))
                     .userRoles(List.of(ROLE_USER)).build();
             userRepository.save(user);
-            return jwtTokenProvider.createTokens(user.getUsername(), user.getUserRoles());
+            return userMapper.toResponse(user);
         } else {
             throw new CustomException("Username is already in use", UNPROCESSABLE_ENTITY);
         }
@@ -91,20 +72,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User whoami(HttpServletRequest request) {
-        return userRepository.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(request)))
-                .orElseThrow(() -> new EntityNotFoundException("Entity not found"));
-    }
-
-    @Override
-    public Tokens refresh(String refreshToken) {
-        String username = jwtTokenProvider.getUsername(refreshToken);
-        Optional<User> user = userRepository.findByUsername(username);
-        if (user.isPresent()) {
-            return jwtTokenProvider.createTokens(user.get().getUsername(), user.get().getUserRoles());
-        } else {
-            throw new EntityNotFoundException("User not found with username: " + username);
-        }
+    public UserResponse whoami(HttpServletRequest request) {
+        return null;
     }
 
     @Override
