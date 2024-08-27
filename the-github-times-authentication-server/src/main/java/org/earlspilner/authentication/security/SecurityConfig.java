@@ -1,6 +1,5 @@
-package org.earlspilner.users.security;
+package org.earlspilner.authentication.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,14 +21,7 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-public class WebSecurityConfig {
-
-    private final JwtTokenProvider jwtTokenProvider;
-
-    @Autowired
-    public WebSecurityConfig(JwtTokenProvider jwtTokenProvider) {
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
+public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -37,10 +29,7 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/users/login", "/users/register", "/users/refresh", "/users/{username}").permitAll()
-                        .anyRequest().authenticated())
-                .exceptionHandling(ex -> ex.accessDeniedPage("/login"))
-                .with(new JwtTokenFilterConfigurer(jwtTokenProvider), Customizer.withDefaults());
+                        .anyRequest().permitAll());
         return http.build();
     }
 

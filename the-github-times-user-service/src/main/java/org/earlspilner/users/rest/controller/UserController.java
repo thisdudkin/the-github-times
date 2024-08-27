@@ -5,6 +5,7 @@ import org.earlspilner.users.rest.dto.request.AuthRequest;
 import org.earlspilner.users.rest.dto.request.RegisterRequest;
 import org.earlspilner.users.rest.dto.response.Tokens;
 import org.earlspilner.users.model.User;
+import org.earlspilner.users.rest.dto.response.UserResponse;
 import org.earlspilner.users.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +44,7 @@ public class UserController {
     }
 
     @GetMapping("/{username}")
-    public ResponseEntity<User> search(@PathVariable String username) {
+    public ResponseEntity<UserResponse> search(@PathVariable String username) {
         return ResponseEntity.ok(userService.search(username));
     }
 

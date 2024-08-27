@@ -18,6 +18,8 @@
         <module>the-github-times-config-server</module>
         <module>the-github-times-user-service</module>
         <module>the-github-times-article-service</module>
+        <module>the-github-times-authentication-server</module>
+        <module>the-github-times-api-gateway</module>
     </modules>
     <packaging>pom</packaging>
 

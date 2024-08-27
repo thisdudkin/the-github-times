@@ -2,6 +2,7 @@ package org.earlspilner.users.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
+import org.earlspilner.users.mapper.UserMapper;
 import org.earlspilner.users.rest.dto.request.AuthRequest;
 import org.earlspilner.users.rest.dto.request.RegisterRequest;
 import org.earlspilner.users.rest.dto.response.Tokens;
@@ -9,6 +10,7 @@ import org.earlspilner.users.model.User;
 import org.earlspilner.users.repository.UserRepository;
 import org.earlspilner.users.rest.advice.custom.CustomException;
 import org.earlspilner.users.rest.advice.custom.UnauthorizedException;
+import org.earlspilner.users.rest.dto.response.UserResponse;
 import org.earlspilner.users.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,14 +37,16 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManager authenticationManager;
+    private final UserMapper userMapper;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder,
-                           JwtTokenProvider jwtTokenProvider, AuthenticationManager authenticationManager) {
+                           JwtTokenProvider jwtTokenProvider, AuthenticationManager authenticationManager, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenProvider = jwtTokenProvider;
         this.authenticationManager = authenticationManager;
+        this.userMapper = userMapper;
     }
 
     @Override
@@ -78,12 +82,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User search(String username) {
+    public UserResponse search(String username) {
         Optional<User> user = userRepository.findByUsername(username);
         if (user.isEmpty()) {
             throw new EntityNotFoundException("User not found with username: " + username);
         }
-        return user.get();
+        return userMapper.toResponse(user.get());
     }
 
     @Override

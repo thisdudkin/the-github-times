@@ -5,6 +5,7 @@ import org.earlspilner.users.rest.dto.request.AuthRequest;
 import org.earlspilner.users.rest.dto.request.RegisterRequest;
 import org.earlspilner.users.rest.dto.response.Tokens;
 import org.earlspilner.users.model.User;
+import org.earlspilner.users.rest.dto.response.UserResponse;
 import org.springframework.security.core.Authentication;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public interface UserService {
     Tokens login(AuthRequest request);
     Tokens register(RegisterRequest request);
     void delete(String username);
-    User search(String username);
+    UserResponse search(String username);
     User whoami(HttpServletRequest request);
     Tokens refresh(String username);
 
