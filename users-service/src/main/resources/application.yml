@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: postgresql
   application:
     name: users-service
   config:
@@ -8,3 +10,8 @@ eureka:
   client:
     fetch-registry: false
     register-with-eureka: false
+
+server:
+  port: 9090
+  servlet:
+    context-path: /api/
