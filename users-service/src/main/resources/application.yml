@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: users-service
+  config:
+    import: optional:configserver:${CONFIG_SERVER_URL:http://localhost:8888/}
+
+eureka:
+  client:
+    fetch-registry: false
+    register-with-eureka: false
