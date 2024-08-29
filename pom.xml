@@ -17,6 +17,7 @@
         <module>users-service</module>
         <module>authentication-server</module>
         <module>discovery-server</module>
+        <module>profiles-service</module>
     </modules>
     <packaging>pom</packaging>
 

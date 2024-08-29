@@ -1,0 +1,12 @@
+# Init database
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/profiles_db
+    username: postgres
+    password: root
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database: POSTGRESQL
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: create-drop

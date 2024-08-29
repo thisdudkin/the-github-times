@@ -55,9 +55,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto updateUser(UserDto userDto) {
-        User existingUser = userRepository.findByUsername(userDto.username())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + userDto.username()));
+    public UserDto updateUser(String username, UserDto userDto) {
+        User existingUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
 
         fieldUpdater.update(existingUser, userDto);
         userRepository.save(existingUser);

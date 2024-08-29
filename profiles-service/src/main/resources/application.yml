@@ -1,6 +1,8 @@
 spring:
+  profiles:
+    active: postgresql
   application:
-    name: authentication-server
+    name: profiles-service
   config:
     import: optional:configserver:${CONFIG_SERVER_URL:http://localhost:8888/}
 
@@ -10,11 +12,11 @@ eureka:
     register-with-eureka: true
 
 server:
-  port: 6969
+  port: 9091
   servlet:
     context-path: /api/
 
 logging:
   level:
     org.springframework.web: debug
-    dev.earlspilner.auth: debug
+    dev.earlspilner.users: debug
