@@ -1,5 +1,7 @@
 package dev.earlspilner.profiles.service;
 
+import dev.earlspilner.profiles.advice.ProfileNotFoundException;
+import dev.earlspilner.profiles.config.FieldUpdater;
 import dev.earlspilner.profiles.dto.ProfileDto;
 import dev.earlspilner.profiles.dto.UserDto;
 import dev.earlspilner.profiles.entity.Profile;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 public class ProfileServiceImpl implements ProfileService {
 
     private final JwtUtil jwtUtil;
+    private final FieldUpdater fieldUpdater;
     private final ProfileMapper profileMapper;
     private final UserServiceClient userServiceClient;
     private final ProfileRepository profileRepository;
@@ -36,22 +39,32 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public ProfileDto getProfileById(Integer id) {
-        return null;
+        Profile profile = profileRepository.findById(id)
+                .orElseThrow(() -> new ProfileNotFoundException("Profile not found with ID:" + id));
+        return profileMapper.toDto(profile);
     }
 
     @Override
     public Page<ProfileDto> getAllProfiles(Pageable pageable) {
-        return null;
+        Page<Profile> profiles = profileRepository.findAll(pageable);
+        return profiles.map(profileMapper::toDto);
     }
 
     @Override
     public ProfileDto updateProfile(Integer id, ProfileDto profileDto) {
-        return null;
+        Profile profile = profileRepository.findById(id)
+                .orElseThrow(() -> new ProfileNotFoundException("Profile not found with ID:" + id));
+        fieldUpdater.update(profile, profileDto);
+        profileRepository.save(profile);
+        return profileMapper.toDto(profile);
     }
 
     @Override
     public void deleteProfile(Integer id) {
+        Profile profile = profileRepository.findById(id)
+                .orElseThrow(() -> new ProfileNotFoundException("Profile not found with ID:" + id));
 
+        profileRepository.deleteById(profile.getId());
     }
 
 }

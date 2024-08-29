@@ -4,6 +4,8 @@ import dev.earlspilner.profiles.dto.ProfileDto;
 import dev.earlspilner.profiles.service.ProfileService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,27 @@ public class ProfileController {
     @PostMapping
     public ResponseEntity<ProfileDto> createProfile(@RequestBody ProfileDto profileDto, HttpServletRequest request) {
         return new ResponseEntity<>(profileService.createProfile(request, profileDto), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProfileDto> getProfileById(@PathVariable int id) {
+        return new ResponseEntity<>(profileService.getProfileById(id), HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<ProfileDto>> getProfiles(Pageable pageable) {
+        return new ResponseEntity<>(profileService.getAllProfiles(pageable), HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProfileDto> updateProfile(@PathVariable int id, @RequestBody ProfileDto profileDto) {
+        return new ResponseEntity<>(profileService.updateProfile(id, profileDto), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProfile(@PathVariable int id) {
+        profileService.deleteProfile(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }
