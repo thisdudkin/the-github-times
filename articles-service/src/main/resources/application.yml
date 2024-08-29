@@ -1,0 +1,22 @@
+spring:
+  profiles:
+    active: postgresql
+  application:
+    name: articles-service
+  config:
+    import: optional:configserver:${CONFIG_SERVER_URL:http://localhost:8888/}
+
+eureka:
+  client:
+    fetch-registry: false
+    register-with-eureka: false
+
+server:
+  port: 9093
+  servlet:
+    context-path: /api/
+
+logging:
+  level:
+    org.springframework.web: debug
+    dev.earlspilner.users: debug
