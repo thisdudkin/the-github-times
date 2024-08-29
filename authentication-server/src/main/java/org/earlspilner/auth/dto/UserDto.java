@@ -1,10 +1,10 @@
-package dev.earlspilner.users.dto;
+package org.earlspilner.auth.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import dev.earlspilner.users.entity.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import org.earlspilner.auth.security.UserRole;
 
 import java.util.List;
 
@@ -22,6 +22,7 @@ public record UserDto(
         @NotNull
         String username,
         @Email
+        @JsonProperty(access = READ_ONLY)
         @NotNull
         String email,
         @NotNull
@@ -30,6 +31,6 @@ public record UserDto(
         String createdUtc,
         @JsonProperty(access = READ_ONLY)
         String updatedUtc,
-        @JsonProperty(access = READ_ONLY)
+        @NotNull
         List<UserRole> userRoles
 ) { }

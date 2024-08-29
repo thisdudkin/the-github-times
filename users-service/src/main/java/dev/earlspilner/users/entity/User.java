@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.util.List;
+
+import static dev.earlspilner.users.entity.UserRole.ROLE_USER;
 
 /**
  * @author Alexander Dudkin
@@ -37,9 +40,17 @@ public class User {
     @Column(name = "updated_utc")
     private Instant updatedUtc;
 
+    @Setter
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"))
+    private List<UserRole> userRoles;
+
     @PrePersist
     protected void onCreate() {
         this.createdUtc = Instant.now();
+        this.userRoles = List.of(ROLE_USER);
     }
 
     @PreUpdate
@@ -56,7 +67,7 @@ public class User {
                 ", password='" + password + '\'' +
                 ", createdUtc=" + createdUtc +
                 ", updatedUtc=" + updatedUtc +
+                ", userRoles=" + userRoles +
                 '}';
     }
-
 }
