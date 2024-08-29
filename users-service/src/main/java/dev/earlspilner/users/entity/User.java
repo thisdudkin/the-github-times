@@ -3,6 +3,7 @@ package dev.earlspilner.users.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 import java.time.Instant;
 import java.util.List;
@@ -60,14 +61,15 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", createdUtc=" + createdUtc +
-                ", updatedUtc=" + updatedUtc +
-                ", userRoles=" + userRoles +
-                '}';
+        return new ToStringBuilder(this)
+                .append("id", id)
+                .append("username", username)
+                .append("email", email)
+                .append("password", password)
+                .append("createdUtc", createdUtc)
+                .append("updatedUtc", updatedUtc)
+                .append("userRoles", userRoles)
+                .toString();
     }
+
 }
