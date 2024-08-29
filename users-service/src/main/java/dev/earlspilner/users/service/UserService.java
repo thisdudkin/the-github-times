@@ -11,6 +11,6 @@ public interface UserService {
     UserDto registerUser(UserDto userDto);
     UserDto getUserByUsername(String username);
     Page<UserDto> getAllUsers(Pageable pageable);
-    UserDto updateUser(UserDto userDto);
+    UserDto updateUser(String username, UserDto userDto);
     void deleteUser(String username);
 }
