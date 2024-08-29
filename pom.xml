@@ -14,9 +14,9 @@
     <version>1.1.0</version>
     <name>${project.artifactId}</name>
     <modules>
+        <module>discovery-server</module>
         <module>users-service</module>
         <module>authentication-server</module>
-        <module>discovery-server</module>
         <module>profiles-service</module>
     </modules>
     <packaging>pom</packaging>
