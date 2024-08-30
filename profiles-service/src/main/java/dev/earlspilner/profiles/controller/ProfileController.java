@@ -21,18 +21,18 @@ public class ProfileController {
     private final ProfileService profileService;
 
     @PostMapping
-    public ResponseEntity<ProfileDto> createProfile(@RequestBody ProfileDto profileDto, HttpServletRequest request) {
-        return new ResponseEntity<>(profileService.createProfile(request, profileDto), HttpStatus.CREATED);
+    public ResponseEntity<ProfileDto> addProfile(@RequestBody ProfileDto profileDto, HttpServletRequest request) {
+        return new ResponseEntity<>(profileService.addProfile(request, profileDto), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProfileDto> getProfileById(@PathVariable int id) {
-        return new ResponseEntity<>(profileService.getProfileById(id), HttpStatus.OK);
+    public ResponseEntity<ProfileDto> getProfile(@PathVariable int id) {
+        return new ResponseEntity<>(profileService.getProfile(id), HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<Page<ProfileDto>> getProfiles(Pageable pageable) {
-        return new ResponseEntity<>(profileService.getAllProfiles(pageable), HttpStatus.OK);
+        return new ResponseEntity<>(profileService.getProfiles(pageable), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
