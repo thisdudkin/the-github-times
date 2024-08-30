@@ -28,7 +28,7 @@ public class ProfileServiceImpl implements ProfileService {
     private final ProfileRepository profileRepository;
 
     @Override
-    public ProfileDto createProfile(HttpServletRequest request, ProfileDto profileDto) {
+    public ProfileDto addProfile(HttpServletRequest request, ProfileDto profileDto) {
         String username = jwtUtil.getUsername(jwtUtil.resolveToken(request));
         UserDto user = userServiceClient.getUserByUsername(username);
         Profile profile = profileMapper.toEntity(profileDto);
@@ -38,14 +38,14 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public ProfileDto getProfileById(Integer id) {
+    public ProfileDto getProfile(Integer id) {
         Profile profile = profileRepository.findById(id)
                 .orElseThrow(() -> new ProfileNotFoundException("Profile not found with ID:" + id));
         return profileMapper.toDto(profile);
     }
 
     @Override
-    public Page<ProfileDto> getAllProfiles(Pageable pageable) {
+    public Page<ProfileDto> getProfiles(Pageable pageable) {
         Page<Profile> profiles = profileRepository.findAll(pageable);
         return profiles.map(profileMapper::toDto);
     }
