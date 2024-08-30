@@ -25,13 +25,13 @@ public class UserController {
     }
 
     @GetMapping("/{username}")
-    public ResponseEntity<UserDto> getUserByUsername(@PathVariable String username) {
-        return new ResponseEntity<>(userService.getUserByUsername(username), HttpStatus.OK);
+    public ResponseEntity<UserDto> getUser(@PathVariable String username) {
+        return new ResponseEntity<>(userService.getUser(username), HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<Page<UserDto>> getAllUsers(Pageable pageable) {
-        return new ResponseEntity<>(userService.getAllUsers(pageable), HttpStatus.OK);
+    public ResponseEntity<Page<UserDto>> getUsers(Pageable pageable) {
+        return new ResponseEntity<>(userService.getUsers(pageable), HttpStatus.OK);
     }
 
     @PutMapping("/{username}")
