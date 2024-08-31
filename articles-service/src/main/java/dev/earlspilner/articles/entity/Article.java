@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import java.time.Instant;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -43,19 +44,21 @@ public class Article {
     @Column(name = "updated_utc")
     private Instant updatedUtc;
 
+    @Setter
     @ManyToMany
     @JoinTable(
             name = "article_categories",
             joinColumns = @JoinColumn(name = "article_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private Set<Category> categories;
+    private Set<Category> categories = new LinkedHashSet<>();
 
+    @Setter
     @ManyToMany
     @JoinTable(
             name = "article_tags",
             joinColumns = @JoinColumn(name = "article_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
-    private Set<Tag> tags;
+    private Set<Tag> tags = new LinkedHashSet<>();
 
     @PrePersist
     protected void onCreate() {
