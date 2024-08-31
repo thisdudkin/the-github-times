@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import java.time.Instant;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -32,7 +33,7 @@ public class Tag {
     private Instant updatedUtc;
 
     @ManyToMany(mappedBy = "tags")
-    private Set<Article> articles;
+    private Set<Article> articles = new LinkedHashSet<>();
 
     @PrePersist
     protected void onCreate() {

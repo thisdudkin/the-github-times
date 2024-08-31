@@ -31,7 +31,11 @@ public class ArticleServiceImpl implements ArticleService {
     public ArticleDto addArticle(HttpServletRequest request, ArticleDto articleDto) {
         UserDto user = userServiceClient.getUserByUsername(jwtUtil.getUsername(jwtUtil.resolveToken(request)));
         Article article = articleMapper.toEntity(articleDto);
+
         article.setAuthorId(user.id());
+        article.getCategories().forEach(category -> article.getCategories().add(category));
+        article.getTags().forEach(tag -> article.getTags().add(tag));
+
         articleRepository.save(article);
         return articleMapper.toDto(article);
     }

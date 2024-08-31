@@ -14,10 +14,8 @@ import static com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY;
  */
 @JsonInclude(NON_NULL)
 public record ArticleDto(
-        @NotNull
         @JsonProperty(access = READ_ONLY)
         Integer id,
-        @NotNull
         @JsonProperty(access = READ_ONLY)
         Integer authorId,
         @NotNull
@@ -30,10 +28,8 @@ public record ArticleDto(
         Set<CategoryDto> categories,
         @NotNull
         Set<TagDto> tags,
-        @NotNull
         @JsonProperty(access = READ_ONLY)
         String createdUtc,
-        @NotNull
         @JsonProperty(access = READ_ONLY)
         String updatedUtc
 ) { }
