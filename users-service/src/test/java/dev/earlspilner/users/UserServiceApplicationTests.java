@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @author Alexander Dudkin
  */
 @SpringBootTest
-public class UserServiceApplicationTests {
+class UserServiceApplicationTests {
 
     @Test
     void contextLoads() {
