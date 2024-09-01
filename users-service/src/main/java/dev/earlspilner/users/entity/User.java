@@ -59,6 +59,19 @@ public class User {
         this.updatedUtc = Instant.now();
     }
 
+    public User() {
+    }
+
+    public User(Integer id, String username, String email, String password, Instant createdUtc, Instant updatedUtc, List<UserRole> userRoles) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.createdUtc = createdUtc;
+        this.updatedUtc = updatedUtc;
+        this.userRoles = userRoles;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
