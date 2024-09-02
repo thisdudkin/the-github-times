@@ -1,5 +1,7 @@
 package dev.earlspilner.users.service;
 
+import dev.earlspilner.users.advice.EmailAlreadyExistsException;
+import dev.earlspilner.users.advice.UsernameAlreadyExistsException;
 import dev.earlspilner.users.config.FieldUpdater;
 import dev.earlspilner.users.dto.UserDto;
 import dev.earlspilner.users.entity.User;
@@ -28,9 +30,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto registerUser(@Valid UserDto userDto) {
         if (userRepository.existsByUsername(userDto.username()))
-            throw new IllegalArgumentException("Username is already in use");
+            throw new UsernameAlreadyExistsException("Username is already in use");
         if (userRepository.existsByEmail(userDto.email()))
-            throw new IllegalArgumentException("Email is already in use");
+            throw new EmailAlreadyExistsException("Email is already in use");
 
         User user = userMapper.toEntity(userDto);
         user.setPassword(passwordEncoder.encode(userDto.password()));
