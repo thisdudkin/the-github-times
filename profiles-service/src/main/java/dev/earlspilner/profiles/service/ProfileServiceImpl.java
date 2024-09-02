@@ -40,7 +40,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public ProfileDto getProfile(Integer id) {
         Profile profile = profileRepository.findById(id)
-                .orElseThrow(() -> new ProfileNotFoundException("Profile not found with ID:" + id));
+                .orElseThrow(() -> new ProfileNotFoundException("Profile not found with ID: " + id));
         return profileMapper.toDto(profile);
     }
 
@@ -53,7 +53,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public ProfileDto updateProfile(Integer id, ProfileDto profileDto) {
         Profile profile = profileRepository.findById(id)
-                .orElseThrow(() -> new ProfileNotFoundException("Profile not found with ID:" + id));
+                .orElseThrow(() -> new ProfileNotFoundException("Profile not found with ID: " + id));
         fieldUpdater.update(profile, profileDto);
         profileRepository.save(profile);
         return profileMapper.toDto(profile);
@@ -62,7 +62,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public void deleteProfile(Integer id) {
         Profile profile = profileRepository.findById(id)
-                .orElseThrow(() -> new ProfileNotFoundException("Profile not found with ID:" + id));
+                .orElseThrow(() -> new ProfileNotFoundException("Profile not found with ID: " + id));
 
         profileRepository.deleteById(profile.getId());
     }
