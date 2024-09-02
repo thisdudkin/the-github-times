@@ -19,7 +19,7 @@ public class CustomUserDetails implements UserDetailsService {
     private final UserServiceClient feignClient;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         UserDto userResponse = feignClient.getUserByUsername(username);
         if (userResponse == null)
             throw new UsernameNotFoundException("User not found with username: " + username);

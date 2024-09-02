@@ -1,7 +1,7 @@
 package org.earlspilner.auth.service;
 
 import lombok.RequiredArgsConstructor;
-import org.earlspilner.auth.advice.IllegalUserCredentialsException;
+import org.earlspilner.auth.advice.BadUserCredentialsException;
 import org.earlspilner.auth.dto.AuthDto;
 import org.earlspilner.auth.dto.Tokens;
 import org.earlspilner.auth.dto.UserDto;
@@ -32,7 +32,7 @@ public class AuthenticationServerImpl implements AuthenticationServer {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authDto.username(), authDto.password()));
             return jwtCore.createTokens(user.username(), user.userRoles());
         } catch (AuthenticationException ex) {
-            throw new IllegalUserCredentialsException(ex.getMessage());
+            throw new BadUserCredentialsException(ex.getMessage());
         }
     }
 
