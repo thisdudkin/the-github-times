@@ -19,6 +19,7 @@
         <module>authentication-server</module>
         <module>profiles-service</module>
         <module>articles-service</module>
+        <module>api-gateway</module>
     </modules>
     <packaging>pom</packaging>
 
