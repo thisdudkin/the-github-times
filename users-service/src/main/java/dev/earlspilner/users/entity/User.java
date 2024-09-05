@@ -1,11 +1,14 @@
 package dev.earlspilner.users.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
 
 import static dev.earlspilner.users.entity.UserRole.ROLE_USER;
@@ -14,6 +17,8 @@ import static dev.earlspilner.users.entity.UserRole.ROLE_USER;
  * @author Alexander Dudkin
  */
 @Entity @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "users")
 public class User {
 
@@ -46,30 +51,16 @@ public class User {
     @CollectionTable(
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"))
-    private List<UserRole> userRoles;
+    private List<UserRole> userRoles = Collections.singletonList(ROLE_USER);
 
     @PrePersist
     protected void onCreate() {
         this.createdUtc = Instant.now();
-        this.userRoles = List.of(ROLE_USER);
     }
 
     @PreUpdate
     protected void onUpdate() {
         this.updatedUtc = Instant.now();
-    }
-
-    public User() {
-    }
-
-    public User(Integer id, String username, String email, String password, Instant createdUtc, Instant updatedUtc, List<UserRole> userRoles) {
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.createdUtc = createdUtc;
-        this.updatedUtc = updatedUtc;
-        this.userRoles = userRoles;
     }
 
     @Override

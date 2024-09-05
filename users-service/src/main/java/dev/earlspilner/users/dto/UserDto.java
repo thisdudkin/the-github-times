@@ -12,23 +12,26 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY;
 
 /**
+ * Data Transfer Object for User.
+ * Provides information about a user, with fields that may be required or optional.
+ *
+ * @param id         Unique identifier for the user, not null.
+ * @param username   Username of the user, not null.
+ * @param email      Email of the user, must be a valid email and not null.
+ * @param password   Password of the user, not null.
+ * @param createdUtc Timestamp of when the user was created, may be null.
+ * @param updatedUtc Timestamp of the last update to the user, may be null.
+ * @param userRoles  List of roles associated with the user, may be null.
+ *
  * @author Alexander Dudkin
  */
-@JsonInclude(NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public record UserDto(
-        @NotNull
-        @JsonProperty(access = READ_ONLY)
-        Integer id,
-        @NotNull
-        String username,
-        @Email
-        @NotNull
-        String email,
-        @NotNull
-        String password,
-        @JsonProperty(access = READ_ONLY)
+        @NotNull Integer id,
+        @NotNull String username,
+        @Email @NotNull String email,
+        @NotNull String password,
         String createdUtc,
-        @JsonProperty(access = READ_ONLY)
         String updatedUtc,
         List<UserRole> userRoles
 ) { }
