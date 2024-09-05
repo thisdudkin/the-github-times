@@ -2,7 +2,6 @@ package dev.earlspilner.users.service;
 
 import dev.earlspilner.users.advice.EmailAlreadyExistsException;
 import dev.earlspilner.users.advice.UsernameAlreadyExistsException;
-import dev.earlspilner.users.config.FieldUpdater;
 import dev.earlspilner.users.dto.UserDto;
 import dev.earlspilner.users.entity.User;
 import dev.earlspilner.users.mapper.UserMapper;
@@ -23,7 +22,6 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
-    private final FieldUpdater fieldUpdater;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -61,7 +59,11 @@ public class UserServiceImpl implements UserService {
         User existingUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
 
-        fieldUpdater.update(existingUser, userDto);
+        existingUser.setUsername(userDto.username());
+        existingUser.setEmail(userDto.email());
+        existingUser.setPassword(passwordEncoder.encode(userDto.password()));
+        existingUser.setUserRoles(userDto.userRoles());
+
         userRepository.save(existingUser);
 
         return userMapper.toDto(existingUser);

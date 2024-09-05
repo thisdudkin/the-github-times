@@ -30,6 +30,5 @@ public record UserDto(
         String createdUtc,
         @JsonProperty(access = READ_ONLY)
         String updatedUtc,
-        @JsonProperty(access = READ_ONLY)
         List<UserRole> userRoles
 ) { }
