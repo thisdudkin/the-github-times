@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.util.Base64;
 import java.util.Date;
 
 /**
@@ -23,7 +24,8 @@ public class JwtUtil {
 
     @PostConstruct
     protected void init() {
-        this.key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
+        byte[] keyBytes = Base64.getDecoder().decode(jwtSecret.getBytes());
+        this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
     public Claims getAllClaimsFromToken(String token) {
