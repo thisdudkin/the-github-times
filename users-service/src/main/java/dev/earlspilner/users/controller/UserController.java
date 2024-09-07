@@ -1,5 +1,6 @@
 package dev.earlspilner.users.controller;
 
+import dev.earlspilner.users.annotation.CheckUserAccess;
 import dev.earlspilner.users.dto.UserDto;
 import dev.earlspilner.users.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -35,11 +36,13 @@ public class UserController {
         return new ResponseEntity<>(userService.getUsers(pageable), HttpStatus.OK);
     }
 
+    @CheckUserAccess
     @PutMapping("/{username}")
     public ResponseEntity<UserDto> updateUser(@PathVariable String username, @RequestBody UserDto userDto) {
         return new ResponseEntity<>(userService.updateUser(username, userDto), HttpStatus.OK);
     }
 
+    @CheckUserAccess
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{username}")
     public ResponseEntity<Void> deleteUser(@PathVariable String username) {

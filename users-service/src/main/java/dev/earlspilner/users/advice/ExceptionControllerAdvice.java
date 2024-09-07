@@ -3,6 +3,7 @@ package dev.earlspilner.users.advice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -22,6 +23,17 @@ import static org.springframework.http.HttpStatus.*;
  */
 @ControllerAdvice
 public class ExceptionControllerAdvice {
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ProblemDetail> handleAccessDeniedException(AccessDeniedException ex, WebRequest request) {
+        return createProblemDetail(
+                "Access denied",
+                FORBIDDEN.value(),
+                ex.getLocalizedMessage(),
+                request,
+                now()
+        );
+    }
 
     @ExceptionHandler(FieldUpdateException.class)
     public ResponseEntity<ProblemDetail> handleFieldUpdateException(FieldUpdateException ex, WebRequest request) {
