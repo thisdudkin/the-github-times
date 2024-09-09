@@ -4,6 +4,7 @@ import feign.FeignException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -14,8 +15,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static java.time.OffsetDateTime.now;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 /**
  * Could either use org.springframework.http.ProblemDetails or
@@ -25,6 +25,17 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
  */
 @ControllerAdvice
 public class ExceptionControllerAdvice {
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ProblemDetail> handleAccessDeniedException(AccessDeniedException ex, WebRequest request) {
+        return createProblemDetail(
+                "Access denied",
+                FORBIDDEN.value(),
+                ex.getLocalizedMessage(),
+                request,
+                now()
+        );
+    }
 
     @ExceptionHandler(ProfileNotFoundException.class)
     public ResponseEntity<ProblemDetail> handleProfileNotFoundException(ProfileNotFoundException ex, WebRequest request) {

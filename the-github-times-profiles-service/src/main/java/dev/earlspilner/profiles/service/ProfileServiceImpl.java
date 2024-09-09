@@ -29,7 +29,7 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public ProfileDto addProfile(HttpServletRequest request, ProfileDto profileDto) {
-        String username = jwtUtil.getUsername(jwtUtil.resolveToken(request));
+        String username = jwtUtil.getUsernameFromToken(jwtUtil.resolveToken(request));
         UserDto user = userServiceClient.getUserByUsername(username);
         Profile profile = profileMapper.toEntity(profileDto);
         profile.setUserId(user.id());
