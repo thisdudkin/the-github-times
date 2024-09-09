@@ -41,7 +41,7 @@ public class UserAccessAspect {
         }
 
         if (!jwtUsername.equals(pathUsername)) {
-            throw new AccessDeniedException("User is not the owner of this resource");
+            throw new AccessDeniedException("Access denied. You are not owning this resource!");
         }
 
         return joinPoint.proceed();
