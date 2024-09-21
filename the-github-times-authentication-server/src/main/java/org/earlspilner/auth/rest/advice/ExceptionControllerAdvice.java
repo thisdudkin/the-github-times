@@ -1,6 +1,7 @@
-package org.earlspilner.auth.advice;
+package org.earlspilner.auth.rest.advice;
 
 import feign.FeignException;
+import org.earlspilner.auth.rest.advice.custom.BadUserCredentialsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;

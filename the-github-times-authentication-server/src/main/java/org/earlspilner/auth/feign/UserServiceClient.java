@@ -1,6 +1,5 @@
-package org.earlspilner.auth.service;
+package org.earlspilner.auth.feign;
 
-import org.earlspilner.auth.config.FeignConfig;
 import org.earlspilner.auth.dto.UserDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +16,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 )
 public interface UserServiceClient {
 
+    /**
+     * Synchronized request to User Service to collect User Details
+     * @param  username is a unique identifier of user
+     * @return {@code UserDto} data transfer object
+     */
     @RequestMapping(method = RequestMethod.GET, value = "/users/{username}")
     UserDto getUserByUsername(@PathVariable String username);
 

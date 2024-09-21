@@ -1,4 +1,4 @@
-package org.earlspilner.auth.advice;
+package org.earlspilner.auth.rest.advice.custom;
 
 import org.springframework.web.bind.annotation.ResponseStatus;
 

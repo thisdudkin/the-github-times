@@ -1,4 +1,4 @@
-package org.earlspilner.auth.controller;
+package org.earlspilner.auth.rest.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.earlspilner.auth.dto.AuthDto;
