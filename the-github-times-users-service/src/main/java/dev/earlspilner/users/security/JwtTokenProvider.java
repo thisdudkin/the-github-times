@@ -1,31 +1,22 @@
-package org.earlspilner.auth.security;
+package dev.earlspilner.users.security;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
+import dev.earlspilner.users.advice.custom.CustomJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
-import org.earlspilner.auth.dto.Tokens;
-import org.earlspilner.auth.dto.UserRole;
-import org.earlspilner.auth.rest.advice.custom.CustomJwtException;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Base64;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-
-import static java.util.stream.Collectors.toList;
 
 /**
  * @author Alexander Dudkin
@@ -33,14 +24,9 @@ import static java.util.stream.Collectors.toList;
 @Service
 public class JwtTokenProvider {
 
+    @Getter
     @Value("${jwt.secret.key}")
     private String secretKey;
-
-    @Value("${jwt.expiration.access}")
-    private Long accessExpiration;
-
-    @Value("${jwt.expiration.refresh}")
-    private Long refreshExpiration;
 
     private Key key;
 
@@ -50,30 +36,6 @@ public class JwtTokenProvider {
     @PostConstruct
     protected void init() {
         this.key = Keys.hmacShaKeyFor(Base64.getDecoder().decode(secretKey.getBytes()));
-    }
-
-    public String createToken(String username, List<UserRole> userRoles, Long tokenExpiration) {
-        Date now = new Date();
-        Date validity = new Date(now.getTime() + tokenExpiration);
-
-        JwtBuilder builder = Jwts.builder()
-                .subject(username)
-                .issuedAt(now)
-                .expiration(validity)
-                .signWith(key);
-
-        builder.claim("auth", userRoles.stream()
-                .map(s -> new SimpleGrantedAuthority(s.getAuthority()))
-                .filter(Objects::nonNull)
-                .collect(toList()));
-
-        return builder.compact();
-    }
-
-    public Tokens createTokens(String username, List<UserRole> userRoles) {
-        String accessToken = createToken(username, userRoles, accessExpiration);
-        String refreshToken = createToken(username, List.of(), refreshExpiration);
-        return new Tokens(accessToken, refreshToken);
     }
 
     public Authentication getAuthentication(String token) {

@@ -18,3 +18,4 @@ logging:
   level:
     org.springframework.web: debug
     dev.earlspilner.auth: debug
+    org.springframework.security: debug

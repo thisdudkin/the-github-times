@@ -1,7 +1,7 @@
 package dev.earlspilner.users.config;
 
 import dev.earlspilner.users.annotation.CheckUserAccess;
-import dev.earlspilner.users.security.JwtUtil;
+import dev.earlspilner.users.security.JwtTokenProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -22,13 +22,13 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class UserAccessAspect {
 
-    private final JwtUtil jwtUtil;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Around("@annotation(checkUserAccess)")
     public Object checkUserAccess(ProceedingJoinPoint joinPoint, CheckUserAccess checkUserAccess) throws Throwable {
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
         String token = request.getHeader("Authorization").substring(7);
-        String jwtUsername = jwtUtil.getUsernameFromToken(token);
+        String jwtUsername = jwtTokenProvider.getUsername(token);
 
         Object[] args = joinPoint.getArgs();
         String pathUsername = null;

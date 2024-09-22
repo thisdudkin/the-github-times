@@ -1,8 +1,9 @@
-package org.earlspilner.auth.security;
+package dev.earlspilner.users.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -38,14 +39,18 @@ public class WebSecurityConfig {
 
         // Entry points
         http.authorizeHttpRequests((authz) -> authz
-                .requestMatchers("/auth/login").permitAll()
-                .requestMatchers("/auth/refresh").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
+                // Allow requests from Feign Client
+                .requestMatchers(request -> {
+                    String feignId = request.getHeader("Feign-ID");
+                    return feignId != null && feignId.equals(jwtTokenProvider.getSecretKey());
+                }).permitAll()
                 // Disallow everything else...
                 .anyRequest().authenticated());
 
         // If a user try to access a resource without having enough permissions
         http.exceptionHandling((exception) -> exception
-                .accessDeniedPage("/api/auth/login"));
+                .accessDeniedPage("/api/users"));
 
         // Apply JWT
         http.with(new JwtTokenFilterConfigurer(jwtTokenProvider), Customizer.withDefaults());

@@ -1,7 +1,7 @@
 package dev.earlspilner.users.service;
 
-import dev.earlspilner.users.advice.EmailAlreadyExistsException;
-import dev.earlspilner.users.advice.UsernameAlreadyExistsException;
+import dev.earlspilner.users.advice.custom.EmailAlreadyExistsException;
+import dev.earlspilner.users.advice.custom.UsernameAlreadyExistsException;
 import dev.earlspilner.users.dto.UserDto;
 import dev.earlspilner.users.entity.User;
 import dev.earlspilner.users.mapper.UserMapper;

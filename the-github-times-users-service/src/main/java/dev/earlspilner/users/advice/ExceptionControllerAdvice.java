@@ -1,5 +1,8 @@
 package dev.earlspilner.users.advice;
 
+import dev.earlspilner.users.advice.custom.EmailAlreadyExistsException;
+import dev.earlspilner.users.advice.custom.FieldUpdateException;
+import dev.earlspilner.users.advice.custom.UsernameAlreadyExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;

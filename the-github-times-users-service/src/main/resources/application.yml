@@ -8,8 +8,8 @@ spring:
 
 eureka:
   client:
-    fetch-registry: true
-    register-with-eureka: true
+    fetch-registry: false
+    register-with-eureka: false
 
 server:
   port: 9090
@@ -20,3 +20,4 @@ logging:
   level:
     org.springframework.web: debug
     dev.earlspilner.users: debug
+    org.springframework.security: debug
