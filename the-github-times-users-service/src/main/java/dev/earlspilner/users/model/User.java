@@ -16,6 +16,7 @@ import static dev.earlspilner.users.model.UserRole.ROLE_USER;
 /**
  * @author Alexander Dudkin
  */
+@Setter
 @Entity @Getter
 @Table(name = "users")
 public class User {
@@ -24,30 +25,24 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Setter
     @NotEmpty
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
-    @Setter
     @NotEmpty
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Setter
     @NotEmpty
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Setter
     @Column(name = "created_utc", nullable = false, updatable = false)
     private Instant createdUtc;
 
-    @Setter
     @Column(name = "updated_utc")
     private Instant updatedUtc;
 
-    @Setter
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
             name = "user_roles",

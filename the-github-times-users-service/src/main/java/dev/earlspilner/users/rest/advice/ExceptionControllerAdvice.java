@@ -1,6 +1,7 @@
 package dev.earlspilner.users.rest.advice;
 
 import dev.earlspilner.users.rest.advice.custom.EmailAlreadyExistsException;
+import dev.earlspilner.users.rest.advice.custom.UserNotFoundException;
 import dev.earlspilner.users.rest.advice.custom.UsernameAlreadyExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -29,12 +30,14 @@ public class ExceptionControllerAdvice {
     static {
         exceptionStatusMap.put(AccessDeniedException.class, HttpStatus.FORBIDDEN);
         exceptionStatusMap.put(UsernameAlreadyExistsException.class, HttpStatus.CONFLICT);
+        exceptionStatusMap.put(UserNotFoundException.class, HttpStatus.NOT_FOUND);
         exceptionStatusMap.put(EmailAlreadyExistsException.class, HttpStatus.CONFLICT);
         exceptionStatusMap.put(UsernameNotFoundException.class, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({
             AccessDeniedException.class,
+            UserNotFoundException.class,
             UsernameAlreadyExistsException.class,
             EmailAlreadyExistsException.class,
             UsernameNotFoundException.class
