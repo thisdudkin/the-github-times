@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -21,7 +22,7 @@ import org.springframework.security.web.SecurityFilterChain;
  * @author Alexander Dudkin
  */
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfig {
@@ -39,18 +40,25 @@ public class WebSecurityConfig {
 
         // Entry points
         http.authorizeHttpRequests((authz) -> authz
-                .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
+                .requestMatchers(HttpMethod.POST, "/users").permitAll()
                 // Allow requests from Feign Client
                 .requestMatchers(request -> {
                     String feignId = request.getHeader("Feign-ID");
                     return feignId != null && feignId.equals(jwtTokenProvider.getSecretKey());
                 }).permitAll()
+                // Allow Swagger
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                .requestMatchers("/api-docs/openapi.yml").permitAll()
+                .requestMatchers("/swagger-resources/**").permitAll()
+                .requestMatchers("/webjars/**").permitAll()
                 // Disallow everything else...
                 .anyRequest().authenticated());
 
         // If a user try to access a resource without having enough permissions
         http.exceptionHandling((exception) -> exception
-                .accessDeniedPage("/api/users"));
+                .accessDeniedHandler((request, response, accessDeniedException) -> {
+                    throw new AccessDeniedException("You don't have the necessary permissions to access this resource.");
+                }));
 
         // Apply JWT
         http.with(new JwtTokenFilterConfigurer(jwtTokenProvider), Customizer.withDefaults());
@@ -60,7 +68,7 @@ public class WebSecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() throws Exception {
-        return web -> web.ignoring().requestMatchers("/v2/api-docs")//
+        return web -> web.ignoring().requestMatchers("/v3/api-docs")//
                 .requestMatchers("/swagger-resources/**")//
                 .requestMatchers("/swagger-ui.html")//
                 .requestMatchers("/configuration/**")//

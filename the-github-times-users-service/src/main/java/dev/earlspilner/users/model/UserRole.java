@@ -1,4 +1,4 @@
-package dev.earlspilner.users.entity;
+package dev.earlspilner.users.model;
 
 import org.springframework.security.core.GrantedAuthority;
 
