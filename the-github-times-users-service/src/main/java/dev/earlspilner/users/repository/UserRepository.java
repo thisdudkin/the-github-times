@@ -1,6 +1,6 @@
 package dev.earlspilner.users.repository;
 
-import dev.earlspilner.users.entity.User;
+import dev.earlspilner.users.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

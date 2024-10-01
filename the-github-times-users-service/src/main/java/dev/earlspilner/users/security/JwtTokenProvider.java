@@ -1,6 +1,6 @@
 package dev.earlspilner.users.security;
 
-import dev.earlspilner.users.advice.custom.CustomJwtException;
+import dev.earlspilner.users.rest.advice.custom.CustomJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.SecretKey;
 import java.security.Key;
 import java.util.Base64;
 
@@ -44,7 +45,7 @@ public class JwtTokenProvider {
     }
 
     public String getUsername(String token) {
-        return Jwts.parser().setSigningKey(key).build().parseSignedClaims(token).getPayload().getSubject();
+        return Jwts.parser().verifyWith((SecretKey) key).build().parseSignedClaims(token).getPayload().getSubject();
     }
 
     public String resolveToken(HttpServletRequest req) {
@@ -57,10 +58,10 @@ public class JwtTokenProvider {
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(key).build().parseSignedClaims(token);
+            Jwts.parser().verifyWith((SecretKey) key).build().parseSignedClaims(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
-            throw new CustomJwtException("Expired or invalid JWT token", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new CustomJwtException("Expired or invalid JWT token", HttpStatus.UNAUTHORIZED);
         }
     }
 

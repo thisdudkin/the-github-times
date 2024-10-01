@@ -8,9 +8,9 @@ import org.springframework.data.domain.Pageable;
  * @author Alexander Dudkin
  */
 public interface UserService {
-    UserDto registerUser(UserDto userDto);
+    UserDto saveUser(UserDto userDto);
     UserDto getUser(String username);
     Page<UserDto> getUsers(Pageable pageable);
     UserDto updateUser(String username, UserDto userDto);
-    void deleteUser(String username);
+    void deleteUser(Integer id);
 }

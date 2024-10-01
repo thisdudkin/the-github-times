@@ -1,4 +1,4 @@
-package dev.earlspilner.users.advice.custom;
+package dev.earlspilner.users.rest.advice.custom;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

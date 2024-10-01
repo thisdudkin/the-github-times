@@ -1,10 +1,11 @@
 package dev.earlspilner.users.security;
 
-import dev.earlspilner.users.advice.custom.CustomJwtException;
+import dev.earlspilner.users.rest.advice.custom.CustomJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.ProblemDetail;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,7 +36,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             }
         } catch (CustomJwtException e) {
             SecurityContextHolder.clearContext();
-            response.sendError(e.getHttpStatus().value(), e.getMessage());
+            response.setStatus(e.getHttpStatus().value());
+            response.setContentType("application/json");
+            response.getWriter().write(String.valueOf(ProblemDetail.forStatusAndDetail(e.getHttpStatus(), e.getMessage())));
             return;
         }
 
